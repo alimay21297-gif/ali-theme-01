@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm build)",
+      "Bash(pnpm install)",
+      "Bash(pnpm audit:*)",
+      "Bash(salla theme doctor)",
+      "Bash(salla theme list)",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(npx lighthouse:*)"
+    ],
+    "ask": [
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(salla theme publish:*)",
+      "Bash(salla theme create:*)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm remove:*)",
+      "mcp__salla-partners__salla_themes"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git clean:*)",
+      "Bash(salla theme delete:*)",
+      "Bash(npm install:*)",
+      "Bash(yarn:*)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Edit(./.npmrc)",
+      "Edit(./app/routeTree.gen.ts)"
+    ]
+  }
+}
