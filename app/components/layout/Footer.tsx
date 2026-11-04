@@ -14,6 +14,7 @@ import { ImageModal } from '@salla.sa/twilight-theme-engine/modal';
 import { MadeWithSalla } from '@salla.sa/twilight-theme-engine/layout';
 import { menu } from '@salla.sa/twilight-theme-engine/api/menu';
 import { useCalligraphy } from '../../hooks/useCalligraphy';
+import { htmlToPlainText } from '../../lib/plainText';
 
 /** Salla's value-added-tax badge icon (70×70, CDN-resized) — a platform
  *  asset shared by every store, not specific to any one theme. */
@@ -221,16 +222,18 @@ function FooterLogo({ className }: { className: string }) {
   );
 }
 
-/** Merchant-authored description HTML -- mirrors the Twig theme's
- *  `store.description|raw`. Renders nothing when the store has none set. */
+/** Merchant-authored description, shown as plain text (tags stripped, line
+ *  breaks kept) -- never as HTML. Renders nothing when the store has none set. */
 function FooterDescription({ className, dark }: { className: string; dark: boolean }) {
   const { store } = useTwilight();
-  if (!store.description) return null;
+  const text = htmlToPlainText(store.description);
+  if (!text) return null;
   return (
     <div
-      className={`store-footer__desc ${dark ? 'text-gray-300' : 'opacity-80'} ${className}`}
-      dangerouslySetInnerHTML={{ __html: store.description }}
-    />
+      className={`store-footer__desc whitespace-pre-line ${dark ? 'text-gray-300' : 'opacity-80'} ${className}`}
+    >
+      {text}
+    </div>
   );
 }
 

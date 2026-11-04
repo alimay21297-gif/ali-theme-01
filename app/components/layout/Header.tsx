@@ -12,6 +12,7 @@ import { MapPinIcon, SearchIcon, ShoppingBagIcon } from '../icons';
 import { useAppSafeAreaTop } from '../../hooks/useAppSafeAreaTop';
 import { useCalligraphy } from '../../hooks/useCalligraphy';
 import { useNavHasContent } from '../../hooks/useNavHasContent';
+import { htmlToPlainText } from '../../lib/plainText';
 import { HOME_ROUTE_ID, PRODUCT_ROUTE_ID } from '../../lib/routeIds';
 import { HeaderMainMenu } from './HeaderMainMenu';
 import { HeaderNav } from './HeaderNav';
@@ -68,17 +69,15 @@ function HeaderIntro({ isHomePage }: { isHomePage: boolean }) {
   // is in the SSR HTML without a hydration mismatch.
   const Title = isHomePage ? 'h1' : 'p';
   const hasSocial = hasSocialLinks(store?.social);
+  const description = htmlToPlainText(store?.description);
 
   return (
     <div className="site-header__intro">
       <div className="container site-header__intro-inner">
         <Title className="site-header__intro-title">{store?.name}</Title>
-        {store?.description && (
-          <div
-            className="site-header__intro-text"
-            // Merchant-authored HTML, mirrors the Twig theme's `store.description|raw`.
-            dangerouslySetInnerHTML={{ __html: store.description }}
-          />
+        {description && (
+          // Plain text (tags stripped, line breaks kept) -- never merchant HTML.
+          <div className="site-header__intro-text whitespace-pre-line">{description}</div>
         )}
         {/* The slot reserves the loaded row's space in the SSR HTML (header.scss). */}
         <div className={`site-header__social-slot${hasSocial ? ' has-links' : ''}`}>
