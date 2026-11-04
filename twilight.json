@@ -239,13 +239,41 @@
     {
       "type": "boolean",
       "icon": "sicon-toggle-off",
-      "label": "شريط علوي داكن",
-      "description": null,
+      "label": "شريط علوي داكن (سطح المكتب)",
+      "description": "الشريط العلوي فوق الهيدر في شاشات الكمبيوتر فقط",
       "id": "topnav_is_dark",
       "format": "switch",
       "required": false,
       "value": true,
       "selected": false,
+      "groups": [
+        "header"
+      ]
+    },
+    {
+      "type": "boolean",
+      "icon": "sicon-toggle-off",
+      "label": "هيدر داكن",
+      "description": "يجعل الشريط الرئيسي للهيدر (الشعار والأيقونات) داكنًا",
+      "id": "header_is_dark",
+      "format": "switch",
+      "required": false,
+      "value": true,
+      "selected": false,
+      "groups": [
+        "header"
+      ]
+    },
+    {
+      "type": "string",
+      "icon": "sicon-image",
+      "label": "الشعار على الخلفية الداكنة",
+      "description": "يظهر بدل شعار المتجر عندما يكون الهيدر داكنًا. اتركه فارغًا لاستخدام شعار المتجر",
+      "id": "logo_on_dark",
+      "format": "image",
+      "required": false,
+      "value": null,
+      "placeholder": null,
       "groups": [
         "header"
       ]

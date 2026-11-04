@@ -1,0 +1,67 @@
+/* Dark main header bar (`header_is_dark`, default on; `.site-header--dark` is
+   set in Header.tsx). Imported after header.scss, and in critical.scss so the
+   dark colour paints with the first frame -- so no image URLs here: the
+   calligraphy pattern comes from calligraphy.scss (full sheet only).
+   Only the bar and its controls are dark. The user menu dropdown, the mega
+   menus and the nav drawer stay light panels with dark text.
+   `topnav_is_dark` is separate: it only darkens the desktop top bar. */
+
+/* The status-bar strip inside the Salla app matches the bar under it. */
+.site-header--dark .site-header__safe-area {
+  @apply bg-dark;
+}
+
+.site-header--dark .site-header__bar {
+  @apply bg-dark;
+
+  &.is-scrolled {
+    @apply border-white/10 bg-dark;
+  }
+}
+
+/* Controls: white icons, a translucent circle on hover, a white focus ring. */
+.site-header--dark .site-header__bar {
+  .header-action {
+    @apply text-white hover:bg-white/15 hover:text-white;
+  }
+
+  .header-action:focus-visible,
+  .site-header__brand:focus-visible,
+  .s-user-menu-login-btn:focus-visible,
+  .s-user-menu-trigger:focus-visible,
+  .site-header__mainmenu a:focus-visible {
+    @apply outline outline-2 outline-offset-2 outline-white;
+  }
+
+  /* Inside a `.header-action`, whose circle is the only hover background. */
+  .s-cart-summary-wrapper {
+    @apply text-white;
+  }
+
+  /* Also inside a `.header-action`. Twilight fills its icon with gray-700. */
+  .s-user-menu-login-btn {
+    @apply text-white hover:bg-transparent hover:text-white;
+
+    svg {
+      @apply fill-white;
+    }
+  }
+
+  /* The dropdown is a child of the (white-text) `.header-action` host: put it
+     back to a light panel with dark text. */
+  .s-user-menu-dropdown {
+    @apply bg-white text-gray-700;
+  }
+}
+
+/* Desktop main menu: white links, underlined on hover/focus (the brand
+   primary is as dark as the bar, so a colour change would vanish). Panels keep
+   their own light styles from header.scss. */
+.site-header--dark .site-header__mainmenu .s-menu-root-level > a {
+  @apply text-white;
+
+  &:hover,
+  &:focus-visible {
+    @apply text-white underline decoration-white/70 underline-offset-8;
+  }
+}

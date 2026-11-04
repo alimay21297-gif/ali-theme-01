@@ -10,6 +10,7 @@ import { HookSlot } from '@salla.sa/twilight-theme-engine/hooks';
 import { Image } from '@salla.sa/twilight-theme-engine/common';
 import { MapPinIcon, SearchIcon, ShoppingBagIcon } from '../icons';
 import { useAppSafeAreaTop } from '../../hooks/useAppSafeAreaTop';
+import { useCalligraphy } from '../../hooks/useCalligraphy';
 import { useNavHasContent } from '../../hooks/useNavHasContent';
 import { HOME_ROUTE_ID, PRODUCT_ROUTE_ID } from '../../lib/routeIds';
 import { HeaderMainMenu } from './HeaderMainMenu';
@@ -119,6 +120,16 @@ export function Header({ navOpen: navOpenProp, onNavOpenChange }: HeaderProps = 
   const { t } = useTranslation();
   const isDefaultLayout = theme?.settings?.header_layout === 'default';
   const stickyEnabled = theme?.settings?.header_is_sticky !== false;
+  // Dark main bar (`header_is_dark`, default on): dark colours, the calligraphy
+  // background and `logo_on_dark` (falls back to the store logo when empty).
+  const darkSettings = theme?.settings as
+    | { header_is_dark?: boolean; logo_on_dark?: unknown }
+    | undefined;
+  const isDark = darkSettings?.header_is_dark !== false;
+  const calligraphy = useCalligraphy();
+  const logoOnDark = darkSettings?.logo_on_dark;
+  const logoSrc =
+    isDark && typeof logoOnDark === 'string' && logoOnDark !== '' ? logoOnDark : store?.logo;
   const navHasContent = useNavHasContent();
   const [navOpenState, setNavOpenState] = useState(false);
   const navOpen = navOpenProp ?? navOpenState;
@@ -195,7 +206,8 @@ export function Header({ navOpen: navOpenProp, onNavOpenChange }: HeaderProps = 
   return (
     <header
       className={`site-header site-header--${isDefaultLayout ? 'default' : 'lite'}${
-        isProductPage ? ' site-header--product' : ''
+        isDark ? ' site-header--dark' : ''
+      }${isProductPage ? ' site-header--product' : ''
       }${isHomePage ? ' site-header--home' : ''}`}
       suppressHydrationWarning
     >
@@ -228,7 +240,12 @@ export function Header({ navOpen: navOpenProp, onNavOpenChange }: HeaderProps = 
       )}
 
       <div className="site-header__bar-outer">
-        <div className={`site-header__bar${scrolled ? ' is-scrolled' : ''}`}>
+        <div
+          className={`site-header__bar${scrolled ? ' is-scrolled' : ''}${
+            isDark && calligraphy.className ? ` ${calligraphy.className}` : ''
+          }`}
+          style={isDark ? calligraphy.style : undefined}
+        >
           <div className="container site-header__bar-inner">
             {/* The cell stays when the button goes, so the logo keeps its place. */}
             <div className="site-header__nav-toggle">
@@ -253,7 +270,7 @@ export function Header({ navOpen: navOpenProp, onNavOpenChange }: HeaderProps = 
 
             <a className="site-header__brand" href={store?.url || '/'}>
               <Image
-                src={store?.logo}
+                src={logoSrc}
                 alt=""
                 priority
                 width={140}
