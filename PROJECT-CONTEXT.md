@@ -40,7 +40,7 @@ _Kept in the theme repo root. Updated by Claude Code via /handover. Last update:
 ## Open issues
 - Home/product first paint uses fallback font — @font-face inside inlined critical CSS breaks the SSR build (vite:asset TypeError) — revisit in perf pass (preload + non-critical fonts.scss only for now)
 - 10 tests fail on the untouched starter baseline (PageAdvertisements, ProductDetails wishlist) — not caused by our changes — confirm against a clean checkout before release
-- Body font resolves to `Dubai` first (engine-loaded face, unicode-range all), so only headings use Readex Pro — decide whether body should override Dubai (observed in Playwright on /ar and /en)
+- ~~Body font resolves to `Dubai`~~ DECIDED 2026-11-04: body follows the merchant's dashboard font setting (engine-loaded, e.g. Dubai); headings stay Readex Pro. No override.
 - Settings labels: Arabic-only plain strings (matches the existing 29 settings; the local editor shows {ar,en} objects as the raw id). Verify with Salla docs/support before release whether the real dashboard supports bilingual setting labels.
 - The top bar is desktop-only (`display:none` below 1024px), so the calligraphy test surface isn't visible at 375px. Phase 2 must apply it to a mobile-visible dark surface.
 - `salla.config.get('theme.settings').topnav_is_dark` was stale (false) while `theme.settings` and the body class were true. Read settings via `useTwilight()`, not `salla.config`.
