@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { useRouterState } from '@tanstack/react-router';
 import { Link } from '@salla.sa/twilight-theme-engine/common';
 import { useTranslation } from '@salla.sa/twilight-theme-engine/i18n';
+import { useCalligraphy } from '../../hooks/useCalligraphy';
 import { useMobileViewport } from '../../hooks/useMobileViewport';
 import { useNavHasContent } from '../../hooks/useNavHasContent';
 import {
@@ -328,6 +329,7 @@ export function MobileBottomBar({
 }: MobileBottomBarProps) {
   const { t } = useTranslation();
   const cartCount = useCartCount();
+  const calligraphy = useCalligraphy();
   const isMobile = useMobileViewport();
   const navHasContent = useNavHasContent();
   const searchOpen = useSearchOpen(isMobile);
@@ -379,7 +381,12 @@ export function MobileBottomBar({
       <div className="mobile-bottom-bar-scrim" aria-hidden="true" />
 
       <nav className="mobile-bottom-bar" aria-label={t('blocks.header.main_menu', 'Menu')}>
-        <div className="mobile-bottom-bar__inner">
+        <div
+          className={`mobile-bottom-bar__inner${
+            calligraphy.className ? ` ${calligraphy.className}` : ''
+          }`}
+          style={calligraphy.style}
+        >
           <BarLink
             to="/"
             label={labels.home}

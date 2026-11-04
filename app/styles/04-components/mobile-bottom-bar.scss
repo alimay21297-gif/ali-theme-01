@@ -2,16 +2,17 @@
    Mobile bottom bar — fixed, floating pill of four tabs (Home · Categories ·
    Cart · User). Small screens only; hidden from `md` up where the header nav
    takes over. The active tab (current route, or Categories while the drawer is
-   open) expands into a filled primary pill that reveals its label.
+   open) expands into a white pill that reveals its label.
    Markup: app/components/layout/MobileBottomBar.tsx (mounted in ThemeLayout).
    ========================================================================= */
 
 .mobile-bottom-bar {
   --mbb-badge-bg: #b3261e;
   --mbb-badge-text: #ffffff;
-  /* Inactive icons read near-black in the design; nudge the theme text colour
-     darker rather than hard-coding so a light-on-dark theme still works. */
-  --mbb-muted: color-mix(in srgb, var(--color-text, #7c8082) 55%, #000 45%);
+  /* Dark bar (bg-darker). Inactive icons use the brand's muted tint, about 8:1
+     on the deep green; the active pill is white with a brand-green icon and
+     label (`--lameem-primary`, never the merchant's `--color-primary`). */
+  --mbb-muted: var(--lameem-muted);
 
   /* Above every overlay — the nav side panel (z-200), bottom sheets and the
      user-menu sheet (z-210). Those panels pad their own bottoms to clear it. */
@@ -48,12 +49,18 @@
 }
 
 .mobile-bottom-bar__inner {
-  @apply flex w-full max-w-md items-center justify-between gap-1 bg-white;
+  @apply flex w-full max-w-md items-center justify-between gap-1 bg-darker;
   height: 52px;
   border-radius: 9999px;
   padding: 0 8px;
   box-shadow: 0 8px 30px rgb(0 0 0 / 12%);
   pointer-events: auto;
+
+  /* The calligraphy layer (calligraphy.scss, full sheet only) follows the pill. */
+  &.has-calligraphy::before {
+    border-radius: inherit;
+  }
+
   /* Not `overflow: hidden` — on the narrowest phones the active tab's
      expanded pill (padding + label, below) can come within a few px of the
      row's total width. Clipping would silently drop a tab (its icon read as
@@ -79,13 +86,22 @@
     background-color 0.32s cubic-bezier(0.22, 1, 0.36, 1),
     padding 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 
+  /* Hover only where there is a pointer: a soft white wash, no colour change. */
+  @media (hover: hover) {
+    &:not(.is-active):hover {
+      @apply bg-white/10 text-white;
+    }
+  }
+
+  &:focus-visible {
+    @apply outline outline-2 outline-offset-2 outline-white;
+  }
+
+  /* White pill, brand-green icon + label. `--lameem-primary` is a static
+     token, so it is right from the first paint (unlike `--color-primary`). */
   &.is-active {
-    /* Fallback: `--color-primary` is only set client-side, in a `useEffect`
-       (engine `applyTheme`) — before that runs (SSR, first paint, early
-       hydration) the property is unset and the pill would render with no
-       background at all, i.e. invisible against the bar's own white. */
-    background: var(--color-primary, #9ca3af);
-    color: var(--color-primary-reverse, #ffffff);
+    @apply bg-white;
+    color: var(--lameem-primary);
     padding: 0 10px;
   }
 }
@@ -151,7 +167,8 @@
 }
 
 /* Count badge on the cart icon. Brand-independent red so it always reads as an
-   alert regardless of the store's primary colour. */
+   alert regardless of the store's primary colour. Its white ring separates it
+   from both the dark bar and the white active pill. */
 .mobile-bottom-bar__badge {
   @apply absolute flex items-center justify-center rounded-full font-bold;
   /* Bottom-centred on the icon, matching the header cart badge. */
@@ -167,10 +184,6 @@
   font-size: 10px;
   line-height: 1;
   animation: mbb-badge-pop 0.28s ease;
-}
-
-.mobile-bottom-bar__item.is-active .mobile-bottom-bar__badge {
-  border-color: var(--color-primary, #9ca3af);
 }
 
 @keyframes mbb-badge-pop {
