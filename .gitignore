@@ -12,3 +12,4 @@ tsconfig.tsbuildinfo
 app/routeTree.gen.ts
 
 .playwright-mcp/
+twilight.preview.json

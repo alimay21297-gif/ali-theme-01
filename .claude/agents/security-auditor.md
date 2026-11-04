@@ -1,6 +1,6 @@
 ---
 name: security-auditor
-description: Use before every release, and after any change that renders HTML, adds settings, adds dependencies, loads external resources or touches forms. Audits the theme against the security checklist. Read-only.
+description: Use before every release, and after any change that renders HTML, adds settings, adds dependencies, loads external resources or touches forms. Audits the theme against the security checklist (docs/kit/06-security-checklist.md). Read-only.
 tools: Read, Grep, Glob, Bash
 ---
 You audit a Salla theme for security. You never edit files.

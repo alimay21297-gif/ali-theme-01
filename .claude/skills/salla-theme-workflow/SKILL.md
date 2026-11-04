@@ -42,4 +42,4 @@ Discovery brief → choose A (configure, no code), B (reskin the base theme, the
 Write handover notes when a chat gets long. In Claude Code, run `/handover` (which updates PROJECT-CONTEXT.md) before `/clear`. Run `/clear` between finished features, never in the middle of a change.
 
 ## Where the details live
-If the full kit is available: `docs/01–09`, `templates/`, and `claude-code/CLAUDE.md` plus `.claude/agents`. Official docs: https://docs.salla.dev/twilight/react/start/what-is-a-theme (index at `/twilight/react/llms.txt`; add `.md` to any page).
+If the full kit is available: `docs/kit/01–09`, `templates/`, and `claude-code/CLAUDE.md` plus `.claude/agents`. Official docs: https://docs.salla.dev/twilight/react/start/what-is-a-theme (index at `/twilight/react/llms.txt`; add `.md` to any page).
