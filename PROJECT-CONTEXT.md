@@ -23,13 +23,14 @@ _Kept in the theme repo root. Updated by Claude Code via /handover. Last update:
 - 2026-11-04 — Direction: dark green premium tech. Dark shell, light content sections.
 - 2026-11-04 — Font: Readex Pro for both Arabic and Latin.
 - 2026-11-04 — Calligraphy background: `public/images/patterns/calligraphy-on-dark.v1.svg` at 8% opacity, dark sections only (hero, dark bands, footer), never behind products/prices/body text; merchant can toggle it. Glyphs from Aref Ruqaa (OFL 1.1); generator script kept outside the repo.
+- 2026-11-04 — Calligraphy settings: `calligraphy_bg_enabled` (switch, default on) and `calligraphy_bg_strength` (subtle 5 / standard 8 / strong 12) in twilight.json; `useCalligraphy()` returns the class and `--calligraphy-opacity`. First applied to `.site-header__topnav`, only when `topnav_is_dark` is on (slider images would cover the pattern; the footer is an engine component). Plain Arabic labels because the local editor showed `{ar,en}` objects as the raw id.
 
 ## Status
 | Phase | State | Notes |
 |---|---|---|
 | 0 Setup | ✅ | |
-| 1 Tokens | 🔶 | Step 1 done (brand tokens, self-hosted Readex Pro v530, headings). Step 2 next: calligraphy background setting |
-| 2 Header/Footer | ☐ | |
+| 1 Tokens | ✅ | Brand tokens, self-hosted Readex Pro v530, headings, calligraphy background setting (toggle + strength) applied to the dark top bar |
+| 2 Header/Footer | ☐ | Next. Include calligraphy on surfaces visible on mobile |
 | 3 Home | ☐ | |
 | 4 Card/Listing | ☐ | |
 | 5 Product | ☐ | |
@@ -41,6 +42,10 @@ _Kept in the theme repo root. Updated by Claude Code via /handover. Last update:
 - 10 tests fail on the untouched starter baseline (PageAdvertisements, ProductDetails wishlist) — not caused by our changes — confirm against a clean checkout before release
 - Body font resolves to `Dubai` first (engine-loaded face, unicode-range all), so only headings use Readex Pro — decide whether body should override Dubai (observed in Playwright on /ar and /en)
 - Settings labels: Arabic-only plain strings (matches the existing 29 settings; the local editor shows {ar,en} objects as the raw id). Verify with Salla docs/support before release whether the real dashboard supports bilingual setting labels.
+- The top bar is desktop-only (`display:none` below 1024px), so the calligraphy test surface isn't visible at 375px. Phase 2 must apply it to a mobile-visible dark surface.
+- `salla.config.get('theme.settings').topnav_is_dark` was stale (false) while `theme.settings` and the body class were true. Read settings via `useTwilight()`, not `salla.config`.
+- The dev editor iframe is ~799px wide, so the top bar is hidden in it; widen the window to review it.
+- `pnpm build` after the calligraphy change passed; tests were not re-run this session.
 
 ## Next step
-Phase 1 step 2: add the calligraphy background merchant setting (toggle) in twilight.json + locales ar/en, apply `calligraphy-on-dark.v1.svg` at 8% on dark sections only (hero, dark bands, footer); run `pnpm check:manifest`.
+Phase 2: header + footer redesign in the LAMEEM dark-green style, including `useCalligraphy()` on dark surfaces visible on mobile (mobile header bar, footer). The footer is an engine component, so it needs a fork (record it in FORKS.md).
