@@ -10,6 +10,7 @@ import {
   MapPinIcon,
   Money01Icon,
 } from '../icons';
+import { useCalligraphy } from '../../hooks/useCalligraphy';
 import { openStoreSwitcher, type StoreSwitcher } from '../../lib/storeSwitchers';
 
 /** One topnav trigger: leading icon, current-selection label, caret. */
@@ -104,8 +105,15 @@ export function HeaderTopnav() {
     },
   ];
 
+  // Test surface: the top bar is dark only when `topnav_is_dark` is on.
+  const calligraphy = useCalligraphy();
+  const isDark = theme?.settings?.topnav_is_dark === true;
+
   return (
-    <div className="site-header__topnav">
+    <div
+      className={`site-header__topnav ${isDark ? calligraphy.className : ''}`.trim()}
+      style={isDark ? calligraphy.style : undefined}
+    >
       <div className="container site-header__topnav-inner">
         {showImportantLinks && (
           <SallaMenu

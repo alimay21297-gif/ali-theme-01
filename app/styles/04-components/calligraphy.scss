@@ -1,0 +1,19 @@
+/* Calligraphy background for DARK surfaces only (never light sections, product
+   grids, prices or body text). Added by `useCalligraphy()` when the merchant
+   setting `calligraphy_bg_enabled` is on; `--calligraphy-opacity` comes from
+   `calligraphy_bg_strength`. */
+.has-calligraphy {
+  position: relative;
+  isolation: isolate;
+}
+
+.has-calligraphy::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: url('/images/patterns/calligraphy-on-dark.v1.svg') repeat;
+  background-size: 480px;
+  opacity: var(--calligraphy-opacity, 0.08);
+}

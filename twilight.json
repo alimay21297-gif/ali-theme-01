@@ -474,6 +474,57 @@
       "required": false,
       "value": false,
       "selected": false
+    },
+    {
+      "type": "boolean",
+      "icon": "sicon-toggle-off",
+      "label": "خلفية الخط العربي على الأقسام الداكنة",
+      "description": "نقش خط عربي خفيف خلف الأقسام الداكنة فقط.",
+      "id": "calligraphy_bg_enabled",
+      "format": "switch",
+      "required": false,
+      "value": true,
+      "selected": true
+    },
+    {
+      "type": "items",
+      "format": "dropdown-list",
+      "icon": "sicon-layers",
+      "label": "قوة خلفية الخط العربي",
+      "id": "calligraphy_bg_strength",
+      "source": "Manual",
+      "required": true,
+      "selected": [
+        {
+          "label": "قياسي (8%)",
+          "value": "standard",
+          "key": "calligraphy-bg-strength-standard"
+        }
+      ],
+      "options": [
+        {
+          "label": "خفيف (5%)",
+          "value": "subtle",
+          "key": "calligraphy-bg-strength-subtle"
+        },
+        {
+          "label": "قياسي (8%)",
+          "value": "standard",
+          "key": "calligraphy-bg-strength-standard"
+        },
+        {
+          "label": "قوي (12%)",
+          "value": "strong",
+          "key": "calligraphy-bg-strength-strong"
+        }
+      ],
+      "conditions": [
+        {
+          "id": "calligraphy_bg_enabled",
+          "operation": "=",
+          "value": true
+        }
+      ]
     }
   ],
   "components": [

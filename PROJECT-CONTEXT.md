@@ -40,6 +40,7 @@ _Kept in the theme repo root. Updated by Claude Code via /handover. Last update:
 - Home/product first paint uses fallback font — @font-face inside inlined critical CSS breaks the SSR build (vite:asset TypeError) — revisit in perf pass (preload + non-critical fonts.scss only for now)
 - 10 tests fail on the untouched starter baseline (PageAdvertisements, ProductDetails wishlist) — not caused by our changes — confirm against a clean checkout before release
 - Body font resolves to `Dubai` first (engine-loaded face, unicode-range all), so only headings use Readex Pro — decide whether body should override Dubai (observed in Playwright on /ar and /en)
+- Settings labels: Arabic-only plain strings (matches the existing 29 settings; the local editor shows {ar,en} objects as the raw id). Verify with Salla docs/support before release whether the real dashboard supports bilingual setting labels.
 
 ## Next step
 Phase 1 step 2: add the calligraphy background merchant setting (toggle) in twilight.json + locales ar/en, apply `calligraphy-on-dark.v1.svg` at 8% on dark sections only (hero, dark bands, footer); run `pnpm check:manifest`.
