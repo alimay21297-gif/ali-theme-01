@@ -87,12 +87,23 @@
 /* `footer_is_dark` darkens `.s-menu-footer-item`'s own border/text too -- the
    one piece of dark-mode handling still theme-owned, since the two menu
    variants above are. */
-body.footer-is-dark .store-footer {
-  &__menu--stacked .s-menu-footer-item {
-    @apply text-white;
+body.footer-is-dark .store-footer:not(.store-footer--sheet) {
+  .store-footer__menu--stacked .s-menu-footer-item {
+    @apply text-white hover:underline;
   }
 
-  &__menu--inline .s-menu-footer-item {
-    @apply border-white/10 text-white;
+  .store-footer__menu--inline .s-menu-footer-item {
+    @apply border-white/10 text-white hover:underline;
+  }
+
+  .social-link {
+    @apply border-white/30 text-white;
+  }
+
+  /* The dark surface is --lameem-primary, so --color-primary rings would vanish. */
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
   }
 }

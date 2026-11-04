@@ -24,6 +24,7 @@ _Kept in the theme repo root. Updated by Claude Code via /handover. Last update:
 - 2026-11-04 — Font: Readex Pro for both Arabic and Latin.
 - 2026-11-04 — Calligraphy background: `public/images/patterns/calligraphy-on-dark.v1.svg` at 8% opacity, dark sections only (hero, dark bands, footer), never behind products/prices/body text; merchant can toggle it. Glyphs from Aref Ruqaa (OFL 1.1); generator script kept outside the repo.
 - 2026-11-04 — Calligraphy settings: `calligraphy_bg_enabled` (switch, default on) and `calligraphy_bg_strength` (subtle 5 / standard 8 / strong 12) in twilight.json; `useCalligraphy()` returns the class and `--calligraphy-opacity`. First applied to `.site-header__topnav`, only when `topnav_is_dark` is on (slider images would cover the pattern; the footer is an engine component). Plain Arabic labels because the local editor showed `{ar,en}` objects as the raw id.
+- 2026-11-04 — Phase 2 decisions: the mobile bottom bar goes dark (`bg-darker`); active tab = white pill with a green `--lameem-primary` icon (not `--color-primary`). Logo: new `logo_on_dark` image setting, falling back to the store logo; no white-filter option. New `header_is_dark` setting (default on) for the main bar; `topnav_is_dark` controls the top bar only. New setting labels are plain Arabic strings in twilight.json; locale files only for shopper-facing text. Build order: footer → header → bottom bar.
 
 ## Status
 | Phase | State | Notes |
@@ -45,7 +46,8 @@ _Kept in the theme repo root. Updated by Claude Code via /handover. Last update:
 - The top bar is desktop-only (`display:none` below 1024px), so the calligraphy test surface isn't visible at 375px. Phase 2 must apply it to a mobile-visible dark surface.
 - `salla.config.get('theme.settings').topnav_is_dark` was stale (false) while `theme.settings` and the body class were true. Read settings via `useTwilight()`, not `salla.config`.
 - The dev editor iframe is ~799px wide, so the top bar is hidden in it; widen the window to review it.
+- SECURITY (security-auditor, 2026-11-04, report only, nothing changed): `store.description` is rendered with `dangerouslySetInnerHTML` in `Footer.tsx` (FooterDescription) and `Header.tsx` (HeaderIntro). Salla documents it as HTML the theme must sanitise or "render with care" (https://docs.salla.dev/twilight/react/data/store.md) and documents no sanitising on its side; the engine Footer renders it raw too. Source is the store owner only, but it conflicts with CLAUDE.md rule 7 as written. Same pattern, same source type: `brand.description` (`ProductListPage.tsx`), `page.content` (`PageSingle.tsx`), product `description` (`ProductDetails.tsx`). Decide before release: (a) a shared sanitiser helper with an allow-list (needs a new dependency, so written approval under rule 7), (b) plain text in footer/header, or (c) a written exception. Also read the publish Requirements (https://docs.salla.dev/twilight/react/local-development/publish.md) in full; the audit did not.
 - `pnpm build` after the calligraphy change passed; tests were not re-run this session.
 
 ## Next step
-Phase 2: header + footer redesign in the LAMEEM dark-green style, including `useCalligraphy()` on dark surfaces visible on mobile (mobile header bar, footer). The footer is an engine component, so it needs a fork (record it in FORKS.md).
+Phase 2 in 3 steps: (1) footer — `Footer.tsx` is already a theme fork (see FORKS.md), no new fork needed; brand tokens + `useCalligraphy()`; (2) header — dark main bar, `header_is_dark`, `logo_on_dark`; (3) mobile bottom bar dark.

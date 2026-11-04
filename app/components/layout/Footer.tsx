@@ -13,6 +13,7 @@ import { Link, Image } from '@salla.sa/twilight-theme-engine/common';
 import { ImageModal } from '@salla.sa/twilight-theme-engine/modal';
 import { MadeWithSalla } from '@salla.sa/twilight-theme-engine/layout';
 import { menu } from '@salla.sa/twilight-theme-engine/api/menu';
+import { useCalligraphy } from '../../hooks/useCalligraphy';
 
 /** Salla's value-added-tax badge icon (70×70, CDN-resized) — a platform
  *  asset shared by every store, not specific to any one theme. */
@@ -71,7 +72,7 @@ function FooterTax({ dark }: { dark: boolean }) {
         </>
       )}
       <div>
-        <p className={`mb-1 text-sm opacity-70 ${dark ? 'text-white' : ''}`}>
+        <p className={`mb-1 text-sm ${dark ? 'text-[var(--lameem-muted)]' : 'text-gray-600'}`}>
           {t('common.elements.tax_number', 'Tax Number')}
         </p>
         <b className="text-sm">{number}</b>
@@ -113,7 +114,7 @@ function FooterSbc({ dark }: { dark: boolean }) {
         className="h-10 w-14 rounded-sm"
       />
       <div>
-        <p className={`text-xs opacity-70 ${dark ? 'text-white' : ''}`}>
+        <p className={`text-xs ${dark ? 'text-[var(--lameem-muted)]' : 'text-gray-600'}`}>
           {t('blocks.footer.sbc_trusted_by', 'Trusted by')}
         </p>
         <b className="text-sm">{t('blocks.footer.sbc_platform', 'Business Platform')}</b>
@@ -222,12 +223,12 @@ function FooterLogo({ className }: { className: string }) {
 
 /** Merchant-authored description HTML -- mirrors the Twig theme's
  *  `store.description|raw`. Renders nothing when the store has none set. */
-function FooterDescription({ className }: { className: string }) {
+function FooterDescription({ className, dark }: { className: string; dark: boolean }) {
   const { store } = useTwilight();
   if (!store.description) return null;
   return (
     <div
-      className={`store-footer__desc opacity-80 ${className}`}
+      className={`store-footer__desc ${dark ? 'text-gray-300' : 'opacity-80'} ${className}`}
       dangerouslySetInnerHTML={{ __html: store.description }}
     />
   );
@@ -283,7 +284,7 @@ function FooterCenteredBody({ inSheet, isDark }: { inSheet: boolean; isDark: boo
   return (
     <div className="container mx-auto flex max-w-2xl flex-col items-center gap-6 text-center">
       <FooterLogo className="" />
-      <FooterDescription className="" />
+      <FooterDescription className="" dark={isDark} />
       <FooterContacts className="" />
       <SallaSocial />
 
@@ -310,7 +311,7 @@ function FooterColumnsBody({ inSheet, isDark }: { inSheet: boolean; isDark: bool
     <div className="container grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-flow-col lg:auto-cols-fr lg:gap-16">
       <div className="store-footer__brand rtl:lg:pl-16 ltr:lg:pr-16 sm:col-span-2">
         <FooterLogo className="mb-5" />
-        <FooterDescription className="max-w-sm leading-6 my-5" />
+        <FooterDescription className="max-w-sm leading-6 my-5" dark={isDark} />
         <SallaSocial className="block mb-6" />
         <FooterTrust dark={isDark} centered={false} />
       </div>
@@ -346,7 +347,9 @@ export interface FooterProps {
  * Fork of the engine `Footer` -- same markup and data, except the columns layout:
  * the store's contacts get their own "Contact us" column (one row per channel)
  * instead of a lone phone / email row under the description, and the "Important
- * links" column hides when the footer menu is empty. Upgrade notes: `FORKS.md`.
+ * links" column hides when the footer menu is empty. Dark mode uses the LAMEEM
+ * tokens (`bg-dark` shell, `bg-darker` band) and the calligraphy background.
+ * Upgrade notes: `FORKS.md`.
  *
  * Two layouts, chosen by the `footer_layout` theme setting:
  *  - **columns** (default): logo / description / social / trust badges, the
@@ -366,7 +369,10 @@ export function Footer({ inSheet = false }: FooterProps = {}) {
   const { t } = useTranslation();
   const year = new Date().getFullYear();
   const isCentered = theme.settings?.footer_layout === 'centered';
-  const isDark = !!theme.settings?.footer_is_dark;
+  // The account sheet is always light (see mobile-account-sheet.scss), whatever `footer_is_dark` says.
+  const isDark = !!theme.settings?.footer_is_dark && !inSheet;
+  const calligraphy = useCalligraphy();
+  const hasPattern = isDark && calligraphy.className !== '';
 
   const Root = inSheet ? 'div' : 'footer';
 
@@ -374,7 +380,10 @@ export function Footer({ inSheet = false }: FooterProps = {}) {
     <Root
       className={`store-footer store-footer--${isCentered ? 'centered' : 'columns'}${
         inSheet ? ' store-footer--sheet' : ''
-      } relative mt-8 sm:mt-16 ${isDark ? 'bg-[#0E0F0F] text-white' : 'bg-[#F4F7F2] text-gray-600'}`}
+      } relative mt-8 sm:mt-16 ${
+        isDark ? 'bg-dark text-white' : 'bg-[var(--lameem-light)] text-gray-600'
+      }${hasPattern ? ` ${calligraphy.className}` : ''}`}
+      style={hasPattern ? calligraphy.style : undefined}
       suppressHydrationWarning
     >
       {!inSheet && <HookSlot name="footer:start" />}
@@ -382,7 +391,9 @@ export function Footer({ inSheet = false }: FooterProps = {}) {
       <div
         aria-label="footer"
         className={`store-footer__inner border-b py-8 lg:py-16 ${
-          isDark ? 'bg-[#1D1F1F] border-dashed border-white/10' : 'bg-transparent border-gray-200'
+          isDark
+            ? `border-dashed border-white/10 ${hasPattern ? 'bg-transparent' : 'bg-darker'}`
+            : 'bg-transparent border-gray-200'
         }`}
       >
         {isCentered ? (
@@ -393,14 +404,19 @@ export function Footer({ inSheet = false }: FooterProps = {}) {
       </div>
 
       <div className="store-footer__bottom container md:flex items-center justify-between gap-4 py-4 lg:py-7 text-center">
-        <span className={`text-sm copyright-text ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
+        <span
+          className={`text-sm copyright-text ${isDark ? 'text-[var(--lameem-muted)]' : 'text-gray-700'}`}
+        >
           <HookSlot
             name="copyright"
             context={{ storeName: store.name }}
             fallback={
               <>
                 {t('blocks.footer.copyright', 'All rights reserved')}{' '}
-                <Link to="/" className="transition-opacity hover:opacity-75 hover:text-primary">
+                <Link
+                  to="/"
+                  className={`transition-opacity hover:opacity-75 ${isDark ? 'hover:text-white' : 'hover:text-primary'}`}
+                >
                   {store.name}
                 </Link>{' '}
                 © {year}
