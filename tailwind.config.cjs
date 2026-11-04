@@ -42,8 +42,8 @@ module.exports = {
         'auto-fill': 'repeat(auto-fill, 290px)',
       },
       colors: {
-        dark: '#1D1F1F',
-        darker: '#0E0F0F',
+        dark: 'var(--lameem-primary)',
+        darker: 'var(--lameem-deep)',
         danger: '#AE0A0A',
         primary: 'var(--color-primary)',
         'primary-dark': 'var(--color-primary-dark)',

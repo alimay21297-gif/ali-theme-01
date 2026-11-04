@@ -1,0 +1,9 @@
+/* Headings always use the brand display font, whatever font the merchant picked. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--lameem-font-display);
+}

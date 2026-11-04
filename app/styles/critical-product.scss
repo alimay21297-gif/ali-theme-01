@@ -6,6 +6,7 @@
 @tailwind utilities;
 
 @import './01-settings/global';
+@import './01-settings/font-tokens';
 @import './01-settings/breakpoints';
 
 @import './02-generic/reset';
@@ -17,6 +18,7 @@
 
 @import './vendor/swiper.css';
 
+@import './03-elements/headings';
 @import './03-elements/form';
 @import './03-elements/buttons';
 @import './03-elements/radio';
@@ -40,7 +42,7 @@
 }
 
 body {
-  font-family: var(--font-main);
+  font-family: var(--font-main, var(--lameem-font-display)), var(--lameem-font-display);
 }
 
 html {

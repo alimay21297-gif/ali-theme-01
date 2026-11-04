@@ -61,7 +61,7 @@ describe('topnav_is_dark (body.topnav-is-dark)', () => {
     const root = await compile('header.scss');
 
     const topnav = declarations(root, 'body.topnav-is-dark .site-header__topnav');
-    expect(topnav['background-color']).toContain('rgb(29 31 31'); // dark #1D1F1F
+    expect(topnav['background-color']).toContain('var(--lameem-primary)'); // dark = LAMEEM primary
     expect(topnav.color).toContain('rgb(209 213 219'); // gray-300
   });
 
@@ -69,7 +69,7 @@ describe('topnav_is_dark (body.topnav-is-dark)', () => {
     const root = await compile('header.scss');
 
     const bar = declarations(root, 'body.topnav-is-dark .site-header--lite .site-header__bar');
-    expect(bar['background-color']).toContain('rgb(29 31 31'); // dark #1D1F1F
+    expect(bar['background-color']).toContain('var(--lameem-primary)'); // dark = LAMEEM primary
 
     const action = declarations(
       root,

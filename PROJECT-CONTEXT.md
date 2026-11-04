@@ -22,7 +22,7 @@ _Kept in the theme repo root. Updated by Claude Code via /handover. Last update:
 ## Decisions (with reason)
 - 2026-11-04 — Direction: dark green premium tech. Dark shell, light content sections.
 - 2026-11-04 — Font: Readex Pro for both Arabic and Latin.
-- 2026-11-04 — Calligraphy background: `public/images/patterns/calligraphy-on-dark.svg` at 8% opacity, dark sections only (hero, dark bands, footer), never behind products/prices/body text; merchant can toggle it. Glyphs from Aref Ruqaa (OFL 1.1); generator script kept outside the repo.
+- 2026-11-04 — Calligraphy background: `public/images/patterns/calligraphy-on-dark.v1.svg` at 8% opacity, dark sections only (hero, dark bands, footer), never behind products/prices/body text; merchant can toggle it. Glyphs from Aref Ruqaa (OFL 1.1); generator script kept outside the repo.
 
 ## Status
 | Phase | State | Notes |
@@ -37,7 +37,8 @@ _Kept in the theme repo root. Updated by Claude Code via /handover. Last update:
 | 7 Release | ☐ | |
 
 ## Open issues
-- <issue> — <evidence> — <next action>
+- Home/product first paint uses fallback font — @font-face inside inlined critical CSS breaks the SSR build (vite:asset TypeError) — revisit in perf pass (preload + non-critical fonts.scss only for now)
+- 10 tests fail on the untouched starter baseline (PageAdvertisements, ProductDetails wishlist) — not caused by our changes — confirm against a clean checkout before release
 
 ## Next step
 <one concrete next task>

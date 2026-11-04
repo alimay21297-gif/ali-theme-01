@@ -14,12 +14,25 @@ $main-text-color: var(--main-text-color);
   // Twilight web components ship their own CSS and read only this token for the
   // default corner radius; keep it equal to Tailwind's `rounded` for this theme.
   --s-radius: 16px;
+
+  /* LAMEEM brand tokens: the single source for brand colors.
+     Dark shell surfaces (hero, dark bands, footer) use these fixed values.
+     Buttons, links and accents keep using the merchant-controlled --color-primary
+     (set to #0F2A1E in the dashboard); never set --color-primary here.
+     --lameem-muted is for decoration and text on DARK surfaces only; its contrast
+     on light backgrounds is far below 4.5:1, so never use it for text there. */
+  --lameem-primary: #0f2a1e;
+  --lameem-deep: #08170f;
+  --lameem-ink: #111111;
+  --lameem-light: #f4f5f2;
+  --lameem-muted: #9fb2a6;
+
   --infinte-color: #c9c9c9;
-  --main-text-color: #231f1e;
+  --main-text-color: var(--lameem-ink);
   --main-text-color-dark: #2b2d34;
   --color-text: #7c8082;
   --bg-gray: #c6c7ce1a;
-  --color-grey: #f5f7f9;
+  --color-grey: var(--lameem-light);
   --color-light-grey: #eeeeee;
   
   /* font-size */

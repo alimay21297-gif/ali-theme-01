@@ -1,0 +1,8 @@
+/* Font family tokens. Imported by the inlined critical sheets too, which cannot carry the @font-face url() (see fonts.scss). */
+:root {
+  /* Headings always use this. Body text follows --font-main and falls back to it. */
+  --lameem-font-display: 'Readex Pro', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* The RTL rule in app.css/critical.scss sets --font-main to --font-ar. */
+  --font-ar: var(--lameem-font-display);
+  --font-latin: var(--lameem-font-display);
+}

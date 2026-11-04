@@ -46,6 +46,16 @@ function RootComponent() {
         {/* Home and product paint from inline critical CSS; `bootClient` adds the full sheet once
             their first screen has painted. Other routes: the full sheet blocks, as before. */}
         <ThemeStylesheet href={appCssUrl} critical={CRITICAL_CSS} />
+        {/* Arabic pages only: the Latin subset is small and rarely first paint, so it is not preloaded. */}
+        {ctx.dir === 'rtl' && (
+          <link
+            rel="preload"
+            href="/fonts/readex-pro/readex-pro-arabic-wght-normal.v530.woff2"
+            as="font"
+            type="font/woff2"
+            crossOrigin="anonymous"
+          />
+        )}
         <ThemeHeadContent />
       </head>
       <body suppressHydrationWarning>

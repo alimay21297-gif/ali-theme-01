@@ -51,6 +51,8 @@
 // Note: Tailwind directives are in app.css, not here
 
 @import './01-settings/global';
+@import './01-settings/font-tokens';
+@import './01-settings/fonts';
 @import './01-settings/breakpoints';
 
 @import './02-generic/reset';
@@ -65,6 +67,7 @@
 // override it, matching the cascade the per-chunk link used to have.
 @import './vendor/swiper.css';
 
+@import './03-elements/headings';
 @import './03-elements/form';
 @import './03-elements/buttons';
 @import './03-elements/radio';
