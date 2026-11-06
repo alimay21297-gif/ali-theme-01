@@ -28,6 +28,9 @@ $main-text-color: var(--main-text-color);
   --lameem-muted: #9fb2a6;
   /* The lit centre of the hero's radial glow (between primary and a lighter green). */
   --lameem-glow: #1d4a35;
+  /* Functional sale colour (Tailwind red-700, 6.5:1 on white), like the gold stars:
+     independent of the merchant --color-primary; used for sale prices and the promotion badge. */
+  --lameem-sale: #b91c1c;
 
   --infinte-color: #c9c9c9;
   --main-text-color: var(--lameem-ink);
