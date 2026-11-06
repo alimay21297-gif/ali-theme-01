@@ -22,15 +22,17 @@
   &__views {
     @apply flex items-center gap-1 px-3;
 
+    /* 44px tap target; inactive gray-500, the active view in brand green */
     button {
-      @apply inline-flex h-8 w-8 items-center justify-center rounded text-gray-400 transition-colors hover:text-gray-700;
+      @apply inline-flex h-11 w-11 items-center justify-center rounded-full text-gray-500 transition-colors hover:text-gray-700;
 
       svg {
         @apply h-[18px] w-[18px];
       }
 
       &[aria-pressed='true'] {
-        @apply bg-gray-100 text-gray-900;
+        @apply bg-gray-100;
+        color: var(--lameem-primary);
       }
     }
   }
@@ -39,11 +41,11 @@
     /* raw `cursor: pointer` — the `.cursor-pointer` utility also sets
        `pointer-events: none` on every child (common.scss), which would stop the
        overlaid <select> from opening. */
-    @apply relative flex items-center gap-1.5 whitespace-nowrap px-4 text-sm text-gray-700;
+    @apply relative flex min-h-11 items-center gap-1.5 whitespace-nowrap px-4 text-sm text-gray-700;
     cursor: pointer;
 
     svg {
-      @apply h-4 w-4 shrink-0 text-gray-400;
+      @apply h-4 w-4 shrink-0 text-gray-500;
     }
 
     select {
@@ -51,18 +53,25 @@
       cursor: pointer;
       pointer-events: auto;
     }
+
+    /* the <select> is invisible, so the ring goes on the whole control */
+    &:has(select:focus-visible) {
+      outline: 2px solid var(--lameem-primary);
+      outline-offset: 2px;
+      border-radius: 9999px;
+    }
   }
 
   &__filters-toggle {
-    @apply h-9 items-center gap-2 rounded-full px-3 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100;
+    @apply h-11 items-center gap-2 rounded-full px-3 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100;
 
     svg {
-      @apply h-[18px] w-[18px] text-gray-400;
+      @apply h-[18px] w-[18px] text-gray-500;
     }
   }
 
   &__filters-trigger {
-    @apply inline-flex h-9 w-9 items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-gray-100;
+    @apply inline-flex h-11 w-11 items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-gray-100;
 
     svg {
       @apply h-5 w-5;
@@ -77,6 +86,15 @@
 */
 #filters-menu,
 #filters-menu-mobile {
+  /* `<salla-filters>` (checkbox, radio, price bar and handles, +/- icon, "show
+     more", search focus) paints its accents with `var(--color-primary)`, the
+     merchant colour. Inside the filters it is the brand green instead. */
+  --color-primary: var(--lameem-primary);
+
+  .s-filters-widget-title {
+    font-family: var(--lameem-font-display);
+  }
+
   .s-filters-widget-container {
     @apply border-b border-gray-100 py-3.5;
     margin-bottom: 0;
@@ -142,6 +160,28 @@
   }
 }
 
+/* Page title (category / brand / "Products"): Readex Pro comes from the global
+   heading rule; 24px on phones, 32px from 768px. `unicode-bidi: plaintext` on the
+   inner span lets merchant text pick its own direction without moving the h1
+   (`dir="auto"` flips the block's alignment). */
+.s-listing-page .s-listing-title {
+  @apply mb-4 text-2xl font-bold md:text-[2rem] md:leading-10;
+  color: var(--lameem-ink);
+
+  > span {
+    unicode-bidi: plaintext;
+  }
+}
+
+/* Filter retry button: brand green here only, `.link--primary` stays global. */
+.s-listing-page .link--primary {
+  color: var(--lameem-primary);
+
+  &:hover {
+    color: var(--lameem-glow);
+  }
+}
+
 .s-listing-page .breadcrumbs .s-breadcrumb-wrapper {
   max-width: 1920px;
   padding-inline: 1rem;
@@ -166,12 +206,16 @@
   salla-add-product-button {
     .s-button-btn,
     .s-button-element {
-      @apply rounded-full border-primary bg-primary text-primary-reverse;
+      @apply rounded-full text-white;
+      border-color: var(--lameem-primary);
+      background-color: var(--lameem-primary);
     }
 
     .s-button-btn:hover,
     .s-button-element:hover {
-      @apply border-primary-d bg-primary-d text-primary-reverse opacity-100;
+      @apply text-white opacity-100;
+      border-color: var(--lameem-glow);
+      background-color: var(--lameem-glow);
     }
   }
 }
@@ -195,8 +239,7 @@
        so its items can sit on either side. */
     .s-catalog-toolbar {
       @apply mb-0 flex-nowrap rounded-none border-0 px-0;
-      /* A slimmer bar than the desktop's 3.25rem: the 32px view buttons plus 6px
-         above and below. */
+      /* A slimmer bar than the desktop's 3.25rem: just the 44px controls. */
       min-height: 2.75rem;
     }
 

@@ -543,8 +543,8 @@ export function ProductListPage({
         scope={blockScope}
       />
 
-      <h1 className="font-bold text-xl mb-4" id="page-main-title">
-        {isBrand ? t('common.titles.products') : page.title}
+      <h1 className="s-listing-title" id="page-main-title">
+        <span>{isBrand ? t('common.titles.products') : page.title}</span>
       </h1>
 
       {/* Toolbar — one bar: filter show/hide at the start, options at the end */}

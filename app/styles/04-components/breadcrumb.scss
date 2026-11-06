@@ -1,21 +1,40 @@
 /* Breadcrumb — markup: @salla.sa/twilight-theme-engine `BreadcrumbTrail`
    (`<nav class="breadcrumbs w-full py-5"><ol class="s-breadcrumb-wrapper">…`).
 
-   New UI: a full-bleed bar tinted with the primary colour at 10%. The <nav>
+   New UI: a full-bleed bar on the brand `--lameem-light` surface (never the
+   merchant colour). The <nav>
    renders inside `.container`, so pull it edge-to-edge with the classic
    full-bleed trick (`.app-inner` has `overflow-x: clip`, so the 100vw can't
    spawn a scrollbar), then re-constrain the <ol> to the content column with
-   `@apply container` so the crumbs line up with the page below. */
+   `@apply container` so the crumbs line up with the page below.
+   Text: links gray-700, current page `--lameem-ink`, separators gray-400
+   (decorative, `aria-hidden`). */
 .breadcrumbs {
   width: 100vw;
   max-width: 100vw;
   margin-inline: calc(50% - 50vw);
   margin-bottom: 1.25rem;
-  background: color-mix(in srgb, var(--color-primary) 5%, transparent);
+  background: var(--lameem-light);
   @apply py-1 sm:py-5;
 
   .s-breadcrumb-wrapper {
     @apply container flex flex-wrap items-center gap-y-1;
+  }
+
+  .s-breadcrumb-item {
+    @apply text-gray-700;
+
+    &[aria-current='page'] {
+      color: var(--lameem-ink);
+    }
+  }
+
+  .s-breadcrumb-arrow {
+    @apply text-gray-400;
+
+    svg {
+      fill: currentColor;
+    }
   }
 }
 
@@ -39,6 +58,12 @@
 
   .s-breadcrumb-wrapper {
     @apply block m-0 max-w-none p-0;
+  }
+
+  /* keep the banner's own text colours (user-pages.scss) */
+  .s-breadcrumb-item,
+  .s-breadcrumb-arrow {
+    color: inherit;
   }
 }
 
