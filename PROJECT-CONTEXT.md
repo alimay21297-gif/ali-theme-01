@@ -45,7 +45,7 @@ _Kept in the theme repo root. Updated by Claude Code via /handover. Last update:
 | 0 Setup | ✅ | |
 | 1 Tokens | ✅ | Brand tokens, self-hosted Readex Pro v530, headings, calligraphy background setting (toggle + strength) applied to the dark top bar |
 | 2 Header/Footer | ✅ | Footer in LAMEEM tokens + calligraphy; dark main header (`header_is_dark`, `logo_on_dark`; `topnav_is_dark` = desktop top bar only) with calligraphy; store description as plain text (header + footer); dark mobile bottom bar with calligraphy and white active pill. Gate passed by the user at 375px + desktop, ar + en |
-| 3 Home | ◐ | Done and approved in the browser: hero block, features strip, how-it-works, distinct dark surfaces, pattern v2, animated products in the hero (slide + swing; commit 46c63cc). Features strip `home.features` (b34280c) and how-it-works `home.how-it-works` (fa1c18a) approved and pushed; wide-screen alignment fix dceab16. Reviews built, awaiting approval. Left: FAQ → standalone showcase block |
+| 3 Home | ◐ | Done and approved in the browser: hero block, features strip, how-it-works, distinct dark surfaces, pattern v2, animated products in the hero (slide + swing; commit 46c63cc). Features strip `home.features` (b34280c) and how-it-works `home.how-it-works` (fa1c18a) approved and pushed; wide-screen alignment fix dceab16. Reviews `home.custom-testimonials` approved in the browser and pushed (7e412b0). Left: FAQ → standalone showcase block |
 | 4 Card/Listing | ☐ | |
 | 5 Product | ☐ | |
 | 6 Cart/Polish | ☐ | |
@@ -66,6 +66,7 @@ _Kept in the theme repo root. Updated by Claude Code via /handover. Last update:
   - (c) Confirm in the real editor that the product link field (`p1_link` / `p2_link`, variable-list) arrives in a shape `linkUrl()` reads (string, `[{value}]` or `{value}`); also whether the number fields accept decimals (pivot Y 71.1).
 - Features strip (2026-11-06): (a) confirm in the real editor that `home.features` items arrive as `{icon, title, text}` (the component also reads `items.icon`-style keys); same check list as the hero link field (c). (b) "Modern design" uses `sicon-crown`: the Salla icon set has no diamond.
 - How-it-works (2026-11-06): (a) confirm in the real editor that `home.how-it-works` steps arrive as `{icon, title, text}` and that the optional `image` field is read as a URL string (same check list as the hero link field). (b) Copy is BLOCKED on four client answers: Find My certification (badge/wording only if certified), which products track, wallet card direction, Android users. Sample text only until answered; the theme makes no tracking claims. (c) The image layout (steps vertical beside the image) was checked with a placeholder photo only; recheck with the real phone screenshot.
+- Reviews (2026-11-06): (a) confirm in the real editor that `items` arrive as `{name, city, product, avatar, stars, text}` (the component also reads `items.*` keys); same check list as the hero link field. (b) Polish phase: merchant setting to switch the section to the real `<salla-reviews>` source once the store has reviews (the store had 0 when checked). (c) The merchant must hide the section until real reviews exist; the theme ships none. (d) Dev-store `--color-primary` is red, so any `bg-primary`/`text-primary` in new blocks shows red there; use `--lameem-*` tokens.
 - Tests were not run during Phase 2 (that is how the outdated assertions went unnoticed); run `pnpm test` at the end of every step.
 
 - Logos are TEMPORARY: made from a 478px screenshot. Get the original SVG from the client and replace the store logo and the `logo_on_dark` image before release.
@@ -74,4 +75,4 @@ _Kept in the theme repo root. Updated by Claude Code via /handover. Last update:
 - Header calligraphy shows on the main bar at every width (not only mobile), as well as on the desktop top bar.
 
 ## Next step
-Phase 3 step 7 — FAQ block (then the standalone showcase). Reviews are built and awaiting approval (see the 2026-11-06 Reviews decision). Description sanitising (DOMPurify) stays a separate approved step.
+Phase 3 step 7 — FAQ block (`home.faq`; then the standalone showcase). Show the plan first (fields, layout, accessible accordion, sample text only in `twilight.preview.json`), then screenshots at 375, 1280 and 1920, /ar and /en. Reviews are done (7e412b0). Description sanitising (DOMPurify) stays a separate approved step.
