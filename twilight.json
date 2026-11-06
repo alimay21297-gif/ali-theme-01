@@ -2795,6 +2795,98 @@
           ]
         }
       ]
+    },
+    {
+      "key": "d8d09b8a-38d7-4927-9c10-530bd7ee4b84",
+      "title": {
+        "en": "How it works",
+        "ar": "كيف يعمل"
+      },
+      "icon": "sicon-list-numbered",
+      "path": "home.how-it-works",
+      "fields": [
+        {
+          "id": "title",
+          "type": "string",
+          "format": "text",
+          "label": "العنوان",
+          "icon": "sicon-format-text-alt",
+          "multilanguage": true,
+          "required": false,
+          "minLength": 0,
+          "maxLength": 80,
+          "description": "نص عادي بدون تنسيق.",
+          "placeholder": "اكتب العنوان هنا..."
+        },
+        {
+          "id": "subtitle",
+          "type": "string",
+          "format": "textarea",
+          "label": "الوصف القصير",
+          "icon": "sicon-typography",
+          "multilanguage": true,
+          "required": false,
+          "minLength": 0,
+          "maxLength": 220,
+          "description": "نص عادي بدون تنسيق، يظهر أسفل العنوان.",
+          "placeholder": "اكتب وصفاً قصيراً هنا..."
+        },
+        {
+          "id": "steps",
+          "type": "collection",
+          "format": "collection",
+          "required": true,
+          "minLength": 2,
+          "maxLength": 4,
+          "label": "الخطوات",
+          "item_label": "خطوة",
+          "description": "من 2 إلى 4 خطوات. تظهر مرقّمة بالترتيب، عمودياً على الجوال وفي صف واحد على الشاشات الكبيرة.",
+          "fields": [
+            {
+              "id": "steps.icon",
+              "type": "string",
+              "format": "icon",
+              "icon": "sicon-format-text-alt",
+              "label": "الأيقونة",
+              "value": "sicon-power",
+              "required": true
+            },
+            {
+              "id": "steps.title",
+              "type": "string",
+              "format": "text",
+              "icon": "sicon-format-text-alt",
+              "label": "العنوان",
+              "multilanguage": true,
+              "required": true,
+              "minLength": 1,
+              "maxLength": 40,
+              "description": "نص عادي بدون تنسيق."
+            },
+            {
+              "id": "steps.text",
+              "type": "string",
+              "format": "textarea",
+              "icon": "sicon-typography",
+              "label": "الوصف القصير",
+              "multilanguage": true,
+              "required": false,
+              "minLength": 0,
+              "maxLength": 140,
+              "description": "نص عادي بدون تنسيق."
+            }
+          ]
+        },
+        {
+          "id": "image",
+          "type": "string",
+          "format": "image",
+          "label": "صورة (اختيارية)",
+          "icon": "sicon-image",
+          "required": false,
+          "description": "* مثلاً لقطة شاشة لتطبيق على الهاتف. تظهر بجانب الخطوات على الشاشات الكبيرة وأسفلها على الجوال."
+        }
+      ]
     }
   ],
   "support_url": "https://salla.com/",

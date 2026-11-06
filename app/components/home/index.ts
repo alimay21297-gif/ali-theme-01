@@ -5,6 +5,7 @@ export { FeaturedProducts, featuredProductsConfig } from './FeaturedProducts';
 export { FixedProducts } from './FixedProducts';
 export { Features } from './Features';
 export { Hero } from './Hero';
+export { HowItWorks } from './HowItWorks';
 export { LatestProducts } from './LatestProducts';
 export { MainLinks } from './MainLinks';
 export { PhotosSlider } from './PhotosSlider';
