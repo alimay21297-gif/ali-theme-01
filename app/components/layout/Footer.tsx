@@ -14,6 +14,7 @@ import { ImageModal } from '@salla.sa/twilight-theme-engine/modal';
 import { MadeWithSalla } from '@salla.sa/twilight-theme-engine/layout';
 import { menu } from '@salla.sa/twilight-theme-engine/api/menu';
 import { useCalligraphy } from '../../hooks/useCalligraphy';
+import { useStoreLogo } from '../../hooks/useStoreLogo';
 import { htmlToPlainText } from '../../lib/plainText';
 
 /** Salla's value-added-tax badge icon (70×70, CDN-resized) — a platform
@@ -202,16 +203,18 @@ function FooterApps({ className }: { className: string }) {
   );
 }
 
-/** The logo link, same shape in both layouts -- only its own spacing differs. */
-function FooterLogo({ className }: { className: string }) {
+/** The logo link, same shape in both layouts -- only its own spacing differs.
+ *  A dark footer shows `logo_on_dark` when it is set, like the header does. */
+function FooterLogo({ className, dark }: { className: string; dark: boolean }) {
   const { store } = useTwilight();
+  const logoSrc = useStoreLogo(dark);
   return (
     <Link
       to="/"
       className={`store-footer__logo inline-flex items-center m-0 transition-opacity hover:opacity-75 ${className}`}
     >
       <Image
-        src={store.logo}
+        src={logoSrc}
         alt={store.name || 'Store'}
         width={150}
         height={44}
@@ -286,7 +289,7 @@ function FooterContactsColumn({ inSheet, dark }: { inSheet: boolean; dark: boole
 function FooterCenteredBody({ inSheet, isDark }: { inSheet: boolean; isDark: boolean }) {
   return (
     <div className="container mx-auto flex max-w-2xl flex-col items-center gap-6 text-center">
-      <FooterLogo className="" />
+      <FooterLogo className="" dark={isDark} />
       <FooterDescription className="" dark={isDark} />
       <FooterContacts className="" />
       <SallaSocial />
@@ -313,7 +316,7 @@ function FooterColumnsBody({ inSheet, isDark }: { inSheet: boolean; isDark: bool
   return (
     <div className="container grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-flow-col lg:auto-cols-fr lg:gap-16">
       <div className="store-footer__brand rtl:lg:pl-16 ltr:lg:pr-16 sm:col-span-2">
-        <FooterLogo className="mb-5" />
+        <FooterLogo className="mb-5" dark={isDark} />
         <FooterDescription className="max-w-sm leading-6 my-5" dark={isDark} />
         <SallaSocial className="block mb-6" />
         <FooterTrust dark={isDark} centered={false} />

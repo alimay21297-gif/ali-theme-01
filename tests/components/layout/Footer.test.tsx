@@ -24,7 +24,7 @@ vi.mock('@salla.sa/twilight-theme-engine/hooks', () => ({
 }));
 vi.mock('@salla.sa/twilight-theme-engine/common', () => ({
   Link: ({ children }: { children?: unknown }) => <a>{children as never}</a>,
-  Image: () => <img alt="" />,
+  Image: ({ src }: { src?: string }) => <img alt="" data-testid="footer-logo-img" src={src} />,
 }));
 vi.mock('@salla.sa/twilight-theme-engine/modal', () => ({
   ImageModal: () => {
@@ -122,5 +122,38 @@ describe('Footer', () => {
     state.theme = { settings: { footer_layout: 'centered' } };
     renderFooter();
     expect(screen.getByTestId('contacts-row')).toBeTruthy();
+  });
+  describe('logo', () => {
+    const light = 'https://cdn.test/store-logo.png';
+    const onDark = 'https://cdn.test/logo-on-dark.png';
+    const src = () => screen.getByTestId('footer-logo-img').getAttribute('src');
+
+    it('shows logo_on_dark on a dark footer when it is set', () => {
+      state.store = { ...state.store, logo: light };
+      state.theme = { settings: { footer_is_dark: true, logo_on_dark: onDark } };
+      renderFooter();
+      expect(src()).toBe(onDark);
+    });
+
+    it('falls back to the store logo when logo_on_dark is empty', () => {
+      state.store = { ...state.store, logo: light };
+      state.theme = { settings: { footer_is_dark: true, logo_on_dark: '' } };
+      renderFooter();
+      expect(src()).toBe(light);
+    });
+
+    it('keeps the store logo on a light footer, even with logo_on_dark set', () => {
+      state.store = { ...state.store, logo: light };
+      state.theme = { settings: { footer_is_dark: false, logo_on_dark: onDark } };
+      renderFooter();
+      expect(src()).toBe(light);
+    });
+
+    it('keeps the store logo in the account sheet, which is always light', () => {
+      state.store = { ...state.store, logo: light };
+      state.theme = { settings: { footer_is_dark: true, logo_on_dark: onDark } };
+      renderFooter(true);
+      expect(src()).toBe(light);
+    });
   });
 });

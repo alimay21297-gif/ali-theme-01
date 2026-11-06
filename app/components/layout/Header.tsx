@@ -11,6 +11,7 @@ import { Image } from '@salla.sa/twilight-theme-engine/common';
 import { MapPinIcon, SearchIcon, ShoppingBagIcon } from '../icons';
 import { useAppSafeAreaTop } from '../../hooks/useAppSafeAreaTop';
 import { useCalligraphy } from '../../hooks/useCalligraphy';
+import { useStoreLogo } from '../../hooks/useStoreLogo';
 import { useNavHasContent } from '../../hooks/useNavHasContent';
 import { htmlToPlainText } from '../../lib/plainText';
 import { HOME_ROUTE_ID, PRODUCT_ROUTE_ID } from '../../lib/routeIds';
@@ -121,14 +122,9 @@ export function Header({ navOpen: navOpenProp, onNavOpenChange }: HeaderProps = 
   const stickyEnabled = theme?.settings?.header_is_sticky !== false;
   // Dark main bar (`header_is_dark`, default on): dark colours, the calligraphy
   // background and `logo_on_dark` (falls back to the store logo when empty).
-  const darkSettings = theme?.settings as
-    | { header_is_dark?: boolean; logo_on_dark?: unknown }
-    | undefined;
-  const isDark = darkSettings?.header_is_dark !== false;
+  const isDark = (theme?.settings as { header_is_dark?: boolean } | undefined)?.header_is_dark !== false;
   const calligraphy = useCalligraphy();
-  const logoOnDark = darkSettings?.logo_on_dark;
-  const logoSrc =
-    isDark && typeof logoOnDark === 'string' && logoOnDark !== '' ? logoOnDark : store?.logo;
+  const logoSrc = useStoreLogo(isDark);
   const navHasContent = useNavHasContent();
   const [navOpenState, setNavOpenState] = useState(false);
   const navOpen = navOpenProp ?? navOpenState;

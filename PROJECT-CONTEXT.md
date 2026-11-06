@@ -25,6 +25,8 @@ _Kept in the theme repo root. Updated by Claude Code via /handover. Last update:
 - 2026-11-04 — Calligraphy background: `public/images/patterns/calligraphy-on-dark.v1.svg` at 8% opacity, dark sections only (hero, dark bands, footer), never behind products/prices/body text; merchant can toggle it. Glyphs from Aref Ruqaa (OFL 1.1); generator script kept outside the repo.
 - 2026-11-04 — Calligraphy settings: `calligraphy_bg_enabled` (switch, default on) and `calligraphy_bg_strength` (subtle 5 / standard 8 / strong 12) in twilight.json; `useCalligraphy()` returns the class and `--calligraphy-opacity`. First applied to `.site-header__topnav`, only when `topnav_is_dark` is on (slider images would cover the pattern; the footer is an engine component). Plain Arabic labels because the local editor showed `{ar,en}` objects as the raw id.
 - 2026-11-04 — Phase 2 decisions: the mobile bottom bar goes dark (`bg-darker`); active tab = white pill with a green `--lameem-primary` icon (not `--color-primary`). Logo: new `logo_on_dark` image setting, falling back to the store logo; no white-filter option. New `header_is_dark` setting (default on) for the main bar; `topnav_is_dark` controls the top bar only. New setting labels are plain Arabic strings in twilight.json; locale files only for shopper-facing text. Build order: footer → header → bottom bar (all done).
+- 2026-11-06 — Phase 3 plan approved. Build order = hero → features → how-it-works → reviews → FAQ → animated product showcase (new block, last). Showcase: desktop hover = wallet cards slide straight out of the RIGHT side in a staircase (back card furthest); the key organizer swings its keys out around the pivot; on phones it plays once on scroll-in; click → product page; reduced-motion = still image; layered images + CSS, no new dependency; needs layered renders/photos from the client. Prototype: https://claude.ai/artifact/NJATEfbpUMkXfPq8Dcna6q
+- 2026-11-06 — Phase 3 rules: `sicon-*` icons are OK for features/steps for now. Calligraphy may sit behind hero/step text with a fade behind the text column. Never invent product claims or reviews in the theme; sample content lives only in `twilight.preview.json` (gitignored) and is marked "نص تجريبي". New home blocks: `home.hero` (step 1), `home.how-it-works`, `home.faq`, showcase; features strip = restyle of engine `store-features`; spotlight = restyle of `fixed-products`; reviews = extend `custom-testimonials` (declare `title`/`description`, relax `avatar`).
 
 ## Status
 | Phase | State | Notes |
@@ -32,7 +34,7 @@ _Kept in the theme repo root. Updated by Claude Code via /handover. Last update:
 | 0 Setup | ✅ | |
 | 1 Tokens | ✅ | Brand tokens, self-hosted Readex Pro v530, headings, calligraphy background setting (toggle + strength) applied to the dark top bar |
 | 2 Header/Footer | ✅ | Footer in LAMEEM tokens + calligraphy; dark main header (`header_is_dark`, `logo_on_dark`; `topnav_is_dark` = desktop top bar only) with calligraphy; store description as plain text (header + footer); dark mobile bottom bar with calligraphy and white active pill. Gate passed by the user at 375px + desktop, ar + en |
-| 3 Home | ☐ | Next |
+| 3 Home | ◐ | Step 1 hero block in review (not committed); steps 2–6 per the build order above |
 | 4 Card/Listing | ☐ | |
 | 5 Product | ☐ | |
 | 6 Cart/Polish | ☐ | |
@@ -40,13 +42,14 @@ _Kept in the theme repo root. Updated by Claude Code via /handover. Last update:
 
 ## Open issues
 - Home/product first paint uses fallback font — @font-face inside inlined critical CSS breaks the SSR build (vite:asset TypeError) — revisit in perf pass (preload + non-critical fonts.scss only for now)
-- 10 tests fail on the untouched starter baseline (PageAdvertisements, ProductDetails wishlist) — not caused by our changes — confirm against a clean checkout before release
+- Test baseline: **10 failing tests** remain (4 `PageAdvertisements`, 5 `ProductDetails` wishlist heart, 1 `ProductGallery` wishlist button). They fail identically at `a7c9251` and `0449935` (before the dark header and bottom bar), so they predate our changes. Confirm against a clean starter checkout before release. (2026-11-06: an earlier run showed 43 failures; the other 33 were outdated Phase 2 tests, now fixed: `MobileBottomBar` lacked a `useCalligraphy` mock, and `dark-mode.test.ts` still described the old footer selector and the removed lite-header rule.)
+- Footer logo: the dark footer now uses `logo_on_dark` through the shared `useStoreLogo(onDark)` hook (also used by the header); a light footer, the account sheet, or an empty setting uses the store logo.
 - ~~Body font resolves to `Dubai`~~ DECIDED 2026-11-04: body follows the merchant's dashboard font setting (engine-loaded, e.g. Dubai); headings stay Readex Pro. No override.
 - Settings labels: Arabic-only plain strings (matches the existing 29 settings; the local editor shows {ar,en} objects as the raw id). Verify with Salla docs/support before release whether the real dashboard supports bilingual setting labels.
 - `salla.config.get('theme.settings').topnav_is_dark` was stale (false) while `theme.settings` and the body class were true. Read settings via `useTwilight()`, not `salla.config`.
 - The dev editor iframe is ~799px wide, so the top bar is hidden in it; widen the window to review it.
 - SECURITY (security-auditor, 2026-11-04): `dangerouslySetInnerHTML` on merchant HTML conflicts with CLAUDE.md rule 7. **DONE for `store.description`** (Footer `FooterDescription`, Header `HeaderIntro`): now plain text via `app/lib/plainText.ts` `htmlToPlainText()` (tags stripped, entities decoded, line breaks kept with `whitespace-pre-line`, no new dependency). **STILL OPEN**: `brand.description` (`ProductListPage.tsx`), `page.content` (`PageSingle.tsx`), product `description` (`ProductDetails.tsx`). They need rich text, so the plan is a DOMPurify allow-list helper (new dependency, needs written approval under rule 7). Also read the publish Requirements (https://docs.salla.dev/twilight/react/local-development/publish.md) in full before release.
-- `pnpm build` after the calligraphy change passed; tests were not re-run this session.
+- Tests were not run during Phase 2 (that is how the outdated assertions went unnoticed); run `pnpm test` at the end of every step.
 
 - Logos are TEMPORARY: made from a 478px screenshot. Get the original SVG from the client and replace the store logo and the `logo_on_dark` image before release.
 - Mobile bottom-bar scrim (white frosted fade behind the floating bar) kept as-is; revisit if it looks wrong over dark sections.

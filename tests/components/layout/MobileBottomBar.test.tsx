@@ -44,6 +44,11 @@ vi.mock('../../../app/hooks/useNavHasContent', () => ({
   useNavHasContent: () => nav.hasContent,
 }));
 
+// The dark bar reads the calligraphy settings through the engine's provider.
+vi.mock('../../../app/hooks/useCalligraphy', () => ({
+  useCalligraphy: () => ({ className: 'has-calligraphy', style: undefined }),
+}));
+
 vi.mock('@salla.sa/twilight-theme-engine/common', () => ({
   Link: ({ to, children, className, ...rest }: Record<string, unknown>) => (
     <a href={String(to)} className={className as string} {...(rest as Record<string, unknown>)}>
