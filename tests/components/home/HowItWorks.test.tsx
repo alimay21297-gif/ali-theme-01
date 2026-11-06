@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { act, render } from '@testing-library/react';
-import { HowItWorks, formatStepNumber } from '../../../app/components/home/HowItWorks';
+import { HowItWorks } from '../../../app/components/home/HowItWorks';
+import { formatDigits } from '../../../app/lib/formatDigits';
 
 let locale = 'ar';
 
@@ -86,8 +87,8 @@ describe('HowItWorks', () => {
   });
 
   it('numbers the steps in Arabic-Indic digits in Arabic and Latin in English', () => {
-    expect(formatStepNumber(3, 'ar')).toBe('٣');
-    expect(formatStepNumber(3, 'en')).toBe('3');
+    expect(formatDigits(3, 'ar')).toBe('٣');
+    expect(formatDigits(3, 'en')).toBe('3');
     const ar = render(<HowItWorks data={{ steps: steps(3) }} />).container;
     expect([...ar.querySelectorAll('.home-how__num')].map((e) => e.textContent)).toEqual(['١', '٢', '٣']);
     locale = 'en';

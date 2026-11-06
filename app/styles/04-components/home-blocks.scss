@@ -1231,6 +1231,11 @@
 .s-block--custom-testimonials {
   background-color: var(--lameem-light);
   @apply py-12 md:py-16 overflow-hidden;
+
+  /* No reviews (the default on a fresh install): no blank band. */
+  &:empty {
+    display: none;
+  }
 }
 
 /*
@@ -1303,10 +1308,10 @@ salla-reviews:not(:has(.s-reviews-swiper-slide)) {
     @apply inline-flex shrink-0 gap-0.5;
 
     svg {
-      @apply h-4 w-4 fill-current text-gray-200 lg:h-[18px] lg:w-[18px];
+      @apply h-4 w-4 fill-current text-gray-500 lg:h-[18px] lg:w-[18px];
 
       &.is-on {
-        @apply text-amber-400;
+        @apply text-amber-600;
       }
     }
   }
@@ -1413,7 +1418,7 @@ salla-reviews:not(:has(.s-reviews-swiper-slide)) {
     @apply flex shrink-0 items-center gap-2;
 
     button {
-      @apply inline-flex h-11 w-11 items-center justify-center rounded-full border border-gray-300 text-gray-800 transition-colors;
+      @apply inline-flex h-11 w-11 items-center justify-center rounded-full border border-gray-500 text-gray-800 transition-colors;
 
       &:hover:not(:disabled) {
         @apply border-primary bg-primary text-primary-reverse;
@@ -1437,19 +1442,19 @@ salla-reviews:not(:has(.s-reviews-swiper-slide)) {
   }
 
   &__count {
-    @apply me-2 whitespace-nowrap text-sm text-gray-500 tabular-nums;
+    @apply me-2 whitespace-nowrap text-sm text-gray-600 tabular-nums;
   }
 }
 
 /*
   Dot navigation (app/components/common/CarouselDots.tsx): phones only. Below `md`
-  the rows swap their arrows for it. Each dot is a 24px target around a small pill.
+  the rows swap their arrows for it. Each dot is a 44px target around a small pill.
 */
 .carousel-dots {
-  @apply mt-3 flex flex-wrap items-center justify-center md:hidden;
+  @apply mt-1 flex flex-wrap items-center justify-center md:hidden;
 
   &__dot {
-    @apply flex h-6 w-6 shrink-0 items-center justify-center p-0;
+    @apply flex h-11 w-11 shrink-0 items-center justify-center p-0;
 
     &::before {
       @apply block h-1.5 w-1.5 rounded-full bg-gray-300;

@@ -9,8 +9,19 @@ vi.mock('../../../app/components/common', async () => ({
   )).TestimonialsCarousel,
 }));
 
+const mockLocale = vi.hoisted(() => ({ value: 'en' }));
+
 vi.mock('@salla.sa/twilight-theme-engine/i18n', () => ({
-  useTranslation: () => ({ t: (_k: string, fb?: string) => fb ?? _k }),
+  useTranslation: () => ({
+    locale: mockLocale.value,
+    // i18next-style: a fallback string, or { defaultValue, ...params } with {{name}} slots.
+    t: (key: string, arg?: string | Record<string, string>) => {
+      if (typeof arg === 'string') return arg;
+      if (!arg) return key;
+      const { defaultValue, ...params } = arg;
+      return (defaultValue ?? key).replace(/\{\{(\w+)\}\}/g, (_m, name) => params[name] ?? '');
+    },
+  }),
 }));
 
 vi.mock('@salla.sa/twilight-theme-engine/common', () => ({
@@ -57,9 +68,24 @@ describe('CustomTestimonials', () => {
     const cards = container.querySelectorAll('.testimonial-card');
     const stars = cards[1].querySelector('.testimonial-card__stars') as HTMLElement;
     expect(stars.getAttribute('role')).toBe('img');
-    expect(stars.getAttribute('aria-label')).toBe('4 of 5');
+    expect(stars.getAttribute('aria-label')).toBe('Rated 4 out of 5');
     expect(stars.querySelectorAll('svg')).toHaveLength(5);
     expect(stars.querySelectorAll('svg.is-on')).toHaveLength(4);
+  });
+
+  it('reads the rating with Arabic-Indic digits in Arabic and keeps the avatar alt empty', () => {
+    mockLocale.value = 'ar';
+    try {
+      const { container } = render(<CustomTestimonials data={{ items }} />);
+      const stars = container.querySelectorAll('.testimonial-card')[1].querySelector(
+        '.testimonial-card__stars'
+      ) as HTMLElement;
+      // The mock t() falls back to the English default; what matters is the digits.
+      expect(stars.getAttribute('aria-label')).toBe('Rated ٤ out of ٥');
+      expect(container.querySelector('.testimonial-card__avatar')?.getAttribute('alt')).toBe('');
+    } finally {
+      mockLocale.value = 'en';
+    }
   });
 
   it('leaves the stars out of a review with no rating', () => {

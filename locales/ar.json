@@ -71,6 +71,7 @@
   "blocks.home.reviews_next": "التالي",
   "blocks.home.slider_page": "الشريحة",
   "blocks.home.count_of": "من",
+  "blocks.home.rating_label": "التقييم {{rating}} من {{max}}",
   "blocks.home.discover_now": "اكتشف الآن",
   "blocks.home.view_product": "عرض المنتج",
   "blocks.catalog.hide_filters": "اخفاء التصفية",

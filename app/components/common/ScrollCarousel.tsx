@@ -109,6 +109,11 @@ export function ScrollCarousel({
     return () => observer.disconnect();
   }, [sync, children]);
 
+  // Follows the setting live: switching reduced motion on mid-visit stops the timer
+  // and makes the arrows jump instead of glide.
+  const motionAllowed = useMotionAllowed();
+  const behavior: ScrollBehavior = motionAllowed ? 'smooth' : 'auto';
+
   /** A page forward (`1`) or back (`-1`), whichever way the row reads. */
   const page = (dir: 1 | -1) => {
     const el = track.current;
@@ -116,7 +121,7 @@ export function ScrollCarousel({
     const gap = parseFloat(getComputedStyle(el).columnGap) || 0;
     const step = slideStep(el);
     const distance = slidesPerPage(el.clientWidth, gap, step) * step;
-    el.scrollBy({ left: dir * forwardSign(el) * distance, behavior: 'smooth' });
+    el.scrollBy({ left: dir * forwardSign(el) * distance, behavior });
   };
 
   // Autoplay waits while the visitor hovers, focuses or has just touched the row.
@@ -124,8 +129,6 @@ export function ScrollCarousel({
   const focused = useRef(false);
   const touchedAt = useRef(0);
 
-  // Follows the setting live: switching reduced motion on mid-visit stops the timer.
-  const motionAllowed = useMotionAllowed();
   const playing = autoPlay && motionAllowed;
 
   useEffect(() => {

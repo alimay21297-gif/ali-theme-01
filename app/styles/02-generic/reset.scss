@@ -44,8 +44,27 @@ img {
 }
 
 a:focus {
-  outline: none;
   text-decoration: none;
+}
+
+/* A mouse click leaves no ring; keyboard focus always gets one (below). */
+a:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/*
+  One keyboard focus ring for every link, button and FAQ question: brand green on
+  light surfaces, white on the dark ones (header, footer, hero, how-it-works).
+  `:where` keeps it at zero specificity, so the component rings that already exist
+  (hero CTA, showcase, FAQ, carousel arrows, bottom bar…) win wherever they apply.
+*/
+:where(a, button, summary):focus-visible {
+  outline: 2px solid var(--lameem-primary);
+  outline-offset: 2px;
+}
+
+:where(.bg-dark, .bg-darker, .home-hero, .home-how) :where(a, button, summary):focus-visible {
+  outline-color: white;
 }
 
 ul,

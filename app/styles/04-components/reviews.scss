@@ -16,11 +16,11 @@
 .s-comments-product {
   /* Rating accent — a warm brown that reads as "rating" regardless of the
      store's primary colour (same rationale as the cart-count badge). */
-  --rev-accent: #fbbf24;
-  --rev-accent-d: #d8a116;
-  --rev-line: #f0f0f0;
-  --rev-muted: #9ca3af;
-  --rev-ink: #1f2937;
+  --rev-accent: theme("colors.amber.400");
+  --rev-accent-d: theme("colors.amber.600");
+  --rev-line: theme("colors.gray.100");
+  --rev-muted: theme("colors.gray.400");
+  --rev-ink: theme("colors.gray.800");
 
   /* ---- section heading + comment form (full-width band) ---------------- */
   .s-comments-title {
@@ -140,7 +140,7 @@
   .s-reviews-summary-row-rate {
     @apply inline-flex shrink-0 items-center justify-end gap-1 text-xs;
     min-width: 2.4ch;
-    color: #6b7280;
+    color: theme("colors.gray.500");
 
     span {
       @apply inline-flex h-3 w-3;
@@ -173,7 +173,7 @@
     .s-progress-bar-wrapper {
       height: 7px;
       border-radius: 9999px;
-      background: #ededed;
+      background: theme("colors.gray.200");
       overflow: hidden;
     }
 
@@ -289,7 +289,7 @@
     inset-block-start: 1.25rem;
     inset-inline-end: 0;
     gap: 0.3rem;
-    background: #f4f4f5;
+    background: theme("colors.gray.100");
   }
 
   .s-comments-item salla-rating-stars {
@@ -320,7 +320,7 @@
      doesn't reserve a blank line */
   .s-comments-item-content-container p {
     @apply mb-0 text-sm leading-7;
-    color: #4b5563;
+    color: theme("colors.gray.600");
 
     &:empty {
       @apply hidden;

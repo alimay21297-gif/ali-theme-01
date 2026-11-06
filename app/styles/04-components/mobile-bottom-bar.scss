@@ -88,6 +88,14 @@
     }
   }
 
+  /* The pill stays 36px high; the touch target around it is 44px. */
+  &::after {
+    content: '';
+    position: absolute;
+    inset-block: -4px;
+    inset-inline: -2px;
+  }
+
   &:focus-visible {
     @apply outline outline-2 outline-offset-2 outline-white;
   }

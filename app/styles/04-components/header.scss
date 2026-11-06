@@ -142,12 +142,19 @@
 }
 
 .header-action {
-  @apply inline-grid place-items-center w-10 h-10 rounded-full text-gray-700 transition-colors hover:bg-gray-100 hover:text-primary;
+  @apply relative inline-grid place-items-center w-10 h-10 rounded-full text-gray-700 transition-colors hover:bg-gray-100 hover:text-primary;
 
   /* Size the action-button icons only — not the icons inside the user-menu
      dropdown items, which keep their own (smaller) size. */
   svg:not(.s-user-menu-dropdown-item *) {
     @apply w-6 h-6;
+  }
+
+  /* The circle stays 40px; the touch target around it is 44px. */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
   }
 }
 

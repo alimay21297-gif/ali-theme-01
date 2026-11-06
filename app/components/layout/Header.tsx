@@ -263,7 +263,7 @@ export function Header({ navOpen: navOpenProp, onNavOpenChange }: HeaderProps = 
               <Image
                 src={logoSrc}
                 alt=""
-                priority
+                loading="eager"
                 width={140}
                 height={48}
               />

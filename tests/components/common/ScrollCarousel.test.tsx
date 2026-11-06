@@ -73,6 +73,30 @@ describe('ScrollCarousel arrows', () => {
     expect(arrowScroll('rtl')).toEqual([400, -400]);
   });
 
+  it('glide only when motion is allowed, and jump when reduced motion is on', () => {
+    const behaviours = (reduce: boolean) => {
+      vi.spyOn(window, 'matchMedia').mockImplementation(
+        (query: string) =>
+          ({
+            matches: reduce,
+            media: query,
+            addEventListener: () => {},
+            removeEventListener: () => {},
+          }) as unknown as MediaQueryList
+      );
+      layout({ scrollWidth: 800, clientWidth: 400, scrollLeft: 200 });
+      const scrollBy = vi.fn();
+      Element.prototype.scrollBy = scrollBy as unknown as typeof Element.prototype.scrollBy;
+      const { getByLabelText, unmount } = carousel();
+      fireEvent.click(getByLabelText('Next'));
+      unmount();
+      return scrollBy.mock.calls.map(([options]) => (options as ScrollToOptions).behavior);
+    };
+    expect(behaviours(false)).toEqual(['smooth']);
+    expect(behaviours(true)).toEqual(['auto']);
+    vi.restoreAllMocks();
+  });
+
   it('are disabled at each end of the row', () => {
     layout({ scrollWidth: 800, clientWidth: 400, scrollLeft: 0 });
     const start = carousel();

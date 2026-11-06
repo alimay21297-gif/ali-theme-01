@@ -99,7 +99,7 @@ export const Hero = memo(function Hero({ data }: HeroProps) {
             <Radar />
             <Image
               src={image}
-              alt={title || ''}
+              alt=""
               priority
               width={960}
               height={960}

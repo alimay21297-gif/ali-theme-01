@@ -7,6 +7,19 @@ vi.mock('@salla.sa/twilight-theme-engine/i18n', () => ({
   useTranslation: () => ({ t: (_k: string, fb?: string) => fb ?? _k }),
 }));
 
+/** The shared setup answers every media query with "matches", i.e. reduced motion. */
+function setReducedMotion(reduce: boolean) {
+  vi.spyOn(window, 'matchMedia').mockImplementation(
+    (query: string) =>
+      ({
+        matches: reduce,
+        media: query,
+        addEventListener: () => {},
+        removeEventListener: () => {},
+      }) as unknown as MediaQueryList
+  );
+}
+
 /** A track 300px wide showing a 1000px row, so 0.3 of it is visible. */
 function track(direction: 'ltr' | 'rtl' = 'ltr') {
   const el = document.createElement('div');
@@ -22,6 +35,7 @@ function track(direction: 'ltr' | 'rtl' = 'ltr') {
 
 afterEach(() => {
   cleanup();
+  vi.restoreAllMocks();
   document.body.innerHTML = '';
 });
 
@@ -55,13 +69,23 @@ describe('CarouselDots', () => {
   });
 
   it('scrolls to the screenful of the dot it was tapped on', () => {
+    setReducedMotion(false);
     const ref = track();
     const { container } = render(<CarouselDots track={ref} visible={0.3} progress={0} />);
     fireEvent.click(container.querySelectorAll('.carousel-dots__dot')[3]);
     expect(ref.current!.scrollTo).toHaveBeenCalledWith({ left: 700, behavior: 'smooth' });
   });
 
+  it('jumps instead of gliding when the visitor asks for reduced motion', () => {
+    setReducedMotion(true);
+    const ref = track();
+    const { container } = render(<CarouselDots track={ref} visible={0.3} progress={0} />);
+    fireEvent.click(container.querySelectorAll('.carousel-dots__dot')[3]);
+    expect(ref.current!.scrollTo).toHaveBeenCalledWith({ left: 700, behavior: 'auto' });
+  });
+
   it('scrolls the other way in RTL, where forward is a negative scrollLeft', () => {
+    setReducedMotion(false);
     const ref = track('rtl');
     const { container } = render(<CarouselDots track={ref} visible={0.3} progress={0} />);
     fireEvent.click(container.querySelectorAll('.carousel-dots__dot')[3]);

@@ -1,5 +1,6 @@
 import { useTranslation } from '@salla.sa/twilight-theme-engine/i18n';
 import { Link } from '@salla.sa/twilight-theme-engine/common';
+import { formatDigits } from '../../lib/formatDigits';
 import { QuoteIcon, StarIcon } from '../icons';
 import { ScrollCarousel } from './ScrollCarousel';
 
@@ -16,8 +17,8 @@ export interface TestimonialItem {
 const MAX_STARS = 5;
 const STAR_POSITIONS = Array.from({ length: MAX_STARS }, (_, position) => position + 1);
 
-function TestimonialCard({ item, index }: { item: TestimonialItem; index: number }) {
-  const { t } = useTranslation();
+function TestimonialCard({ item }: { item: TestimonialItem }) {
+  const { t, locale } = useTranslation();
   const name = item.name?.trim();
   const stars = Math.max(0, Math.min(MAX_STARS, Math.round(Number(item.stars ?? 0))));
 
@@ -29,7 +30,11 @@ function TestimonialCard({ item, index }: { item: TestimonialItem; index: number
           <span
             className="testimonial-card__stars"
             role="img"
-            aria-label={`${stars} ${t('blocks.home.count_of', 'of')} ${MAX_STARS}`}
+            aria-label={t('blocks.home.rating_label', {
+              defaultValue: 'Rated {{rating}} out of {{max}}',
+              rating: formatDigits(stars, locale),
+              max: formatDigits(MAX_STARS, locale),
+            })}
           >
             {STAR_POSITIONS.map((position) => (
               <StarIcon
@@ -49,7 +54,7 @@ function TestimonialCard({ item, index }: { item: TestimonialItem; index: number
           <img
             className="testimonial-card__avatar"
             src={item.avatar}
-            alt={name ?? `testimonial-${index}`}
+            alt=""
             width={44}
             height={44}
             loading="lazy"
@@ -118,7 +123,7 @@ export function TestimonialsCarousel({
           // A static settings list whose items have no id: see
           // .react-doctor/false-positives.md.
           // react-doctor-disable-next-line react-doctor/no-array-index-as-key
-          <TestimonialCard key={`${index}-${item.name ?? ''}`} item={item} index={index} />
+          <TestimonialCard key={`${index}-${item.name ?? ''}`} item={item} />
         ))}
       </ScrollCarousel>
       {showAllLink && (

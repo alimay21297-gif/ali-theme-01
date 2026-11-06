@@ -1,5 +1,6 @@
 import type { RefObject } from 'react';
 import { useTranslation } from '@salla.sa/twilight-theme-engine/i18n';
+import { useMotionAllowed } from '../../hooks/useMotionAllowed';
 
 export interface CarouselDotsProps {
   /** The horizontally scrolling track the dots page through. */
@@ -23,6 +24,7 @@ export function pageCount(visible: number): number {
  */
 export function CarouselDots({ track, visible, progress }: CarouselDotsProps) {
   const { t } = useTranslation();
+  const motionAllowed = useMotionAllowed();
   const pages = pageCount(visible);
   if (pages < 2) return null;
 
@@ -34,7 +36,7 @@ export function CarouselDots({ track, visible, progress }: CarouselDotsProps) {
     const max = el.scrollWidth - el.clientWidth;
     // Forward is towards negative scrollLeft in RTL.
     const forward = getComputedStyle(el).direction === 'rtl' ? -1 : 1;
-    el.scrollTo({ left: forward * (page / (pages - 1)) * max, behavior: 'smooth' });
+    el.scrollTo({ left: forward * (page / (pages - 1)) * max, behavior: motionAllowed ? 'smooth' : 'auto' });
   };
 
   return (

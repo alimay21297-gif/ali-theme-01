@@ -24,6 +24,18 @@
     @apply flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 text-sm transition duration-300 hover:opacity-75;
   }
 
+  /* `<salla-social>` renders 32px circles (`.s-social-link a`): the circle stays,
+     the touch target around it is 44px. */
+  .s-social-link a {
+    @apply relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: -7px; /* 30px padding box inside the 1px border + 14 = 44px */
+    }
+  }
+
   /* Footer menu — `<salla-menu source="footer">` renders a bare
      `.s-menu-footer-list` of `.s-menu-footer-item` anchors (no list markup).
      Two presentations, picked by the modifier class `Footer` adds:

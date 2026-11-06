@@ -2,6 +2,7 @@ import { memo, useEffect, useRef, useState } from 'react';
 import { Image } from '@salla.sa/twilight-theme-engine/common';
 import { useTranslation } from '@salla.sa/twilight-theme-engine/i18n';
 import { useCalligraphy } from '../../hooks/useCalligraphy';
+import { formatDigits } from '../../lib/formatDigits';
 
 export interface HowItWorksProps {
   data: {
@@ -39,12 +40,6 @@ function parseSteps(raw: unknown): Step[] {
     .map((item) => ({ icon: field(item, 'icon'), title: field(item, 'title'), text: field(item, 'text') }))
     .filter((step) => step.title)
     .slice(0, MAX_STEPS);
-}
-
-/** The step number in the page language: Arabic-Indic digits in Arabic, Latin otherwise. */
-export function formatStepNumber(n: number, locale: string): string {
-  const tag = locale.toLowerCase().startsWith('ar') ? 'ar-u-nu-arab' : 'en-u-nu-latn';
-  return new Intl.NumberFormat(tag, { useGrouping: false }).format(n);
 }
 
 /**
@@ -116,7 +111,7 @@ export const HowItWorks = memo(function HowItWorks({ data }: HowItWorksProps) {
             {steps.map((step, i) => (
               <li key={`${i}:${step.title}`} className="home-how__step" style={{ '--i': i } as React.CSSProperties}>
                 <span className="home-how__num" aria-hidden="true">
-                  {formatStepNumber(i + 1, locale)}
+                  {formatDigits(i + 1, locale)}
                 </span>
                 <div className="home-how__content">
                   {ICON_CLASS.test(step.icon) && <i className={`home-how__icon ${step.icon}`} aria-hidden="true" />}
