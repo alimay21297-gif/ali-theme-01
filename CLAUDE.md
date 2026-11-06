@@ -23,6 +23,7 @@ Read `PROJECT-CONTEXT.md` at session start, if it exists.
 13. Never delete the theme/repo/branches/node_modules, force-push, or edit `.npmrc`.
 14. File edits only with the Edit/Write tools. Never write or rewrite files through the shell (`cat >`, heredocs, `echo >`, `node -e` writes): it has truncated files and mangled backslashes, and a truncated module helps hang the dev server.
 15. Never edit files while a Playwright page is open on the dev server: close it, edit, then reopen. Never write `twilight.preview.json` while the dev server runs; ask the human to stop it first.
+16. After any batch of edits, stop and ask Ali to restart `pnpm dev` BEFORE the browser check (edits reliably trigger the SSR hang). Never browser-check on a server that was running during edits.
 
 ## Definition of done
 - [ ] `pnpm build`, `pnpm typecheck`, `pnpm test` pass (+ `pnpm check:manifest` if twilight.json changed)

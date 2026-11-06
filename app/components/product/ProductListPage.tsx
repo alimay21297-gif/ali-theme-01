@@ -22,6 +22,7 @@ import { product, parseNextPageToken } from '@salla.sa/twilight-theme-engine/api
 import type { ProductListLoaderData } from '@salla.sa/twilight-theme-engine/routes/product-listing';
 import type { Product } from '@salla.sa/twilight-theme-engine/types';
 import { ProductCard } from './ProductCard';
+import { ListingEmpty } from './ListingEmpty';
 import { useAppliedFilters } from '@salla.sa/twilight-theme-engine/routes/product-listing';
 import type { ProductListFilters } from '@salla.sa/twilight-theme-engine/api/product';
 import { BlockHookSlot, BottomSheet } from '../common';
@@ -300,9 +301,11 @@ function CatalogGrid({
   loader,
   listLayoutClass,
   filterStatus,
+  hasFilters,
   onRetry,
 }: {
   filterStatus: 'idle' | 'loading' | 'ready' | 'error';
+  hasFilters: boolean;
   onRetry: () => void;
   filtersVisible: boolean;
   filters: ProductListLoaderData['filters'];
@@ -364,12 +367,7 @@ function CatalogGrid({
               skeleton={<ProductCardSkeleton />}
               skeletonType="item"
               skeletonCount={12}
-              empty={
-                <NoContent
-                  icon="sicon-shopping-bag"
-                  message={t('pages.categories.no_products', 'No products found in this category')}
-                />
-              }
+              empty={<ListingEmpty hasFilters={hasFilters} />}
               t={(key, fallback) => t(key, fallback || key)}
             >
               {(items) =>
@@ -568,6 +566,7 @@ export function ProductListPage({
         filters={filters}
         listKey={`${listKey}${filteredKey}`}
         filterStatus={filterStatus}
+        hasFilters={appliedFilters !== null}
         onRetry={retryFilters}
         selectedSort={selectedSort}
         view={view}

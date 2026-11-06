@@ -95,6 +95,29 @@
     font-family: var(--lameem-font-display);
   }
 
+  /* Price "go" arrow: the engine draws a 24px gray-400 outline circle that turns
+     solid gray with a white icon on hover. Keep the small circle, give it a 44px
+     hit area (`::after`, the same trick as the header icons), gray-500 icon,
+     brand green on hover and keyboard focus. The ring is the global one. */
+  salla-price-range salla-button button {
+    @apply relative text-gray-500;
+    border-color: currentColor;
+    background-color: transparent;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: -10px;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: var(--lameem-primary);
+      border-color: var(--lameem-primary);
+      background-color: transparent;
+    }
+  }
+
   .s-filters-widget-container {
     @apply border-b border-gray-100 py-3.5;
     margin-bottom: 0;
@@ -170,6 +193,45 @@
 
   > span {
     unicode-bidi: plaintext;
+  }
+}
+
+/* Empty state (`ListingEmpty.tsx`): centred, gray-400 decorative icon, Readex Pro
+   heading, one line, then the "Clear filters" pill (44px, brand green, white
+   text, the global focus ring) or, with no filters active, a plain link. */
+.s-listing-page .s-listing-empty {
+  @apply w-full px-4 pb-16 pt-10 text-center;
+
+  &__icon {
+    @apply mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-gray-100 text-gray-400;
+
+    svg {
+      @apply h-10 w-10;
+    }
+  }
+
+  &__title {
+    @apply mb-2 text-xl font-bold;
+    color: var(--lameem-ink);
+    font-family: var(--lameem-font-display);
+  }
+
+  p.s-listing-empty__hint {
+    @apply mb-6 max-w-sm text-base text-gray-600;
+  }
+
+  &__action {
+    @apply inline-flex min-h-11 items-center justify-center rounded-full px-6 text-sm font-bold text-white transition-colors;
+    background-color: var(--lameem-primary);
+
+    &:hover {
+      background-color: var(--lameem-glow);
+    }
+  }
+
+  &__link {
+    @apply inline-flex min-h-11 items-center px-2 text-sm font-bold underline underline-offset-4;
+    color: var(--lameem-primary);
   }
 }
 
