@@ -63,7 +63,8 @@ describe('topnav_is_dark (body.topnav-is-dark)', () => {
     const root = await compile('header.scss');
 
     const topnav = declarations(root, 'body.topnav-is-dark .site-header__topnav');
-    expect(topnav['background-color']).toContain('var(--lameem-primary)'); // dark = LAMEEM primary
+    expect(topnav['background-color']).toContain('var(--lameem-deep)'); // solid deep green
+    expect(topnav['border-color']).toBe('rgb(255 255 255 / 0.1)');
     expect(topnav.color).toContain('rgb(209 213 219'); // gray-300
   });
 });
@@ -72,11 +73,12 @@ describe('header_is_dark (.site-header--dark)', () => {
   // `topnav_is_dark` now darkens the desktop top bar only. The main bar, in
   // both the lite and the default layout, is darkened by `header_is_dark`
   // (header-dark.scss), which replaced the old lite-only rule in header.scss.
-  it('darkens the main bar with the LAMEEM primary token', async () => {
+  it('darkens the main bar with the deep green token and a thin white/10 border', async () => {
     const root = await compile('header-dark.scss');
 
     const bar = declarations(root, '.site-header--dark .site-header__bar');
-    expect(bar['background-color']).toContain('var(--lameem-primary)');
+    expect(bar['background-color']).toContain('var(--lameem-deep)');
+    expect(bar['border-color']).toBe('rgb(255 255 255 / 0.1)');
   });
 
   it('shows the bar controls in white, with a translucent circle on hover', async () => {

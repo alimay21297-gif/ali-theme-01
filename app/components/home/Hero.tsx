@@ -17,6 +17,24 @@ export interface HeroProps {
 /** Widths the CDN resizes the product shot to; the displayed size is at most half the viewport. */
 const IMAGE_WIDTHS = [480, 720, 960, 1200] as const;
 
+/**
+ * Radar rings behind the product shot: five thin concentric circles and one slow
+ * outward "signal" pulse (animated in `home-hero.scss`, off for reduced motion).
+ * Inline SVG, so no `url()` reaches the critical CSS. Decorative.
+ */
+const RING_RADII = [22, 40, 58, 76, 94] as const;
+
+function Radar() {
+  return (
+    <svg className="home-hero__radar" viewBox="-100 -100 200 200" aria-hidden="true" focusable="false">
+      {RING_RADII.map((r) => (
+        <circle key={r} cx="0" cy="0" r={r} />
+      ))}
+      <circle className="home-hero__pulse" cx="0" cy="0" r={RING_RADII[0]} />
+    </svg>
+  );
+}
+
 /** Links the merchant may set: a path or an http(s) address. Anything else (`javascript:`) is dropped. */
 function safeUrl(url: unknown): string | undefined {
   if (typeof url !== 'string') return undefined;
@@ -27,8 +45,9 @@ function safeUrl(url: unknown): string | undefined {
 
 /**
  * `hero` home block (`s-block--hero`): the first screen of the home page. A dark
- * green surface with the calligraphy background (thinned behind the text column,
- * see `home-hero.scss`), a headline, a short text, one button and a product shot.
+ * green surface with a radial glow behind the product, radar rings and the
+ * calligraphy background (thinned behind the text column and toward the edges, see
+ * `home-hero.scss`), a headline, a short text, one button and a product shot.
  *
  * Text goes on the inline-start side and the image on the other (mirrors in RTL);
  * on phones the text comes first, then the image. Every field is plain text; React
@@ -53,7 +72,7 @@ export const Hero = memo(function Hero({ data }: HeroProps) {
 
   return (
     <div
-      className={`home-hero bg-dark ${calligraphy.className}`.trim()}
+      className={`home-hero ${calligraphy.className}`.trim()}
       style={calligraphy.style}
     >
       <div className={`container home-hero__inner${hasText ? '' : ' home-hero__inner--image-only'}`}>
@@ -70,6 +89,7 @@ export const Hero = memo(function Hero({ data }: HeroProps) {
         )}
         {image && (
           <div className="home-hero__media">
+            <Radar />
             <Image
               src={image}
               alt={title || ''}

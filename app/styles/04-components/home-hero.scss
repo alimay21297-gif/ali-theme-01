@@ -1,7 +1,8 @@
 /* `hero` home block (components/home/Hero.tsx). Imported in app.scss and
    critical.scss (it is the first screen), so no image URLs here: the calligraphy
-   pattern comes from calligraphy.scss (full sheet only). Colors are brand tokens
-   through Tailwind (`bg-dark`, `text-white`) and `--lameem-*`; logical properties only.
+   pattern comes from calligraphy.scss (full sheet only). Colors are the
+   `--lameem-*` brand tokens; logical properties only. It is the one place on the
+   home screen with the calligraphy pattern.
 
    Text goes on the inline-start side, the product shot on the other (the grid
    mirrors in RTL); phones stack them, text first. */
@@ -12,12 +13,36 @@
 }
 
 .home-hero {
+  /* Where the glow is lit: under the product. Stacked on phones the product is
+     below the text; from `lg` it is on the inline-end side (right in LTR, left
+     in RTL, set below). */
+  --hero-glow-x: 50%;
+  --hero-glow-y: 78%;
+
   /* The same stacking context `.has-calligraphy` makes, repeated because the
      critical sheet does not include calligraphy.scss. */
   position: relative;
   isolation: isolate;
   overflow: hidden;
+  background-color: var(--lameem-primary);
+  background-image: radial-gradient(
+    ellipse at var(--hero-glow-x) var(--hero-glow-y),
+    var(--lameem-glow) 0%,
+    var(--lameem-primary) 45%,
+    var(--lameem-deep) 100%
+  );
   @apply text-white;
+
+  @media (min-width: 1024px) {
+    --hero-glow-x: 75%;
+    --hero-glow-y: 50%;
+  }
+}
+
+[dir='rtl'] .home-hero {
+  @media (min-width: 1024px) {
+    --hero-glow-x: 25%;
+  }
 }
 
 .home-hero__inner {
@@ -39,6 +64,8 @@
 }
 
 .home-hero__text {
+  position: relative;
+  z-index: 1; /* above the radar rings */
   display: flex;
   flex-direction: column;
   align-items: flex-start; /* inline-start in both directions */
@@ -84,6 +111,7 @@
 
 /* Fixed-ratio box: the image can load at any size without moving the text. */
 .home-hero__media {
+  position: relative;
   inline-size: 100%;
   max-inline-size: 30rem;
   margin-inline: auto;
@@ -91,30 +119,91 @@
 }
 
 .home-hero__image {
+  position: relative;
+  z-index: 1;
   display: block;
   inline-size: 100%;
   block-size: 100%;
   object-fit: contain;
 }
 
-/* The calligraphy thins behind the text: about 15% at the text edge, full strength
-   by 65% of the way across. Stacked on phones the text is on top, so it fades
+/* Radar rings centred on the product: an SVG twice the size of the image box,
+   so it runs past it on every side (symmetric `inset`, no left/right). It fades
+   out towards its edge. The pulse is a ring that grows outward and fades, every
+   3s, only when the visitor has not asked for reduced motion. */
+.home-hero__radar {
+  position: absolute;
+  inset: -50%;
+  inline-size: 200%;
+  block-size: 200%;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(circle, black 55%, transparent 100%);
+  mask-image: radial-gradient(circle, black 55%, transparent 100%);
+
+  circle {
+    fill: none;
+    stroke: white;
+    stroke-width: 1px;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Ring opacity, 10% at the centre down to 6% at the rim. */
+  circle:nth-child(1) { stroke-opacity: 0.1; }
+  circle:nth-child(2) { stroke-opacity: 0.09; }
+  circle:nth-child(3) { stroke-opacity: 0.08; }
+  circle:nth-child(4) { stroke-opacity: 0.07; }
+  circle:nth-child(5) { stroke-opacity: 0.06; }
+}
+
+.home-hero__radar .home-hero__pulse {
+  stroke-opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .home-hero__radar .home-hero__pulse {
+    animation: home-hero-pulse 3s ease-out infinite;
+  }
+}
+
+/* 22 → 94 is the outermost ring's radius: the pulse grows to meet it. */
+@keyframes home-hero-pulse {
+  from {
+    transform: scale(1);
+    stroke-opacity: 0.22;
+  }
+
+  to {
+    transform: scale(4.27);
+    stroke-opacity: 0;
+  }
+}
+
+/* The calligraphy fades in two ways at once (the masks intersect): thinner behind
+   the text column (about 10% at its edge, full strength by 65% across) and out
+   towards the edges of the hero. Stacked on phones the text is on top, so it fades
    downwards; from `lg` the text is on the inline-start side, so it fades towards
-   the inline-end (right in LTR, left in RTL). The mask has no URL, so it is safe
+   the inline-end (right in LTR, left in RTL). Masks have no URL, so they are safe
    in the critical sheet. */
 .home-hero.has-calligraphy::before {
-  -webkit-mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.15), black 65%);
-  mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.15), black 65%);
+  --hero-fade-dir: to bottom;
+  -webkit-mask-image:
+    linear-gradient(var(--hero-fade-dir), rgb(0 0 0 / 0.1), black 65%),
+    radial-gradient(ellipse at center, black 45%, transparent 100%);
+  mask-image:
+    linear-gradient(var(--hero-fade-dir), rgb(0 0 0 / 0.1), black 65%),
+    radial-gradient(ellipse at center, black 45%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
 
   @media (min-width: 1024px) {
-    -webkit-mask-image: linear-gradient(to right, rgb(0 0 0 / 0.15), black 65%);
-    mask-image: linear-gradient(to right, rgb(0 0 0 / 0.15), black 65%);
+    --hero-fade-dir: to right;
   }
 }
 
 [dir='rtl'] .home-hero.has-calligraphy::before {
   @media (min-width: 1024px) {
-    -webkit-mask-image: linear-gradient(to left, rgb(0 0 0 / 0.15), black 65%);
-    mask-image: linear-gradient(to left, rgb(0 0 0 / 0.15), black 65%);
+    --hero-fade-dir: to left;
   }
 }

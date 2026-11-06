@@ -26,6 +26,17 @@ beforeEach(() => {
   for (const key of Object.keys(settings)) delete settings[key];
 });
 
+describe('HeaderTopnav surface', () => {
+  it('has no calligraphy pattern, even when the top bar is dark', () => {
+    settings.topnav_is_dark = true;
+    const { container } = render(<HeaderTopnav />);
+
+    expect(container.querySelector('.site-header__topnav')?.className).not.toContain(
+      'has-calligraphy'
+    );
+  });
+});
+
 describe('HeaderTopnav important links', () => {
   it('shows the footer menu when important_links is on', () => {
     settings.important_links = true;

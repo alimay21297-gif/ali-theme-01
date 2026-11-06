@@ -56,11 +56,6 @@
   box-shadow: 0 8px 30px rgb(0 0 0 / 12%);
   pointer-events: auto;
 
-  /* The calligraphy layer (calligraphy.scss, full sheet only) follows the pill. */
-  &.has-calligraphy::before {
-    border-radius: inherit;
-  }
-
   /* Not `overflow: hidden` — on the narrowest phones the active tab's
      expanded pill (padding + label, below) can come within a few px of the
      row's total width. Clipping would silently drop a tab (its icon read as

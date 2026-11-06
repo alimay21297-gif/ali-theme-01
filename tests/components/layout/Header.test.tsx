@@ -111,6 +111,11 @@ describe('Header', () => {
     expect(container.querySelector('[data-hook-slot="header:end"]')).toBeTruthy();
   });
 
+  it('keeps the main bar solid: no calligraphy pattern on it', () => {
+    const { container } = render(<Header />);
+    expect(container.querySelector('.site-header__bar')?.className).not.toContain('has-calligraphy');
+  });
+
   it('names the logo link by the store name once', () => {
     const { container } = render(<Header />);
     const brand = container.querySelector('.site-header__brand')!;

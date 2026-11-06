@@ -806,7 +806,7 @@
 
 /* `topnav_is_dark` setting: the engine adds `topnav-is-dark` to <body>. */
 body.topnav-is-dark .site-header__topnav {
-  @apply border-gray-300/10 bg-dark text-gray-300;
+  @apply border-white/10 bg-darker text-gray-300;
 
   .site-header__topnav-menu a,
   .site-header__topnav-action,

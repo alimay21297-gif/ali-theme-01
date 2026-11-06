@@ -377,7 +377,8 @@ export function Footer({ inSheet = false }: FooterProps = {}) {
   const isCentered = theme.settings?.footer_layout === 'centered';
   // The account sheet is always light (see mobile-account-sheet.scss), whatever `footer_is_dark` says.
   const isDark = !!theme.settings?.footer_is_dark && !inSheet;
-  const calligraphy = useCalligraphy();
+  // Quieter than the hero's pattern: about 60% of the chosen strength.
+  const calligraphy = useCalligraphy(0.6);
   const hasPattern = isDark && calligraphy.className !== '';
 
   const Root = inSheet ? 'div' : 'footer';

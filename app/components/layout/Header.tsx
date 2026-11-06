@@ -10,7 +10,6 @@ import { HookSlot } from '@salla.sa/twilight-theme-engine/hooks';
 import { Image } from '@salla.sa/twilight-theme-engine/common';
 import { MapPinIcon, SearchIcon, ShoppingBagIcon } from '../icons';
 import { useAppSafeAreaTop } from '../../hooks/useAppSafeAreaTop';
-import { useCalligraphy } from '../../hooks/useCalligraphy';
 import { useStoreLogo } from '../../hooks/useStoreLogo';
 import { useNavHasContent } from '../../hooks/useNavHasContent';
 import { htmlToPlainText } from '../../lib/plainText';
@@ -120,10 +119,10 @@ export function Header({ navOpen: navOpenProp, onNavOpenChange }: HeaderProps = 
   const { t } = useTranslation();
   const isDefaultLayout = theme?.settings?.header_layout === 'default';
   const stickyEnabled = theme?.settings?.header_is_sticky !== false;
-  // Dark main bar (`header_is_dark`, default on): dark colours, the calligraphy
-  // background and `logo_on_dark` (falls back to the store logo when empty).
+  // Dark main bar (`header_is_dark`, default on): solid deep green and
+  // `logo_on_dark` (falls back to the store logo when empty). No calligraphy: the
+  // hero carries the pattern, once per screen.
   const isDark = (theme?.settings as { header_is_dark?: boolean } | undefined)?.header_is_dark !== false;
-  const calligraphy = useCalligraphy();
   const logoSrc = useStoreLogo(isDark);
   const navHasContent = useNavHasContent();
   const [navOpenState, setNavOpenState] = useState(false);
@@ -236,10 +235,7 @@ export function Header({ navOpen: navOpenProp, onNavOpenChange }: HeaderProps = 
 
       <div className="site-header__bar-outer">
         <div
-          className={`site-header__bar${scrolled ? ' is-scrolled' : ''}${
-            isDark && calligraphy.className ? ` ${calligraphy.className}` : ''
-          }`}
-          style={isDark ? calligraphy.style : undefined}
+          className={`site-header__bar${scrolled ? ' is-scrolled' : ''}`}
         >
           <div className="container site-header__bar-inner">
             {/* The cell stays when the button goes, so the logo keeps its place. */}

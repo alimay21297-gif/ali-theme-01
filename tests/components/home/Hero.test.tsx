@@ -47,6 +47,19 @@ describe('Hero', () => {
     expect(container.querySelector('a')).toBeNull();
   });
 
+  it('puts the decorative radar behind the product shot: five rings and one pulse', () => {
+    const { container } = render(<Hero data={{ title: 'T', image: 'https://cdn.example/p.png' }} />);
+    const radar = container.querySelector('.home-hero__media svg.home-hero__radar');
+    expect(radar?.getAttribute('aria-hidden')).toBe('true');
+    expect(radar?.querySelectorAll('circle')).toHaveLength(6);
+    expect(radar?.querySelectorAll('.home-hero__pulse')).toHaveLength(1);
+  });
+
+  it('draws no radar without a product shot', () => {
+    const { container } = render(<Hero data={{ title: 'T' }} />);
+    expect(container.querySelector('.home-hero__radar')).toBeNull();
+  });
+
   it('renders an image-only hero without a text column', () => {
     const { container } = render(<Hero data={{ image: 'https://cdn.example/p.png' }} />);
     expect(container.querySelector('.home-hero__text')).toBeNull();

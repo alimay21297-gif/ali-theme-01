@@ -1,21 +1,23 @@
 /* Dark main header bar (`header_is_dark`, default on; `.site-header--dark` is
    set in Header.tsx). Imported after header.scss, and in critical.scss so the
-   dark colour paints with the first frame -- so no image URLs here: the
-   calligraphy pattern comes from calligraphy.scss (full sheet only).
+   dark colour paints with the first frame.
+   Solid deep green (`bg-darker`), a thin white/10 bottom border, and no
+   calligraphy: each dark surface has its own role, and the pattern appears once
+   per screen (the home hero).
    Only the bar and its controls are dark. The user menu dropdown, the mega
    menus and the nav drawer stay light panels with dark text.
    `topnav_is_dark` is separate: it only darkens the desktop top bar. */
 
 /* The status-bar strip inside the Salla app matches the bar under it. */
 .site-header--dark .site-header__safe-area {
-  @apply bg-dark;
+  @apply bg-darker;
 }
 
 .site-header--dark .site-header__bar {
-  @apply bg-dark;
+  @apply border-white/10 bg-darker;
 
   &.is-scrolled {
-    @apply border-white/10 bg-dark;
+    @apply border-white/10 bg-darker;
   }
 }
 

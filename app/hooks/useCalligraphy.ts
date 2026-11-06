@@ -22,8 +22,11 @@ export interface Calligraphy {
  * The calligraphy background for a DARK surface (`calligraphy_bg_enabled`,
  * `calligraphy_bg_strength`; styles in `04-components/calligraphy.scss`).
  * A never-saved switch counts as on. Spread onto dark surfaces only.
+ *
+ * `scale` multiplies the chosen strength for a surface that should be quieter
+ * than the hero (the footer passes 0.6).
  */
-export function useCalligraphy(): Calligraphy {
+export function useCalligraphy(scale = 1): Calligraphy {
   const { theme } = useTwilight();
   const settings = theme?.settings as
     | { calligraphy_bg_enabled?: unknown; calligraphy_bg_strength?: unknown }
@@ -35,6 +38,8 @@ export function useCalligraphy(): Calligraphy {
   const strength: Strength = value && value in OPACITY ? (value as Strength) : 'standard';
   return {
     className: 'has-calligraphy',
-    style: { '--calligraphy-opacity': OPACITY[strength] } as CSSProperties,
+    style: {
+      '--calligraphy-opacity': Math.round(OPACITY[strength] * scale * 10000) / 10000,
+    } as CSSProperties,
   };
 }

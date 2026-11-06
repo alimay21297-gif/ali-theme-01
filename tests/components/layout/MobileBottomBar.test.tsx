@@ -44,11 +44,6 @@ vi.mock('../../../app/hooks/useNavHasContent', () => ({
   useNavHasContent: () => nav.hasContent,
 }));
 
-// The dark bar reads the calligraphy settings through the engine's provider.
-vi.mock('../../../app/hooks/useCalligraphy', () => ({
-  useCalligraphy: () => ({ className: 'has-calligraphy', style: undefined }),
-}));
-
 vi.mock('@salla.sa/twilight-theme-engine/common', () => ({
   Link: ({ to, children, className, ...rest }: Record<string, unknown>) => (
     <a href={String(to)} className={className as string} {...(rest as Record<string, unknown>)}>
@@ -99,6 +94,14 @@ describe('MobileBottomBar', () => {
     expect(screen.getByText('Menu')).toBeTruthy();
     expect(screen.getByText('Cart')).toBeTruthy();
     expect(screen.getByText('My Account')).toBeTruthy();
+  });
+
+  it('is a solid dark pill: no calligraphy pattern on the bar', () => {
+    const { container } = render(<MobileBottomBar navOpen={false} onOpenNav={noop} />);
+
+    const inner = container.querySelector('.mobile-bottom-bar__inner');
+    expect(inner).toBeTruthy();
+    expect(inner?.className).not.toContain('has-calligraphy');
   });
 
   it('drops the Menu tab when the menu would open empty', () => {
