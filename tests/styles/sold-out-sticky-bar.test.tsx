@@ -23,7 +23,8 @@ vi.mock('@salla.sa/twilight-theme-engine/providers', () => ({
 const themeRoot = `${path.resolve(process.cwd())}/`;
 const tailwindConfig = createRequire(`${themeRoot}package.json`)(`${themeRoot}tailwind.config.cjs`);
 
-const PHONE = '(max-width: 640px)';
+// The nav's own breakpoint (`md:hidden`): the bar is fixed for as long as the nav shows.
+const PHONE = '(max-width: 767px)';
 
 /** Selectors of the rules that hide something at phone width in `product.scss`. */
 let phoneHiders: string[] = [];

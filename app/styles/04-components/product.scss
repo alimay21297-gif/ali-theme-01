@@ -507,82 +507,72 @@ salla-gifting {
   }
 }
 
-/* Add to cart sticky bar */
-@media (max-width: 640px) {
+/* Add to cart sticky bar: on phones it floats above the bottom nav. The range is
+   the nav's own (`md:hidden`, mobile-bottom-bar.scss), so the bar is never loose
+   in the page while the nav is showing.
+
+   Vertical budget, all from the bottom edge:
+   - nav footprint 76px = 52 bar + 12 gap + 12 air (`--safe-bottom` added on top)
+   - the bar sits at that offset; its height is known from its rows:
+       gap 12 + price 28 + gap 12 + stepper/button row 48 + gap 12 + padding 24 = 112
+       with `--quick-buy` the buttons wrap to their own row: 112 + 12 + 48 = 172
+       sold out (label only): 24 + 28 = 52
+   - the page then needs 12px of air above the bar, so the end of the content is
+     never under it: 76 + bar + 12.
+   The add-to-cart toast is fixed at the TOP of the screen on phones, so it cannot
+   meet the bar. */
+@media (max-width: 767px) {
   .is-sticky-product-bar {
-    /* clear the sticky add-to-cart bar, which sits above the mobile bottom nav
-       (see `mobile-bottom-bar.scss`). More specific than that file's generic
-       `.app-inner` rule so it wins here.
-       190px = nav (52 content + 12 own gap) + 10 breathing room + this bar's own height. */
+    /* More specific than the generic `.app-inner` rule in mobile-bottom-bar.scss. */
     &.product-single .app-inner {
-      padding-bottom: calc(190px + var(--flow-safe-bottom));
+      padding-bottom: calc(200px + var(--flow-safe-bottom));
+    }
+
+    &.product-single:has(.sticky-product-bar--quick-buy) .app-inner {
+      padding-bottom: calc(260px + var(--flow-safe-bottom));
+    }
+
+    &.product-single:has(.sticky-product-bar--sold-out) .app-inner {
+      padding-bottom: calc(140px + var(--flow-safe-bottom));
     }
 
     .sticky-product-bar {
-      @apply flex flex-wrap flex-col gap-2.5 sm:gap-4 fixed z-[2] bottom-0 p-3 justify-between items-center shadow-[-1px_-2px_9px_0_rgba(0,0,0,0.05)] transition duration-700 delay-500 translate-y-100 opacity-0 ease-elastic;
+      @apply fixed z-[2] gap-3 rounded p-3 shadow-[-1px_-2px_9px_0_rgba(0,0,0,0.05)] transition duration-700 delay-500 translate-y-100 opacity-0 ease-elastic;
       /* Floats inset from the screen edges, matching the bottom nav's own
          rounded pill (mobile-bottom-bar.scss) rather than running flush edge
          to edge. */
-      left: 16px;
-      right: 16px;
-      width: auto;
-      @apply rounded;
-      /* nav (52 content + 12 own gap) + 10 breathing room above it */
-      bottom: calc(70px + var(--safe-bottom));
+      inset-inline: 1rem;
+      bottom: calc(76px + var(--safe-bottom));
 
-      &__quantity,
-      salla-add-product-button {
-        @apply translate-y-5 opacity-0 transition duration-700 ease-elastic w-full;
-      }
-
-      &__price,
-      .form-label {
-        @apply hidden;
-      }
-
-      &__quantity {
-        salla-quantity-input {
-          @apply w-full;
-          .s-quantity-input-container {
-            @apply w-full;
-          }
-          .s-quantity-input-input {
-            @apply w-[80%];
-          }
-        }
-        @apply m-0 delay-[900ms];
-      }
-
-      salla-add-product-button {
-        @apply w-auto m-0 flex-1 delay-1000;
+      &__actions {
+        @apply translate-y-5 opacity-0 transition duration-700 ease-elastic delay-[900ms];
       }
 
       .hydrated & {
         &,
-        &__quantity,
-        salla-add-product-button {
+        &__actions {
           @apply translate-y-0 opacity-100;
         }
+      }
+
+      /* Add to cart + buy now (+ Apple Pay) do not fit beside the stepper in 319px:
+         the stepper keeps its row, the buttons get the next one. */
+      &--quick-buy .sticky-product-bar__btn,
+      &--quick-buy > .sticky-product-bar__actions > div:has(> .sticky-product-bar__btn) {
+        flex-basis: 100%;
       }
     }
 
     /* Sold out with no "notify me" (`StickyProductBar`): nothing to buy, so the
-       bar is just the out-of-stock label — no stepper, no button. */
+       bar is just the out-of-stock label, centred. */
     .sticky-product-bar--sold-out {
-      > :not(.sticky-product-bar__quantity),
-      .sticky-product-bar__quantity > :not(.out-of-stock) {
+      .sticky-product-bar__actions {
         display: none;
       }
 
-      /* The row is `center-between` for price + stepper; alone, the label sits in the middle. */
-      .sticky-product-bar__quantity {
+      .sticky-product-bar__summary {
         justify-content: center;
       }
-    }
-
-    /* …and the page only clears that one row: nav (52 + 12) + 10 + the bar (12 + 28 + 12). */
-    &.product-single:has(.sticky-product-bar--sold-out) .app-inner {
-      padding-bottom: calc(126px + var(--flow-safe-bottom));
     }
   }
 }
@@ -1098,16 +1088,65 @@ salla-gifting {
 }
 
 /*
-  The quantity stepper pill lives in `04-components/quantity-stepper.scss` (shared
-  with the cart page). Product page only: cap the width so it sits compact next
-  to the price.
+  Add-to-cart block layout (all widths). Rows, top to bottom: the live price
+  (`__summary`), then `__actions`: the quantity stepper and the buttons on one row
+  where the width allows (the buttons take the rest, `8rem` is the narrowest they
+  may shrink to before the row wraps). Everything is at least 44px tall and the
+  rows share one 48px height. Colours are untouched: they stay merchant-controlled.
 */
-.sticky-product-bar__quantity .s-quantity-input-container {
-  @apply w-full max-w-[120px];
+.sticky-product-bar {
+  @apply flex flex-col gap-5;
 }
 
-/* Product-page add-to-cart — pill-rounded, matching the product-card button */
+.sticky-product-bar__summary {
+  @apply flex min-h-7 items-center;
+}
+
+.sticky-product-bar__actions {
+  @apply flex flex-wrap items-center gap-3;
+
+  > salla-quantity-input,
+  > div:has(> salla-quantity-input) {
+    @apply flex-none;
+  }
+
+  > .sticky-product-bar__btn,
+  > div:has(> .sticky-product-bar__btn) {
+    @apply min-w-0 flex-[1_1_8rem];
+  }
+}
+
+/*
+  The quantity stepper pill lives in `04-components/quantity-stepper.scss` (shared
+  with the cart page, where it keeps its 32px buttons until the cart phase). On
+  the product page the − / + are 44px targets inside a 48px pill; the manual-entry
+  box (only when the store allows typing a quantity) is 44px tall too.
+*/
+.sticky-product-bar__actions .s-quantity-input {
+  .s-quantity-input-container {
+    @apply h-12 w-auto gap-0 p-px;
+  }
+
+  .s-quantity-input-button {
+    @apply h-11 w-11;
+
+    svg {
+      @apply h-5 w-5;
+    }
+  }
+
+  .s-quantity-input-input {
+    @apply h-11 w-10;
+  }
+}
+
+/* Product-page add-to-cart — pill-rounded, matching the product-card button, and
+   as tall as the stepper beside it */
 .sticky-product-bar__btn {
+  .s-button-btn {
+    @apply h-auto min-h-12;
+  }
+
   .s-button-btn,
   .s-button-element {
     @apply rounded-full;
@@ -1123,30 +1162,27 @@ salla-gifting {
 }
 
 /* The deferred loader wraps `salla-add-product-button` in a bare <div> that
-   doesn't pick up the button's own `w-full`, so it collapses to the pill's
-   intrinsic width. Stretch that wrapper to the bar; the button inside already
-   fills it (`w-full`, or `flex-1` in the mobile sticky bar). */
-.sticky-product-bar > div:has(> .sticky-product-bar__btn) {
-  @apply w-full;
-}
+   doesn't pick up the button's own class, so it would collapse to the pill's
+   intrinsic width. The `__actions` rule above sizes that wrapper too; the button
+   inside fills it (`width="wide"`). */
 
 /* At hydration the SDK wrappers swap their skeleton for the element, empty until the SDK renders
-   it: keep the loaded 40px meanwhile, and in the skeletons, so the bar never shrinks and regrows. */
+   it: keep the loaded 48px meanwhile, and in the skeletons, so the bar never shrinks and regrows. */
 .sticky-product-bar {
   salla-quantity-input:not(.hydrated) {
-    min-height: 40px;
+    min-height: 48px;
   }
 
   salla-add-product-button:not(.hydrated) {
     display: block;
-    min-height: 40px;
+    min-height: 48px;
   }
 
   .s-skeleton-input,
   .s-skeleton-button,
   .s-skeleton-input .s-skeleton-pulse,
   .s-skeleton-button .s-skeleton-pulse {
-    height: 40px !important;
+    height: 48px !important;
   }
 }
 

@@ -226,20 +226,6 @@
   }
 }
 
-/* The engine's default product-page "add to cart" bar (`04-components/product.scss`,
-   `.sticky-product-bar`) is also `position: fixed; bottom: 0`, at a far lower
-   z-index (2) than this bar (220) — it would render directly underneath ours,
-   covered and untappable, with `product.scss`'s own `pb-28` reserving space only
-   for its own height, not ours on top of it. Lift it clear of this bar's real
-   footprint (76px, matching the reservation above) and extend the page's reserved
-   space to match. A stopgap until `product.scss` gets its own theme-owned sticky
-   bar (a later PR in this split) with its own coordination. */
-@media (max-width: 767px) {
-  body.product-single.is-sticky-product-bar {
-    padding-bottom: calc(76px + 112px + var(--safe-bottom)) #{!important};
-  }
-
-  body.product-single .sticky-product-bar {
-    bottom: calc(76px + var(--safe-bottom)) #{!important};
-  }
-}
+/* The product page's sticky add-to-cart bar sits above this bar (z-index 2, so it
+   must never overlap it). Its offset (76px, this bar's footprint) and the page
+   room it needs are owned by `product.scss`, next to the bar's own rows. */

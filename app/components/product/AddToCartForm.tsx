@@ -233,7 +233,7 @@ function AttachmentsSection({
 }
 
 /** Sale / starting-or-normal price, plus the out-of-stock message — the
- * left-hand side of the sticky bar's quantity row. */
+ * sticky bar's summary row. */
 function StickyPriceDisplay({ product, priceBump }: { product: Product; priceBump: number }) {
   const { t } = useTranslation();
   // The API converts the amounts but still labels them in the store's own currency.
@@ -308,7 +308,7 @@ function StickyQuantityField({ product }: { product: Product }) {
       value={1}
       name="quantity"
       aria-label={t('pages.products.quantity')}
-      className="border-gray-200 flex ms-auto"
+      className="border-gray-200 flex"
     />
   );
 }
@@ -341,49 +341,55 @@ function StickyProductBar({
   const soldOut = product.is_out_of_stock && product.status !== 'out-and-notify';
   return (
     <section
-      className={`sticky-product-bar bg-white${soldOut ? ' sticky-product-bar--sold-out' : ''}`}
+      className={`sticky-product-bar bg-white${soldOut ? ' sticky-product-bar--sold-out' : ''}${quickBuy && !soldOut ? ' sticky-product-bar--quick-buy' : ''}`}
     >
-      {/* Live price on the start side, quantity stepper on the end side
-          (replaces the standalone price section and the "Quantity" label). */}
-      <div className="sticky-product-bar__quantity center-between mb-5">
+      {/* Live price (replaces the standalone price section), then one row with the
+          quantity stepper and the buttons. `--quick-buy` tells the phone CSS the
+          buttons need their own row, so the bar's height is known and the page can
+          reserve exactly that much room (`product.scss`). */}
+      <div className="sticky-product-bar__summary">
         <StickyPriceDisplay product={product} priceBump={priceBump} />
-        <StickyQuantityField product={product} />
       </div>
 
-      <SallaAddProductButton
-        ref={addButtonRef}
-        {...(quickBuy ? { quickBuy: true } : {})}
-        {...(stickyAddToCart ? { supportStickyBar: true } : {})}
-        {...(product.is_require_shipping ? { requiredShipping: true } : {})}
-        {...(hasPreorder ? { hasPreOrder: true } : {})}
-        amount={
-          typeof product.base_currency_price === 'object'
-            ? product.base_currency_price.amount
-            : product.base_currency_price
-        }
-        className="mt-5 w-full sticky-product-bar__btn"
-        productStatus={product.status}
-        productType={product.type}
-        productId={product.id}
-        type="submit"
-        width="wide"
-        {...(product.notify_availability
-          ? {
-              ...(product.notify_availability.subscribed ? { isSubscribed: true } : {}),
-              channels: product.notify_availability.channels.join(','),
-              ...(product.notify_availability.subscribed_options
-                ? {
-                    subscribedOptions: JSON.stringify(
-                      product.notify_availability.subscribed_options
-                    ),
-                  }
-                : {}),
-              ...(product.notify_availability.options ? { notifyOptionsAvailability: true } : {}),
-            }
-          : {})}
-      >
-        {product.add_to_cart_label}
-      </SallaAddProductButton>
+      <div className="sticky-product-bar__actions">
+        <StickyQuantityField product={product} />
+        <SallaAddProductButton
+          ref={addButtonRef}
+          {...(quickBuy ? { quickBuy: true } : {})}
+          {...(stickyAddToCart ? { supportStickyBar: true } : {})}
+          {...(product.is_require_shipping ? { requiredShipping: true } : {})}
+          {...(hasPreorder ? { hasPreOrder: true } : {})}
+          amount={
+            typeof product.base_currency_price === 'object'
+              ? product.base_currency_price.amount
+              : product.base_currency_price
+          }
+          className="sticky-product-bar__btn"
+          productStatus={product.status}
+          productType={product.type}
+          productId={product.id}
+          type="submit"
+          width="wide"
+          {...(product.notify_availability
+            ? {
+                ...(product.notify_availability.subscribed ? { isSubscribed: true } : {}),
+                channels: product.notify_availability.channels.join(','),
+                ...(product.notify_availability.subscribed_options
+                  ? {
+                      subscribedOptions: JSON.stringify(
+                        product.notify_availability.subscribed_options
+                      ),
+                    }
+                  : {}),
+                ...(product.notify_availability.options
+                  ? { notifyOptionsAvailability: true }
+                  : {}),
+              }
+            : {})}
+        >
+          {product.add_to_cart_label}
+        </SallaAddProductButton>
+      </div>
     </section>
   );
 }
