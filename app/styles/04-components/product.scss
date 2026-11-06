@@ -460,7 +460,10 @@ salla-gifting {
   overflow: visible;
 }
 
-/* Promotion badge — pill on the image corner */
+/* Badge — pill on the image's top inline-start corner (opposite the heart).
+   The text is the computed discount, the merchant's promotion title or "Sold
+   out" (see ProductCard.tsx); `plaintext` lets Arabic merchant text read right
+   on an English page, and the other way round. */
 .s-product-card-promotion-title {
   top: 0.75rem;
   inset-inline-start: 0.75rem;
@@ -468,8 +471,14 @@ salla-gifting {
   padding: 0.375rem 0.75rem;
   border-radius: 9999px;
   max-width: calc(100% - 1.5rem);
-  @apply text-white text-[11px] font-semibold leading-none shadow-sm;
+  @apply text-white text-xs font-semibold leading-none shadow-sm;
   background-color: var(--lameem-sale);
+  unicode-bidi: plaintext;
+}
+
+/* Sold out: neutral gray instead of the sale red. */
+.s-product-card-out-of-stock .s-product-card-promotion-title {
+  @apply bg-gray-700;
 }
 
 /* Add to cart sticky bar */

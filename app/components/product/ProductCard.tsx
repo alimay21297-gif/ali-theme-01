@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, type ComponentProps } from 'react';
 import { ProductCard as EngineProductCard } from '@salla.sa/twilight-theme-engine/product';
+import { useTranslation } from '@salla.sa/twilight-theme-engine/i18n';
+import { cardBadgeText } from '../../lib/cardBadge';
 import { registerNativeBookingHook } from '../../lib/nativeBooking';
 import { withImageFallback } from '../../lib/productImage';
 
@@ -15,16 +17,25 @@ type ProductCardProps = ComponentProps<typeof EngineProductCard>;
  * in the footer row for the horizontal card.
  * A product with no photo shows the theme's placeholder, as the Twig card does
  * (the engine `Image` renders nothing without a `src`).
+ * One badge per card: the engine shows `promotion_title`, so a sold-out product
+ * or a discounted one without a merchant title gets that text there
+ * (`lib/cardBadge.ts`). Its text direction (Arabic merchant text on an English
+ * page) is handled in CSS with `unicode-bidi: plaintext`, not a `dir` attribute,
+ * which would also flip the badge's `inset-inline-start` corner.
  * Inside the Salla app, a booking product's "Book now" fires `mobile::booking.open`
  * instead of opening the booking page (`lib/nativeBooking.ts`).
  * Styling: `04-components/product.scss`.
  */
 export function ProductCard(props: ProductCardProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const { product, isPlaceholder } = useMemo(
-    () => withImageFallback(props.product),
-    [props.product]
-  );
+  const { t, locale } = useTranslation();
+  const { product, isPlaceholder } = useMemo(() => {
+    const withImage = withImageFallback(props.product);
+    const badge = cardBadgeText(withImage.product, locale, t);
+    return badge
+      ? { ...withImage, product: { ...withImage.product, promotion_title: badge } }
+      : withImage;
+  }, [props.product, locale, t]);
 
   useEffect(() => {
     registerNativeBookingHook();

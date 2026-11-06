@@ -12,7 +12,7 @@ vi.mock('@salla.sa/twilight-theme-engine/product', () => ({
     product,
     layout = 'vertical',
   }: {
-    product: { id: number; name: string; image?: { url?: string } };
+    product: { id: number; name: string; image?: { url?: string }; promotion_title?: string };
     layout?: string;
   }) => (
     <div
@@ -21,6 +21,11 @@ vi.mock('@salla.sa/twilight-theme-engine/product', () => ({
       data-image={product.image?.url}
     >
       <div className="s-product-card-image">
+        {product.promotion_title && (
+          <div className="s-product-card-promotion-title" data-testid="badge">
+            {product.promotion_title}
+          </div>
+        )}
         {layout !== 'horizontal' && (
           <button
             type="button"
@@ -38,9 +43,28 @@ vi.mock('@salla.sa/twilight-theme-engine/product', () => ({
   ),
 }));
 
+const i18n = vi.hoisted(() => ({
+  locale: 'en',
+  messages: {
+    en: { 'pages.products.discount_badge': '{{percent}}% off', 'pages.products.sold_out': 'Sold out' },
+    ar: { 'pages.products.discount_badge': 'خصم {{percent}}٪', 'pages.products.sold_out': 'نفذت الكمية' },
+  } as Record<string, Record<string, string>>,
+}));
+
+vi.mock('@salla.sa/twilight-theme-engine/i18n', () => {
+  const t = (key: string, options: { defaultValue: string; percent?: string }) =>
+    (i18n.messages[i18n.locale][key] ?? options.defaultValue).replace(
+      '{{percent}}',
+      options.percent ?? ''
+    );
+  return { useTranslation: () => ({ t, locale: i18n.locale }) };
+});
+
 const product = { id: 42, name: 'Test product' } as never;
+const saleProduct = { id: 7, name: 'Sale', is_on_sale: true, regular_price: 200, sale_price: 150 };
 
 beforeEach(() => {
+  i18n.locale = 'en';
   cleanup();
 });
 
@@ -58,6 +82,30 @@ describe('ProductCard', () => {
     const card = getByTestId('engine-card');
     expect(card.getAttribute('data-image')).toBe('https://example.com/a.jpg');
     expect(card.parentElement?.hasAttribute('data-image-placeholder')).toBe(false);
+  });
+
+  it('badges a discounted product with its computed percentage, in locale digits', () => {
+    const en = render(<ProductCard product={saleProduct as never} />);
+    expect(en.getByTestId('badge').textContent).toBe('25% off');
+    en.unmount();
+
+    i18n.locale = 'ar';
+    const ar = render(<ProductCard product={saleProduct as never} />);
+    expect(ar.getByTestId('badge').textContent).toBe('خصم ٢٥٪');
+  });
+
+  it("shows the merchant's promotion title instead of the computed one, never both", () => {
+    const titled = { ...saleProduct, promotion_title: 'عرض خاص' };
+    const { getAllByTestId } = render(<ProductCard product={titled as never} />);
+    expect(getAllByTestId('badge')).toHaveLength(1);
+    expect(getAllByTestId('badge')[0].textContent).toBe('عرض خاص');
+  });
+
+  it('badges an out-of-stock product "Sold out" instead of the sale badge', () => {
+    const soldOut = { ...saleProduct, is_out_of_stock: true };
+    const { getAllByTestId } = render(<ProductCard product={soldOut as never} />);
+    expect(getAllByTestId('badge')).toHaveLength(1);
+    expect(getAllByTestId('badge')[0].textContent).toBe('Sold out');
   });
 
   it('makes the add-to-cart button solid and centres its loader', async () => {
