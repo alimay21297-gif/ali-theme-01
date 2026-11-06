@@ -1,10 +1,14 @@
 import { useTranslation } from '@salla.sa/twilight-theme-engine/i18n';
+import { Link } from '@salla.sa/twilight-theme-engine/common';
 import { QuoteIcon, StarIcon } from '../icons';
 import { ScrollCarousel } from './ScrollCarousel';
 
 export interface TestimonialItem {
   avatar?: string;
   name?: string;
+  /** Optional plain text under the name. */
+  city?: string;
+  product?: string;
   text?: string;
   stars?: number;
 }
@@ -59,7 +63,14 @@ function TestimonialCard({ item, index }: { item: TestimonialItem; index: number
             </span>
           )
         )}
-        <b className="testimonial-card__name">{item.name}</b>
+        <div className="testimonial-card__who">
+          {name && <b className="testimonial-card__name">{name}</b>}
+          {(item.city || item.product) && (
+            <span className="testimonial-card__meta">
+              {[item.city, item.product].filter(Boolean).join(' · ')}
+            </span>
+          )}
+        </div>
       </figcaption>
     </figure>
   );
@@ -69,6 +80,8 @@ export interface TestimonialsCarouselProps {
   items: TestimonialItem[];
   title: string;
   description?: string;
+  /** Link to the store's real /testimonials page under the row. */
+  showAllLink?: boolean;
 }
 
 /**
@@ -78,7 +91,12 @@ export interface TestimonialsCarouselProps {
  * ({@link CustomTestimonials}). Styling: `04-components/home-blocks.scss`
  * (`.s-testimonials` / `.testimonial-card`).
  */
-export function TestimonialsCarousel({ items, title, description }: TestimonialsCarouselProps) {
+export function TestimonialsCarousel({
+  items,
+  title,
+  description,
+  showAllLink = false,
+}: TestimonialsCarouselProps) {
   const { t } = useTranslation();
 
   if (!items.length) return null;
@@ -86,6 +104,7 @@ export function TestimonialsCarousel({ items, title, description }: Testimonials
   return (
     <div className="s-testimonials container">
       <ScrollCarousel
+        className={`testimonials-track testimonials-track--${Math.min(items.length, 3)}`}
         heading={
           <>
             <h2 className="s-testimonials__title">{title}</h2>
@@ -102,6 +121,13 @@ export function TestimonialsCarousel({ items, title, description }: Testimonials
           <TestimonialCard key={`${index}-${item.name ?? ''}`} item={item} index={index} />
         ))}
       </ScrollCarousel>
+      {showAllLink && (
+        <div className="s-testimonials__more">
+          <Link to="/testimonials" className="s-testimonials__more-link">
+            {t('blocks.home.reviews_all', 'See all reviews')}
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

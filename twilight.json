@@ -2175,41 +2175,53 @@
           "value": "<div ><img class='w-full' src='https://cdn.salla.network/images/themes/raed/preview-images/custom-testimonials.png?v=1.1'></div>"
         },
         {
+          "id": "title",
+          "type": "string",
+          "format": "text",
+          "label": "العنوان",
+          "description": null,
+          "placeholder": "آراء عملائنا",
+          "icon": "sicon-format-text-alt",
+          "value": null,
+          "multilanguage": true,
+          "required": false,
+          "minLength": 0,
+          "maxLength": 80
+        },
+        {
+          "id": "description",
+          "type": "string",
+          "format": "textarea",
+          "label": "وصف قصير",
+          "description": null,
+          "placeholder": "وصف قصير تحت العنوان (اختياري)",
+          "icon": "sicon-typography",
+          "value": null,
+          "multilanguage": true,
+          "required": false,
+          "maxLength": 200
+        },
+        {
+          "id": "show_all_link",
+          "type": "boolean",
+          "format": "switch",
+          "label": "إظهار رابط «عرض كل الآراء»",
+          "description": "يفتح صفحة آراء المتجر الحقيقية.",
+          "icon": "sicon-link",
+          "value": true,
+          "required": false
+        },
+        {
           "id": "items",
           "key": "0473eb46-c7f5-44c5-bd6f-b1fe716a5e64",
           "type": "collection",
           "format": "collection",
-          "label": "التقييمات",
-          "description": null,
+          "label": "آراء العملاء الحقيقيين",
+          "description": "أضف هنا آراء عملائك الحقيقية فقط. أخفِ القسم إلى أن تتوفر آراء حقيقية.",
           "labelHTML": null,
-          "item_label": "التقييم",
+          "item_label": "رأي عميل",
           "icon": "sicon-list-add",
-          "value": [
-            {
-              "items.name": "ندى الحسيني",
-              "items.avatar": "https://cdn.assets.salla.network/prod/stores/themes/default/assets/images/avatar_female.png",
-              "items.stars": 5,
-              "items.text": "وصلتني اليوم  وطلعت جميلة متحمسة أجربها ❤️"
-            },
-            {
-              "items.name": "خالد الأحمد",
-              "items.avatar": "https://cdn.assets.salla.network/prod/stores/themes/default/assets/images/avatar_male.png",
-              "items.stars": 5,
-              "items.text": "اشتريت من هنا لعيالي وصراحة شئ لا يعلى عليه 👏"
-            },
-            {
-              "items.name": "خالد المسعودي",
-              "items.avatar": "https://cdn.assets.salla.network/prod/stores/themes/default/assets/images/avatar_male.png",
-              "items.stars": 5,
-              "items.text": "رهيبين يفكون أزمة. 👌"
-            },
-            {
-              "items.name": "عبدالعزيز اليامي",
-              "items.avatar": "https://cdn.assets.salla.network/prod/stores/themes/default/assets/images/avatar_male.png",
-              "items.stars": 5,
-              "items.text": "أحب هذا المتجر وتعاملهم الراقي مع العملاء ❤️"
-            }
-          ],
+          "value": [],
           "fields": [
             {
               "id": "items.name",
@@ -2226,17 +2238,45 @@
               "required": false
             },
             {
+              "id": "items.city",
+              "type": "string",
+              "format": "text",
+              "label": "المدينة (اختيارية)",
+              "description": null,
+              "labelHTML": null,
+              "placeholder": "مثال: الرياض",
+              "icon": "sicon-location",
+              "value": null,
+              "multilanguage": true,
+              "required": false,
+              "maxLength": 40
+            },
+            {
+              "id": "items.product",
+              "type": "string",
+              "format": "text",
+              "label": "المنتج المشترى (اختياري)",
+              "description": null,
+              "labelHTML": null,
+              "placeholder": "مثال: محفظة البطاقات",
+              "icon": "sicon-shopping-bag",
+              "value": null,
+              "multilanguage": true,
+              "required": false,
+              "maxLength": 60
+            },
+            {
               "id": "items.avatar",
               "key": "9ae4a6cc-7d20-4ae9-8bc0-33b2452502ca",
               "type": "string",
               "format": "image",
-              "label": "صورة العميل",
-              "description": "المقاس المناسب للصورة هو 68*68 بكسل",
+              "label": "صورة العميل (اختيارية)",
+              "description": "اختيارية. بدونها يظهر حرف الاسم الأول داخل دائرة. المقاس المناسب 68*68 بكسل",
               "labelHTML": null,
               "placeholder": "e.g. https://hostname.com/image.png",
               "icon": "sicon-image",
               "value": null,
-              "required": true
+              "required": false
             },
             {
               "id": "items.stars",

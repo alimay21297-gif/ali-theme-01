@@ -13,6 +13,14 @@ vi.mock('@salla.sa/twilight-theme-engine/i18n', () => ({
   useTranslation: () => ({ t: (_k: string, fb?: string) => fb ?? _k }),
 }));
 
+vi.mock('@salla.sa/twilight-theme-engine/common', () => ({
+  Link: ({ to, children, ...rest }: { to: string; children: React.ReactNode }) => (
+    <a href={to} {...rest}>
+      {children}
+    </a>
+  ),
+}));
+
 const items = [
   { avatar: 'a1.jpg', name: 'ندى الحسيني', text: 'رائحة رائعة', stars: 5 },
   { avatar: 'a2.jpg', name: 'خالد الأحمد', text: 'أنصح به', stars: 4 },
@@ -127,5 +135,51 @@ describe('CustomTestimonials', () => {
     );
     expect(getByText('آراء العملاء')).toBeTruthy();
     expect(getByText('اكتشف تجارب عملائنا')).toBeTruthy();
+  });
+
+  it('reads the editor shape ("items.*" keys) and drops reviews with no text', () => {
+    const { container } = render(
+      <CustomTestimonials
+        data={{
+          items: [
+            { 'items.name': 'ندى', 'items.text': 'رائع', 'items.stars': 5 },
+            { 'items.name': 'بدون نص' },
+          ],
+        }}
+      />
+    );
+    expect(container.querySelectorAll('.testimonial-card')).toHaveLength(1);
+  });
+
+  it('shows city and product under the name, only when given', () => {
+    const { container } = render(
+      <CustomTestimonials
+        data={{
+          items: [
+            { name: 'A', text: 'x', city: 'الرياض', product: 'محفظة' },
+            { name: 'B', text: 'y' },
+          ],
+        }}
+      />
+    );
+    const meta = container.querySelectorAll('.testimonial-card__meta');
+    expect(meta).toHaveLength(1);
+    expect(meta[0].textContent).toBe('الرياض · محفظة');
+  });
+
+  it('works with a single review (no arrows needed, centred track)', () => {
+    const { container } = render(<CustomTestimonials data={{ items: [items[0]] }} />);
+    expect(container.querySelectorAll('.testimonial-card')).toHaveLength(1);
+    expect(container.querySelector('.testimonials-track--1')).toBeTruthy();
+  });
+
+  it('links to the real /testimonials page, unless the merchant hides it', () => {
+    const shown = render(<CustomTestimonials data={{ items }} />);
+    expect(shown.container.querySelector('a.s-testimonials__more-link')?.getAttribute('href')).toBe(
+      '/testimonials'
+    );
+    shown.unmount();
+    const hidden = render(<CustomTestimonials data={{ items, show_all_link: false }} />);
+    expect(hidden.container.querySelector('.s-testimonials__more')).toBeNull();
   });
 });
