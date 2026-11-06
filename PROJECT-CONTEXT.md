@@ -1,5 +1,5 @@
 # PROJECT-CONTEXT — ali-theme-01
-_Kept in the theme repo root. Updated by Claude Code via /handover. Last update: 2026-11-04._
+_Kept in the theme repo root. Updated by Claude Code via /handover. Last update: 2026-11-06._
 
 ## Client
 - Brand: LAMEEM — smart organizers (metal card wallet with tracking, key organizer). Store: <url> · Contact: <name, role>. Don't store phone numbers or passwords here.
@@ -30,6 +30,7 @@ _Kept in the theme repo root. Updated by Claude Code via /handover. Last update:
 - 2026-11-06 — Surface roles (fixes the "one solid green block" look): each dark surface has its own role and the calligraphy appears once per screen. Header (top bar + main bar) = solid `bg-darker` (--lameem-deep) with a thin `border-white/10`, no calligraphy; mobile bottom bar = solid `bg-darker`, no calligraphy (the hero carries the pattern on phones); the hero has depth — radial glow (`--lameem-glow` #1d4a35 → primary → deep) behind the product side, five thin radar rings plus one slow pulse ring (off for reduced motion), calligraphy fading out behind the text column and toward the edges; footer keeps the pattern at 60% of the chosen strength (`useCalligraphy(0.6)`). The `calligraphy_*` and `header_is_dark`/`topnav_is_dark` settings are kept; they no longer drive the header or bottom bar pattern.
 - 2026-11-06 — Pattern v2: the generator (`C:\salla-theme-kit\tools\calligraphy\gen.js`, v1 kept as `gen.v1.js`; the number-joining bug that merged coordinates, e.g. "-14" + ".5" → "-14.5", is fixed in v2) mixes in simple location symbols (map pin, radar arcs, crosshair, signal waves; 38 of 256 cells), output `calligraphy-on-{dark,light}.v2.svg` (55.6 KB each) copied to `public/images/patterns/`; `calligraphy.scss` points at v2; the v1 files stay for now.
 - 2026-11-06 — Animated products live in the hero first (the standalone showcase block comes later and reuses `ProductShowcase.tsx`). Hero fields: `animate_products` switch + per product (`p1_*`, `p2_*`): `_link`, `_name` (screen-reader label), `_type` (slide / swing), `_body`, `_layers` (collection, max 3), `_pivot_x/_y` (swing). Switch off or a product missing its link / body / layers → that product is left out; none left → the single hero `image`. Layers of one product share one canvas, fixed per type (slide 520×900, swing 600×900) so the box is reserved before load; layers listed nearest-first (slide: the last card travels furthest, 16/31/45% of the canvas width, 80ms stagger; swing: inner blade first, outer last, closed -30°/-55° → open 0°/6°). Art never mirrors in RTL (row is `dir=ltr`; cards slide physical right). Desktop opens on hover/focus, touch opens once 600ms after in view, reduced motion = open and still. Layer weight with the first set of art: ~99 KB (bodies 53 KB eager, 5 layers 46 KB lazy).
+- 2026-11-06 — Showcase tuning, approved in the browser. Gap between products is 0.07 of the canvas height: the open cards reach ~0.15 past the wallet canvas and the key body starts ~0.14 into its own canvas, so 0.07 leaves ~20px clearance at 1280 while the closed products sit close. From 1536px the showcase grows (`--showcase-height` 28rem → 32rem, hero media max 42rem) and the hero grid becomes 1fr / 1.25fr so the column does not cap it. A link field may arrive as a string, [{value}] or {value}; `linkUrl()` reads all three.
 - 2026-11-06 — Dev preview images must be named `<16 hex of sha256>.<ext>` in `twilight-preview-assets/` (the dev server only serves that pattern); uploading through the editor does this itself.
 
 ## Status
@@ -38,7 +39,7 @@ _Kept in the theme repo root. Updated by Claude Code via /handover. Last update:
 | 0 Setup | ✅ | |
 | 1 Tokens | ✅ | Brand tokens, self-hosted Readex Pro v530, headings, calligraphy background setting (toggle + strength) applied to the dark top bar |
 | 2 Header/Footer | ✅ | Footer in LAMEEM tokens + calligraphy; dark main header (`header_is_dark`, `logo_on_dark`; `topnav_is_dark` = desktop top bar only) with calligraphy; store description as plain text (header + footer); dark mobile bottom bar with calligraphy and white active pill. Gate passed by the user at 375px + desktop, ar + en |
-| 3 Home | ◐ | Hero v1 + distinct dark surfaces + pattern v2 committed; animated products in the hero in review (not committed); then features → how-it-works → reviews → FAQ → standalone showcase block |
+| 3 Home | ◐ | Done and approved in the browser: hero block, distinct dark surfaces, pattern v2, animated products in the hero (slide + swing; commit 46c63cc). Left: features → how-it-works → reviews → FAQ → standalone showcase block |
 | 4 Card/Listing | ☐ | |
 | 5 Product | ☐ | |
 | 6 Cart/Polish | ☐ | |
@@ -65,4 +66,4 @@ _Kept in the theme repo root. Updated by Claude Code via /handover. Last update:
 - Header calligraphy shows on the main bar at every width (not only mobile), as well as on the desktop top bar.
 
 ## Next step
-Phase 3 — the home page: hero, dark bands and light content sections in LAMEEM tokens, with the calligraphy only on dark sections (never behind products, prices or body text). Start by reading the existing home blocks and `twilight.json` components, and pick the smallest change level per block (setting → block override). Product/page/brand description sanitising stays a separate approved step (DOMPurify, see the security issue).
+Phase 3 step 4 — the four-features strip: restyle the engine `store-features` block (setting/CSS level first, `sicon-*` icons, no invented product claims; sample text only in `twilight.preview.json`). Read its fields in `twilight.json` and the docs before coding, then show the plan and screenshots at 375px and 1280px, /ar and /en. Then how-it-works → reviews → FAQ → standalone showcase. Description sanitising (DOMPurify) stays a separate approved step.
