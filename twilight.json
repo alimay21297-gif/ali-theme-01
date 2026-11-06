@@ -2927,6 +2927,138 @@
           "description": "* مثلاً لقطة شاشة لتطبيق على الهاتف. تظهر بجانب الخطوات على الشاشات الكبيرة وأسفلها على الجوال."
         }
       ]
+    },
+    {
+      "key": "ca168047-4fac-4f11-a780-1c25f4ff9de6",
+      "title": {
+        "en": "FAQ and guarantee",
+        "ar": "الأسئلة الشائعة والضمان"
+      },
+      "icon": "sicon-help",
+      "path": "home.faq",
+      "fields": [
+        {
+          "id": "title",
+          "type": "string",
+          "format": "text",
+          "label": "العنوان",
+          "icon": "sicon-format-text-alt",
+          "multilanguage": true,
+          "required": false,
+          "minLength": 0,
+          "maxLength": 80,
+          "description": "نص عادي بدون تنسيق."
+        },
+        {
+          "id": "subtitle",
+          "type": "string",
+          "format": "textarea",
+          "label": "الوصف القصير",
+          "icon": "sicon-typography",
+          "multilanguage": true,
+          "required": false,
+          "minLength": 0,
+          "maxLength": 220,
+          "description": "نص عادي بدون تنسيق، يظهر أسفل العنوان."
+        },
+        {
+          "id": "items",
+          "type": "collection",
+          "format": "collection",
+          "required": true,
+          "minLength": 1,
+          "maxLength": 12,
+          "label": "الأسئلة",
+          "item_label": "سؤال",
+          "description": "من 1 إلى 12 سؤالاً. السؤال والجواب مطلوبان، وإلا يُتجاهل السؤال. يُفتح سؤال واحد في كل مرة.",
+          "fields": [
+            {
+              "id": "items.question",
+              "type": "string",
+              "format": "text",
+              "label": "السؤال",
+              "icon": "sicon-format-text-alt",
+              "multilanguage": true,
+              "required": true,
+              "minLength": 1,
+              "maxLength": 140,
+              "description": "نص عادي بدون تنسيق."
+            },
+            {
+              "id": "items.answer",
+              "type": "string",
+              "format": "textarea",
+              "label": "الجواب",
+              "icon": "sicon-typography",
+              "multilanguage": true,
+              "required": true,
+              "minLength": 1,
+              "maxLength": 800,
+              "description": "نص عادي بدون تنسيق. تُحفظ فواصل الأسطر."
+            }
+          ]
+        },
+        {
+          "type": "static",
+          "format": "line",
+          "id": "guarantee_line"
+        },
+        {
+          "id": "guarantee_title",
+          "type": "string",
+          "format": "text",
+          "label": "عنوان بطاقة الضمان",
+          "icon": "sicon-format-text-alt",
+          "multilanguage": true,
+          "required": false,
+          "minLength": 0,
+          "maxLength": 60,
+          "description": "اختياري. اتركه فارغاً مع النص لإخفاء البطاقة. نص عادي بدون تنسيق."
+        },
+        {
+          "id": "guarantee_text",
+          "type": "string",
+          "format": "textarea",
+          "label": "نص بطاقة الضمان",
+          "icon": "sicon-typography",
+          "multilanguage": true,
+          "required": false,
+          "minLength": 0,
+          "maxLength": 300,
+          "description": "اختياري. نص عادي بدون تنسيق. اكتب الضمان كما هو في سياسة المتجر الفعلية."
+        },
+        {
+          "id": "guarantee_icon",
+          "type": "string",
+          "format": "icon",
+          "icon": "sicon-format-text-alt",
+          "label": "أيقونة بطاقة الضمان",
+          "value": "sicon-shield-check",
+          "required": false
+        },
+        {
+          "id": "guarantee_button",
+          "type": "string",
+          "format": "text",
+          "label": "نص زر البطاقة",
+          "icon": "sicon-format-text-alt",
+          "multilanguage": true,
+          "required": false,
+          "minLength": 0,
+          "maxLength": 30,
+          "description": "يظهر الزر فقط عند إضافة الرابط أيضاً."
+        },
+        {
+          "id": "guarantee_link",
+          "type": "items",
+          "format": "variable-list",
+          "label": "رابط زر البطاقة",
+          "icon": "sicon-link",
+          "required": false,
+          "description": "مثلاً صفحة سياسة الاسترجاع.",
+          "source": "custom"
+        }
+      ]
     }
   ],
   "support_url": "https://salla.com/",

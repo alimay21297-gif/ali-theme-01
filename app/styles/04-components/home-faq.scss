@@ -1,0 +1,194 @@
+/* `faq` home block (components/home/Faq.tsx): a white section with a native
+   <details> accordion and an optional dark guarantee card. Colors are the
+   `--lameem-*` brand tokens; logical properties only, so RTL mirrors by itself.
+
+   Phones: FAQ first, card below. From 1024px (with a card): FAQ on the inline-start
+   side (2/3), card on the other (1/3). A card alone is centred at a readable width. */
+
+.s-block.s-block--faq {
+  margin-block: 0;
+}
+
+.home-faq {
+  @apply bg-white py-12 md:py-16;
+}
+
+/* No `margin` shorthand here: the container's auto inline margins centre it on wide screens. */
+.home-faq__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2rem;
+  margin-block: 0;
+}
+
+@media (min-width: 1024px) {
+  .home-faq__layout--split {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 3rem;
+    align-items: start;
+  }
+}
+
+.home-faq__header {
+  max-inline-size: 40rem;
+  margin-block-end: 1.5rem;
+}
+
+.home-faq__title {
+  margin: 0;
+  font-family: 'Readex Pro', sans-serif;
+  color: var(--lameem-ink);
+  @apply text-2xl font-semibold leading-tight md:text-3xl;
+}
+
+.home-faq__subtitle {
+  margin: 0.75rem 0 0;
+  @apply text-base leading-relaxed text-gray-600;
+}
+
+.home-faq__list {
+  border-block-start: 1px solid rgb(17 17 17 / 10%);
+}
+
+.home-faq__item {
+  border-block-end: 1px solid rgb(17 17 17 / 10%);
+}
+
+.home-faq__question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-block-size: 3.5rem; /* tap target >= 44px */
+  padding-block: 0.75rem;
+  cursor: pointer;
+  list-style: none;
+  font-family: 'Readex Pro', sans-serif;
+  color: var(--lameem-ink);
+  @apply text-base font-semibold leading-snug;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--lameem-primary);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+  }
+}
+
+/* A chevron drawn with two borders; it sits at the logical end and turns when open. */
+.home-faq__chevron {
+  flex: none;
+  inline-size: 0.625rem;
+  block-size: 0.625rem;
+  margin-inline-end: 0.25rem;
+  /* Physical sides on purpose: a down chevron must point down in RTL and LTR alike. */
+  border-right: 2px solid var(--lameem-primary);
+  border-bottom: 2px solid var(--lameem-primary);
+  transform: translateY(-25%) rotate(45deg);
+  transition: transform 0.2s ease;
+}
+
+.home-faq__item[open] .home-faq__chevron {
+  transform: translateY(25%) rotate(-135deg);
+}
+
+.home-faq__answer {
+  margin: 0;
+  padding-block-end: 1.25rem;
+  white-space: pre-line; /* answers keep their line breaks */
+  @apply text-base leading-relaxed text-gray-600; /* 7.2:1 on white */
+}
+
+/* Guarantee card: brand green, white text, faint radar rings at the inline-end corner. */
+.home-faq__card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 2rem 1.5rem;
+  border-radius: 1.25rem;
+  background-color: var(--lameem-primary);
+  @apply text-white md:p-8;
+
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset-block-start: -6rem;
+    inset-inline-end: -6rem;
+    inline-size: 18rem;
+    block-size: 18rem;
+    border-radius: 9999px;
+    background: repeating-radial-gradient(
+      circle,
+      transparent 0 2.5rem,
+      rgb(255 255 255 / 9%) 2.5rem calc(2.5rem + 1px)
+    );
+    pointer-events: none;
+  }
+}
+
+/* A card on its own is not stretched across the whole row. */
+.home-faq__layout:not(.home-faq__layout--split) .home-faq__card {
+  inline-size: 100%;
+  max-inline-size: 40rem;
+  margin-inline: auto;
+}
+
+.home-faq__card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 3.5rem;
+  block-size: 3.5rem;
+  margin-block-end: 1.25rem;
+  border-radius: 9999px;
+  background-color: rgb(255 255 255 / 12%);
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.home-faq__card-title {
+  margin: 0 0 0.75rem;
+  font-family: 'Readex Pro', sans-serif;
+  @apply text-xl font-semibold leading-snug text-white;
+}
+
+.home-faq__card-text {
+  margin: 0;
+  white-space: pre-line;
+  color: var(--lameem-muted);
+  @apply text-base leading-relaxed;
+}
+
+.home-faq__card-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 3rem; /* tap target */
+  margin-block-start: 1.5rem;
+  padding-inline: 1.75rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  @apply border-2 border-white text-white;
+
+  &:hover {
+    @apply bg-white;
+    color: var(--lameem-primary);
+  }
+
+  &:focus-visible {
+    @apply outline outline-2 outline-offset-2 outline-white;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-faq__chevron,
+  .home-faq__card-cta {
+    transition: none;
+  }
+}

@@ -12,6 +12,7 @@ import {
   Brands,
   CustomTestimonials,
   EnhancedSlider,
+  Faq,
   FeaturedProducts,
   featuredProductsConfig,
   FixedProducts,
@@ -84,6 +85,7 @@ registerHomeComponents({
   hero: Hero,
   features: Features,
   'how-it-works': HowItWorks,
+  faq: Faq,
 });
 
 // Wrapper `<section>` classes for `featured-products` — the engine only styles
@@ -105,6 +107,9 @@ registerHomeComponentConfig({
   // puts it, with no reserved height or skeleton because it is never lazy.
   'how-it-works': {
     className: 's-block s-block--how-it-works s-block--full-bg',
+  },
+  faq: {
+    className: 's-block s-block--faq s-block--full-bg',
   },
   features: {
     className: 's-block s-block--features-strip s-block--full-bg',

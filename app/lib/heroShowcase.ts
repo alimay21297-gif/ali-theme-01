@@ -1,21 +1,10 @@
 import type { ShowcaseAnimation, ShowcaseProduct } from '../components/home/ProductShowcase';
-import { safeUrl } from './safeUrl';
+import { linkUrl } from './safeUrl';
 
 /** A dropdown value arrives as a string or as `[{ value }]`. */
 function choice(raw: unknown): string | undefined {
   const first = Array.isArray(raw) ? raw[0] : raw;
   return typeof first === 'string' ? first : (first as { value?: string } | undefined)?.value;
-}
-
-/**
- * A link (variable-list) arrives as a string, `[{ value }]` or `{ value }` — the shapes
- * the engine reads for `variable-url`. Anything else, or an unsafe address, is dropped.
- */
-function linkUrl(raw: unknown): string | undefined {
-  const first = Array.isArray(raw) ? raw[0] : raw;
-  const value =
-    first && typeof first === 'object' ? (first as { value?: unknown }).value : first;
-  return safeUrl(value);
 }
 
 /** A layer item arrives as `{ image }`, `{ '<id>.image': … }` or a bare URL. */
