@@ -15,6 +15,7 @@ import {
   FeaturedProducts,
   featuredProductsConfig,
   FixedProducts,
+  Features,
   Hero,
   LatestProducts,
   MainLinks,
@@ -80,6 +81,7 @@ registerHomeComponents({
   blog: Blog,
   // First-screen block (LCP): not lazy, see `registerHomeComponentConfig` below.
   hero: Hero,
+  features: Features,
 });
 
 // Wrapper `<section>` classes for `featured-products` — the engine only styles
@@ -99,6 +101,9 @@ registerHomeComponentConfig({
   },
   // The page's LCP: mounts on page load (`renderOnMount`) wherever the merchant
   // puts it, with no reserved height or skeleton because it is never lazy.
+  features: {
+    className: 's-block s-block--features-strip s-block--full-bg',
+  },
   hero: {
     className: 's-block s-block--hero',
     renderOnMount: true,

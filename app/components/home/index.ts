@@ -3,6 +3,7 @@ export { CustomTestimonials } from './CustomTestimonials';
 export { EnhancedSlider } from './EnhancedSlider';
 export { FeaturedProducts, featuredProductsConfig } from './FeaturedProducts';
 export { FixedProducts } from './FixedProducts';
+export { Features } from './Features';
 export { Hero } from './Hero';
 export { LatestProducts } from './LatestProducts';
 export { MainLinks } from './MainLinks';

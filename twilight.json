@@ -2738,6 +2738,63 @@
           "description": "للتأرجح فقط. نسبة من ارتفاع اللوحة (مثال: 71)."
         }
       ]
+    },
+    {
+      "key": "0bb87fde-5438-4d1e-8248-9da5b035d3cc",
+      "title": {
+        "en": "Features strip",
+        "ar": "شريط المزايا"
+      },
+      "icon": "sicon-shield-check",
+      "path": "home.features",
+      "fields": [
+        {
+          "id": "items",
+          "type": "collection",
+          "format": "collection",
+          "required": true,
+          "minLength": 2,
+          "maxLength": 6,
+          "label": "المزايا",
+          "item_label": "ميزة",
+          "description": "من 2 إلى 6 مزايا قصيرة. تظهر 2 في كل صف على الجوال، وحتى 4 في كل صف على الشاشات الكبيرة.",
+          "fields": [
+            {
+              "id": "items.icon",
+              "type": "string",
+              "format": "icon",
+              "icon": "sicon-format-text-alt",
+              "label": "الأيقونة",
+              "value": "sicon-shield-check",
+              "required": true
+            },
+            {
+              "id": "items.title",
+              "type": "string",
+              "format": "text",
+              "icon": "sicon-format-text-alt",
+              "label": "العنوان",
+              "multilanguage": true,
+              "required": true,
+              "minLength": 1,
+              "maxLength": 40,
+              "description": "نص عادي بدون تنسيق."
+            },
+            {
+              "id": "items.text",
+              "type": "string",
+              "format": "textarea",
+              "icon": "sicon-typography",
+              "label": "الوصف القصير",
+              "multilanguage": true,
+              "required": false,
+              "minLength": 0,
+              "maxLength": 120,
+              "description": "نص عادي بدون تنسيق."
+            }
+          ]
+        }
+      ]
     }
   ],
   "support_url": "https://salla.com/",

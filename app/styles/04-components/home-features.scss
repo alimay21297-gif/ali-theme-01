@@ -1,0 +1,106 @@
+/* `features` home block (components/home/Features.tsx): a light strip of 2–6 short
+   selling points under the dark hero. Colors are the `--lameem-*` brand tokens;
+   logical properties only, so RTL needs no overrides. No calligraphy (light surface).
+
+   Grid: 2 columns on phones; from 1024px one column per item up to 4 (`--features-cols`
+   is set inline from the item count), so 5–6 items wrap. Tiles stretch to equal height. */
+
+.s-block.s-block--features-strip {
+  margin-block: 0;
+}
+
+.home-features {
+  background-color: var(--lameem-light);
+  @apply py-12 md:py-16;
+}
+
+.home-features__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0;
+  list-style: none;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(var(--features-cols, 4), minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+.home-features__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  @apply bg-white;
+  border: 1px solid rgb(17 17 17 / 8%);
+  border-radius: 1rem;
+  @apply px-4 py-6 md:px-6 md:py-8;
+}
+
+/* The icon circle with a faint radar-ring motif behind it (two rings, CSS only). */
+.home-features__icon {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-block-end: 1rem;
+  border-radius: 9999px;
+  background-color: var(--lameem-primary);
+  @apply text-white;
+
+  i {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    z-index: -1;
+    border: 1px solid var(--lameem-primary);
+    border-radius: 9999px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  &::before {
+    width: 5rem;
+    height: 5rem;
+    opacity: 0.14;
+  }
+
+  &::after {
+    width: 6.5rem;
+    height: 6.5rem;
+    opacity: 0.07;
+  }
+}
+
+[dir='rtl'] .home-features__icon::before,
+[dir='rtl'] .home-features__icon::after {
+  transform: translate(50%, -50%);
+}
+
+.home-features__title {
+  margin: 0 0 0.375rem;
+  font-family: 'Readex Pro', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--lameem-ink);
+}
+
+.home-features__text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  @apply text-gray-600; /* 7.2:1 on white */
+}

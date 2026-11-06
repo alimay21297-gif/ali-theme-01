@@ -58,6 +58,7 @@ _Kept in the theme repo root. Updated by Claude Code via /handover. Last update:
   - (a) Canvases are fixed at 520×900 (slide) / 600×900 (swing) and the 0.07 gap between products is tuned to the current art (20px clearance at 1280). Revisit when the client's renders arrive: export at these sizes, or add canvas-size / gap fields.
   - (b) Verify layer transparency (WebP alpha) through Salla's image CDN on the real store; the engine `Image` passes width/height to the CDN.
   - (c) Confirm in the real editor that the product link field (`p1_link` / `p2_link`, variable-list) arrives in a shape `linkUrl()` reads (string, `[{value}]` or `{value}`); also whether the number fields accept decimals (pivot Y 71.1).
+- Features strip (2026-11-06): (a) confirm in the real editor that `home.features` items arrive as `{icon, title, text}` (the component also reads `items.icon`-style keys); same check list as the hero link field (c). (b) "Modern design" uses `sicon-crown`: the Salla icon set has no diamond.
 - Tests were not run during Phase 2 (that is how the outdated assertions went unnoticed); run `pnpm test` at the end of every step.
 
 - Logos are TEMPORARY: made from a 478px screenshot. Get the original SVG from the client and replace the store logo and the `logo_on_dark` image before release.
