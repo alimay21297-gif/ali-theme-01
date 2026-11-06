@@ -1,9 +1,16 @@
-/** Links the merchant may set: a path, `#anchor` or an http(s) address. Anything else (`javascript:`, `data:`) is dropped. */
+/**
+ * Links the merchant may set: a path, `#anchor` or an http(s) address. Anything else
+ * (`javascript:`, `data:`) is dropped, and so is anything that could leave the store
+ * through the first slash: `//host` (protocol-relative) and `/\host` (browsers read the
+ * backslash as a slash). Control characters (tab, newline…) are rejected outright because
+ * browsers strip them before parsing, which would turn `/\t/host` into `//host`.
+ */
 export function safeUrl(url: unknown): string | undefined {
   if (typeof url !== 'string') return undefined;
+  if (/[\u0000-\u001f\u007f]/.test(url)) return undefined;
   const value = url.trim();
   if (!value) return undefined;
-  return /^(\/|https?:\/\/|#)/i.test(value) ? value : undefined;
+  return /^(\/(?![/\\])|https?:\/\/|#)/i.test(value) ? value : undefined;
 }
 
 /**
