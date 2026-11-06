@@ -171,10 +171,17 @@
       }
     }
 
-    /* solid, pill-rounded, 44px add-to-cart in the brand green (the engine
-       renders it as fill="outline" with the merchant colour) */
+    /* solid, pill-rounded add-to-cart in the brand green, at least 44px tall
+       (the engine renders it as fill="outline" with the merchant colour). A long
+       label ("Notify me when available") wraps to centred lines instead of being
+       cut with an ellipsis; the engine's label text is untouched. */
     salla-add-product-button .s-button-btn {
-      @apply h-11 w-full rounded-full border text-white;
+      @apply h-auto min-h-11 w-full rounded-full border px-3 py-2 text-white;
+
+      .s-button-text {
+        @apply overflow-visible whitespace-normal text-center leading-tight;
+        text-overflow: clip;
+      }
       background-color: var(--lameem-primary);
       border-color: var(--lameem-primary);
 
@@ -687,11 +694,24 @@ salla-gifting {
 }
 
 .s-product-card-starting-price {
-  @apply justify-start gap-2.5;
+  @apply flex-wrap justify-start gap-x-2.5 gap-y-0;
 
   p {
     @apply text-gray-600;
   }
+}
+
+/* A price and its currency symbol never split across lines. The sale price and
+   the struck-out old price are separate items that may wrap onto two lines. */
+.s-product-card-sale-price h4,
+.s-product-card-sale-price span,
+.s-product-card-starting-price h4,
+.s-product-card-price {
+  white-space: nowrap;
+}
+
+.s-product-card-sale-price {
+  @apply flex flex-wrap items-baseline gap-x-2 gap-y-0.5;
 }
 
 .s-product-card-minimal salla-button.s-product-card-wishlist-btn {

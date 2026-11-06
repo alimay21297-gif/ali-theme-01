@@ -299,7 +299,6 @@ function CatalogGrid({
   pagination,
   loader,
   listLayoutClass,
-  wideGridClass,
   filterStatus,
   onRetry,
 }: {
@@ -314,7 +313,6 @@ function CatalogGrid({
   pagination: ProductListLoaderData['pagination'];
   loader: ItemsLoaderFn<Product>;
   listLayoutClass: string;
-  wideGridClass: string;
 }) {
   const { t } = useTranslation();
   const location = useLocation();
@@ -362,7 +360,7 @@ function CatalogGrid({
               mode={pagination?.next ? 'infinite' : 'static'}
               pageUrl={location.pathname + location.searchStr}
               className="s-products-list flex-1 min-w-0"
-              itemsClassName={`s-products-list-wrapper ${listLayoutClass}${filtersVisible ? ' s-products-list-with-filters' : ''}${wideGridClass}`}
+              itemsClassName={`s-products-list-wrapper ${listLayoutClass}`}
               skeleton={<ProductCardSkeleton />}
               skeletonType="item"
               skeletonCount={12}
@@ -524,13 +522,11 @@ export function ProductListPage({
 
   const listLayoutClass =
     view === 'list' ? 's-products-list-horizontal-cards' : 's-products-list-vertical-cards';
-  // Offers (and other filter-less lists) get the full row: 5 columns on desktop.
-  const wideGridClass = !query.filters && view === 'grid' ? ' s-products-list-cols-5' : '';
 
   return (
     <div
       key={listKey}
-      className="container px-2.5 mb-10"
+      className="container s-listing-page px-2.5 mb-10"
       data-source={isReorder ? 'reorder' : undefined}
     >
       {theme?.settings?.product_index_show_breadcrumbs !== false && <Breadcrumb page={page} />}
@@ -579,7 +575,6 @@ export function ProductListPage({
         pagination={{ next: shownNext ?? null }}
         loader={loader}
         listLayoutClass={listLayoutClass}
-        wideGridClass={wideGridClass}
       />
 
       {/* App-block hook `product.index.after_products_group_with_filter` — below the listing */}

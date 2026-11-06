@@ -88,13 +88,66 @@
 }
 
 /*
-  Filter-less lists (offers, etc.) — no sidebar, so the grid takes the full
-  row: 5 columns on desktop. Tablet/mobile fall through to the base grid
-  (`home-blocks.scss`): 4 columns >= 768px, 2 below.
+  Listing page (category, search, brand, offers) — `.s-listing-page` is a class
+  on the page root in `ProductListPage.tsx`, and scopes every rule here. The grid
+  rule `.s-products-list-wrapper.s-products-list-vertical-cards` in
+  `home-blocks.scss` is shared with the home product blocks, the tabs and the
+  header mega menu and is left alone; so is the Tailwind `container` cap
+  (1280px), which sizes the header, footer and home blocks. The 1920px cap below
+  applies to this page's wrapper only; a site-wide container waits for Phase 6.
+
+  Grid: the column count follows the width of the list itself, not the
+  viewport, through a CSS container query (`.s-products-list` is the
+  `listing` container). The filter sidebar (288px + 32px gap) takes a varying
+  share of the row: at 768px with filters open the grid is only ~380px wide, so
+  viewport breakpoints gave cards of 110px. Under 560px of list width: 2
+  columns; 560–899px: 3; 900px and up: 4. Gap 12px under 560px, 20px from
+  560px. With no sidebar (phones, filters hidden) the list is as wide as the page
+  content, so the same thresholds apply. `container-type: inline-size` applies
+  layout containment: anything `position: fixed` inside the list would be
+  positioned against the list instead of the viewport, so keep fixed overlays
+  out of it (the sticky toolbar and the mobile filters sheet live outside).
+
+  Container: up to 1920px, centred (`margin-inline: auto`, never `margin: 0`),
+  16px side padding on phones, 32px from 768px. The breadcrumb's `<ol>` is its
+  own `container`, so it gets the same width to stay lined up. Keep `.container`
+  out of the breadcrumb selector: next to `@apply container` (breadcrumb.scss) it
+  makes Tailwind fail the build with a circular dependency.
 */
-.s-products-list-wrapper.s-products-list-vertical-cards.s-products-list-cols-5 {
-  @media (min-width: 1024px) {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+.s-listing-page.container {
+  max-width: 1920px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+
+  @media (min-width: 768px) {
+    padding-inline: 2rem;
+  }
+
+  .s-products-list {
+    container: listing / inline-size;
+  }
+
+  .s-products-list-wrapper.s-products-list-vertical-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+
+    @container listing (min-width: 560px) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    @container listing (min-width: 900px) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+}
+
+.s-listing-page .breadcrumbs .s-breadcrumb-wrapper {
+  max-width: 1920px;
+  padding-inline: 1rem;
+
+  @media (min-width: 768px) {
+    padding-inline: 2rem;
   }
 }
 
