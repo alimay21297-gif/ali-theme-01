@@ -225,7 +225,6 @@ function CatalogToolbar({
           <button
             type="button"
             className="s-catalog-toolbar__filters-toggle hidden md:inline-flex"
-            aria-pressed={filtersHidden === '1'}
             onClick={onToggleFiltersHidden}
           >
             <FilterHorizontalIcon aria-hidden="true" />

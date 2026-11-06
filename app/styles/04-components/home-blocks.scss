@@ -994,21 +994,6 @@
   @media (max-width: 767px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
-  &.s-products-list-with-filters {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-
-    /* mobile: 2 columns (the unconditional 3-col rule above would otherwise
-       beat the parent's `max-width: 767px` rule) */
-    @media (max-width: 767px) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    /* desktop: 4 columns even with the filter sidebar */
-    @media (min-width: 1024px) {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-  }
 }
 
 /*

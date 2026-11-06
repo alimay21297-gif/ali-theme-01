@@ -290,11 +290,10 @@
    margin, so in its own place the layout is unchanged. */
 @media (max-width: 767px) {
   .s-catalog-toolbar-sticky {
-    @apply sticky z-20 -mx-2.5 -mt-2 mb-4 bg-white px-2.5;
+    /* -mx-4 / px-4 match the page's 16px padding on phones (the sticky bar only
+       exists below 768px, where the padding is not yet 32px) */
+    @apply sticky z-20 -mx-4 -mt-2 mb-4 bg-white px-4;
     top: calc(var(--app-safe-area-top, 0px) + 3rem);
-    transition:
-      transform 0.25s ease,
-      box-shadow 0.25s ease;
 
     /* No rounded box on phones: the filter button and grid/list switch at the
        start, the sort (and count) at the end. The options group is unwrapped
@@ -329,6 +328,19 @@
     &.is-hidden {
       transform: translateY(calc(-100% - 3rem - var(--app-safe-area-top, 0px)));
       visibility: hidden;
+    }
+  }
+}
+
+/* Slide and shadow animate only when the user hasn't asked for reduced motion;
+   otherwise the bar jumps (the hidden state still flips `visibility`). */
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  .s-catalog-toolbar-sticky {
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
+
+    &.is-hidden {
       transition:
         transform 0.25s ease,
         visibility 0s linear 0.25s;

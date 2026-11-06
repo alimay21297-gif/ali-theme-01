@@ -10,6 +10,11 @@ type ProductCardProps = ComponentProps<typeof EngineProductCard>;
 /**
  * Thin wrapper over the engine `ProductCard`.
  *
+ * Site-wide by design: this wrapper (and the card styling in `product.scss`)
+ * serves every card — listing, home sliders, Featured/Fixed/Latest blocks,
+ * menus — so the badge text and look are the same everywhere (Salla review
+ * requirement). Do not gate it to the listing page.
+ *
  * After mount (and whenever the lazily-hydrated bits appear) it sets
  * `fill="solid"` and `loader-position="center"` on the add-to-cart button
  * (grid + list). The wishlist heart stays where the engine puts it: on the
