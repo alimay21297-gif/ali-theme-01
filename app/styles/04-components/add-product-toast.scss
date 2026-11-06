@@ -139,11 +139,11 @@
   }
 
   &__price-sale {
-    @apply text-red-800;
+    color: var(--lameem-sale);
   }
 
   &__price-original {
-    @apply text-xs text-gray-500 line-through font-normal;
+    @apply text-xs text-gray-600 line-through font-normal;
 
     @media (min-width: 768px) {
       @apply text-sm;

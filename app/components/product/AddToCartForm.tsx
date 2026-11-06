@@ -249,10 +249,10 @@ function StickyPriceDisplay({ product, priceBump }: { product: Product; priceBum
           key={`sale-${priceBump}`}
           className={`price_is_on_sale${priceBumpClass} space-x-2 rtl:space-x-reverse whitespace-nowrap ${product.is_on_sale ? '' : 'hidden'}`}
         >
-          <span className="price-bump__now total-price text-red-800 font-bold text-xl inline-block">
+          <span className="price-bump__now total-price text-[color:var(--lameem-sale)] font-bold text-xl inline-block">
             {product.sale_price} <CurrencySymbol currency={priceCurrency} />
           </span>
-          <span className="before-price text-gray-500 line-through">
+          <span className="before-price text-gray-600 line-through">
             {product.regular_price} <CurrencySymbol currency={priceCurrency} />
           </span>
         </div>
@@ -271,7 +271,7 @@ function StickyPriceDisplay({ product, priceBump }: { product: Product; priceBum
       </div>
 
       <div
-        className={`out-of-stock min-h-7 leading-7 text-base text-red-600 !opacity-50 font-bold ${product.is_out_of_stock ? 'scale-pulse' : 'hidden'}`}
+        className={`out-of-stock min-h-7 leading-7 text-base text-gray-700 font-bold ${product.is_out_of_stock ? 'scale-pulse' : 'hidden'}`}
       >
         {t('pages.products.out_of_stock')}
       </div>

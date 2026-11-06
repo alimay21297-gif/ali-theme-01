@@ -1054,7 +1054,9 @@ salla-gifting {
 
 // bank offer corner badge
 #offer-corner-badge {
-  @apply float-left absolute bg-red-600 text-white transform rtl:-rotate-45 ltr:rotate-45 px-12 py-1 h-auto w-auto border-0 m-0 z-1 rtl:top-3 ltr:top-5 rtl:-left-12 ltr:-right-14;
+  @apply absolute text-white transform rtl:-rotate-45 ltr:rotate-45 px-12 py-1 h-auto w-auto border-0 m-0 z-1 rtl:top-3 ltr:top-5 rtl:-end-12 ltr:-end-14;
+  // Sash on the inline-end corner (physical left in RTL, right in LTR), logical offset.
+  background-color: var(--lameem-sale);
 }
 
 // cart options

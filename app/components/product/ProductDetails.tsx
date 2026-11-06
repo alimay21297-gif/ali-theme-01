@@ -71,7 +71,7 @@ export function ProductDetails({
         <div>
           <h1 className="text-xl md:text-2xl leading-10 font-bold text-gray-800">{product.name}</h1>
           {product.subtitle && (
-            <h2 className="product-entry__sub-title text-sm text-gray-500 leading-6 font-normal">
+            <h2 className="product-entry__sub-title text-sm text-gray-600 leading-6 font-normal">
               {product.subtitle}
             </h2>
           )}
@@ -115,7 +115,7 @@ export function ProductDetails({
             <Fragment key={tag.name}>
               <Link
                 to={tag.url}
-                className="rtl:ml-2 ltr:mr-2 inline-flex text-gray-500 hover:text-primary underline text-sm mb-1"
+                className="rtl:ml-2 ltr:mr-2 inline-flex text-gray-600 hover:text-primary underline text-sm mb-1"
               >
                 {tag.name}
               </Link>
@@ -215,10 +215,10 @@ function ProductPrice({ product }: { product: Product }) {
       <div
         className={`${product.is_on_sale ? '' : 'hidden'} space-x-2 rtl:space-x-reverse whitespace-nowrap`}
       >
-        <p className="text-red-800 font-bold text-xl inline-block">
+        <p className="text-[color:var(--lameem-sale)] font-bold text-xl inline-block">
           {product.sale_price} <CurrencySymbol currency={priceCurrency} />
         </p>
-        <span className="text-gray-500 line-through">
+        <span className="text-gray-600 line-through">
           {product.regular_price} <CurrencySymbol currency={priceCurrency} />
         </span>
       </div>
@@ -310,6 +310,7 @@ function ProductDescription({ product }: { product: Product }) {
   );
 }
 
+/** Sold count in the sale red; the low-stock line is a notice, not a price, so it is amber-800 (7:1 on white). */
 function ProductQuantityInfo({ product }: { product: Product }) {
   const { t } = useTranslation();
   // Like Twig's `{% if product.sold_quantity or product.can_show_remained_quantity %}`:
@@ -321,7 +322,7 @@ function ProductQuantityInfo({ product }: { product: Product }) {
   return (
     <div className="mb-5 inline-flex text-sm">
       {(product.sold_quantity ?? 0) > 0 && (
-        <div className="px-4 only:px-0 !text-red-800">
+        <div className="px-4 only:px-0 !text-[color:var(--lameem-sale)]">
           <i className="sicon-fire rtl:ml-1.5 ltr:mr-1.5"></i> {t('pages.products.sold')}{' '}
           {/* Salla ships `sold_times` in Laravel plural format; resolve it for the count. */}
           <span>{formatSallaPlural(t('pages.products.sold_times'), product.sold_quantity!)}</span>
@@ -342,7 +343,7 @@ function ProductQuantityInfo({ product }: { product: Product }) {
             {t('blocks.product.in_stock')} ({product.quantity})
           </div>
         ) : (
-          <div className="px-4 only:px-1 !text-red-800">
+          <div className="px-4 only:px-1 !text-amber-800">
             <i className="sicon-box-bankers rtl:ml-1.5 ltr:mr-1.5"></i>
             {t('pages.products.remained')} <span>{product.quantity ?? 0}</span>
           </div>
