@@ -137,25 +137,17 @@
 
 /*
   Product-card enhancements
-  - wishlist button is moved into the footer row (by app/components/product/ProductCard.tsx)
-  - add-to-cart is solid + pill-rounded
+  - vertical card: the engine's wishlist heart stays on the image, restyled as a
+    44px white circle on the top inline-end corner; the horizontal card keeps it
+    in the footer row
+  - add-to-cart is a solid --lameem-primary pill, 44px tall (a scoped override on
+    the card's salla-add-product-button, not the merchant --color-primary)
+  - out of stock: dimmed photo, the "notify me" button in an outline style
   - content order becomes: subtitle, title, price
 */
 .s-product-card {
-  /* `ProductCard.tsx` relocates the wishlist button into the footer, but only
-     from a mount effect — every vertical card briefly shows the engine's
-     default image-corner button first (a visible flash on every page with
-     product cards, since every current usage goes through that wrapper).
-     `.s-product-card-vertical` is the engine's own class, present in the
-     first paint, so hiding the image-overlay copy here (rather than from
-     the wrapper's effect) removes the flash instead of just timing it
-     differently. */
-  .s-product-card-vertical .s-product-card-image > .s-product-card-wishlist-btn {
-    display: none;
-  }
-
   .s-product-card-content-footer {
-    @apply flex items-center gap-1.5;
+    @apply flex items-center gap-2;
 
     /* the add-to-cart fills the row — the deferred loader wraps it in a bare
        <div>, so target that (and the element itself, once hydrated). */
@@ -164,53 +156,76 @@
       @apply w-full flex-1 min-w-0;
     }
 
-    /* wishlist stays a fixed 36px circle, however the engine wraps it
-       (bare button on the grid card, `.s-button-wrap` on the list card) */
-    > .s-product-card-wishlist-btn,
+    /* horizontal card: wishlist stays a fixed 44px circle in the footer, however
+       the engine wraps it (`.s-button-wrap`, a *direct* footer child — the
+       add-to-cart's own `.s-button-wrap` is nested, so `>` keeps this off it) */
     > .s-button-wrap {
-      @apply w-9 flex-none;
+      @apply w-11 flex-none;
     }
 
-    .s-product-card-wishlist-btn {
-      position: static;
-      inset: auto;
-      opacity: 1;
-      @apply w-9 h-9 shrink-0 m-0;
-
-      button,
-      .s-button-btn,
-      .s-button-element {
-        @apply w-9 h-9 min-w-0 m-0 p-0 flex-none inline-flex items-center justify-center rounded-full border border-gray-200 bg-white;
-      }
-
-      svg {
-        @apply w-4 h-4;
-      }
-    }
-
-    /* list-card wishlist arrives wrapped in `.s-button-wrap` (a *direct* footer
-       child — the add-to-cart's own `.s-button-wrap` is nested, so `>` keeps
-       this off it) */
     > .s-button-wrap .s-button-icon {
-      @apply w-9 h-9 min-w-0 m-0 p-0 inline-flex items-center justify-center rounded-full border border-gray-200 bg-white;
+      @apply w-11 h-11 min-w-0 m-0 p-0 inline-flex items-center justify-center rounded-full border border-gray-200 bg-white;
 
       svg {
         @apply w-4 h-4;
       }
     }
 
-    /* solid, pill-rounded add-to-cart, matched to the wishlist button height
-       (the engine renders it as fill="outline") */
-    .s-button-btn {
-      @apply h-9 bg-primary text-primary-reverse border-primary rounded-full;
+    /* solid, pill-rounded, 44px add-to-cart in the brand green (the engine
+       renders it as fill="outline" with the merchant colour) */
+    salla-add-product-button .s-button-btn {
+      @apply h-11 w-full rounded-full border text-white;
+      background-color: var(--lameem-primary);
+      border-color: var(--lameem-primary);
 
       &:hover {
-        @apply bg-primary-d text-primary-reverse border-primary-d opacity-100;
+        background-color: var(--lameem-glow);
+        border-color: var(--lameem-glow);
+        @apply text-white opacity-100;
       }
 
       svg {
         @apply fill-current;
       }
+    }
+  }
+
+  /* vertical card: the heart sits on the image's top inline-end corner */
+  &.s-product-card-vertical .s-product-card-image {
+    position: relative;
+
+    /* the engine wraps the heart button in an `.s-button-wrap` */
+    > .s-button-wrap {
+      position: absolute;
+      inset-block-start: 0.5rem;
+      inset-inline: auto 0.5rem;
+      z-index: 2;
+      @apply w-11 h-11;
+    }
+
+    .s-product-card-wishlist-btn {
+      position: static;
+      @apply w-11 h-11 min-w-0 m-0 p-0 inline-flex items-center justify-center rounded-full border-0 bg-white;
+      box-shadow: 0 2px 10px -2px color-mix(in srgb, var(--lameem-deep) 30%, transparent);
+
+      svg {
+        @apply w-4 h-4;
+      }
+    }
+  }
+
+  /* out of stock: dimmed photo, outline "notify me" button */
+  &.s-product-card-out-of-stock .s-product-card-image img {
+    opacity: 0.55;
+  }
+
+  &.s-product-card-out-of-stock .s-product-card-content-footer salla-add-product-button .s-button-btn {
+    background-color: transparent;
+    color: var(--lameem-primary);
+
+    &:hover {
+      background-color: var(--lameem-light);
+      color: var(--lameem-primary);
     }
   }
 

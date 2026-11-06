@@ -21,6 +21,8 @@ Read `PROJECT-CONTEXT.md` at session start, if it exists.
 11. If a fix fails twice, stop and ask for the exact error/output.
 12. Salla MCP writes (create, settings, components, publish) need explicit human confirmation. `create` makes a GitHub repo and isn't idempotent: `list` first after a timeout.
 13. Never delete the theme/repo/branches/node_modules, force-push, or edit `.npmrc`.
+14. File edits only with the Edit/Write tools. Never write or rewrite files through the shell (`cat >`, heredocs, `echo >`, `node -e` writes): it has truncated files and mangled backslashes, and a truncated module helps hang the dev server.
+15. Never edit files while a Playwright page is open on the dev server: close it, edit, then reopen. Never write `twilight.preview.json` while the dev server runs; ask the human to stop it first.
 
 ## Definition of done
 - [ ] `pnpm build`, `pnpm typecheck`, `pnpm test` pass (+ `pnpm check:manifest` if twilight.json changed)
