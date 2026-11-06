@@ -18,7 +18,7 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
-  margin: 0;
+  margin-block: 0; /* keep the container's auto inline margins: it centres on wide screens */
   list-style: none;
 
   @media (min-width: 1024px) {
