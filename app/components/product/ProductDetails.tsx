@@ -67,9 +67,12 @@ export function ProductDetails({
         </div>
       )}
 
-      <div className="mb-2.5 flex items-start justify-between gap-4">
+      <div className="mb-3 flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-xl md:text-2xl leading-10 font-bold text-gray-800">{product.name}</h1>
+          {/* 24px on phones, 32px from 768px; Readex Pro comes from `03-elements/headings.scss` */}
+          <h1 className="text-2xl md:text-[2rem] leading-snug font-bold text-[color:var(--lameem-ink)]">
+            {product.name}
+          </h1>
           {product.subtitle && (
             <h2 className="product-entry__sub-title text-sm text-gray-600 leading-6 font-normal">
               {product.subtitle}
@@ -88,16 +91,17 @@ export function ProductDetails({
       </div>
 
       {product.rating && (
-        <div className="product-details__rating">
+        <div className="product-details__rating mb-3">
           <SallaRatingStars value={product.rating.stars} reviews={product.rating.count} />
         </div>
       )}
 
-      {product.is_taxable && (
-        <small className="color-grey">{t('pages.products.tax_included')}</small>
-      )}
-
-      <ProductPrice product={product} />
+      <div className="mb-4">
+        <ProductPrice product={product} />
+        {product.is_taxable && (
+          <small className="block mt-1 text-xs text-gray-600">{t('pages.products.tax_included')}</small>
+        )}
+      </div>
 
       <ProductDescription product={product} />
 
@@ -106,7 +110,7 @@ export function ProductDetails({
           there, so together the two never run two `<SallaMetadata>` instances
           at once past first paint; see the comment on that copy. */}
       {product.has_metadata && (!hydrated || isMobile) && (
-        <ProductMetadata className="mb-3 md:hidden" />
+        <ProductMetadata className="mb-3 md:hidden order-2" />
       )}
 
       {!!product.tags?.length && showTags && (
@@ -148,7 +152,7 @@ export function ProductDetails({
       )}
 
       {product.show_availability && (
-        <section className="mb-5 last:mb-0">
+        <section className="mb-4 last:mb-0">
           <div className="center-between">
             <span className="flex items-center text-base">
               <span className="sicon-location rtl:ml-1 ltr:mr-1"></span>
@@ -211,20 +215,22 @@ function ProductPrice({ product }: { product: Product }) {
   const priceCurrency = getActiveCurrency(product.currency);
 
   return (
-    <div className="flex whitespace-nowrap gap-4 items-center mb-2.5">
+    <div className="flex whitespace-nowrap gap-4 items-baseline">
       <div
-        className={`${product.is_on_sale ? '' : 'hidden'} space-x-2 rtl:space-x-reverse whitespace-nowrap`}
+        className={`${product.is_on_sale ? '' : 'hidden'} space-x-3 rtl:space-x-reverse whitespace-nowrap`}
       >
-        <p className="text-[color:var(--lameem-sale)] font-bold text-xl inline-block">
+        <p className="text-[color:var(--lameem-sale)] font-bold text-2xl md:text-3xl inline-block">
           {product.sale_price} <CurrencySymbol currency={priceCurrency} />
         </p>
-        <span className="text-gray-600 line-through">
+        <span className="text-gray-600 text-base line-through">
           {product.regular_price} <CurrencySymbol currency={priceCurrency} />
         </span>
       </div>
-      <div className={`gap-4 ${product.is_on_sale ? 'hidden' : 'flex'}`}>
-        {product.starting_price && <span>{t('pages.products.starting_price')}</span>}
-        <p className="font-bold text-xl inline-block">
+      <div className={`gap-4 items-baseline ${product.is_on_sale ? 'hidden' : 'flex'}`}>
+        {product.starting_price && (
+          <span className="text-sm text-gray-600">{t('pages.products.starting_price')}</span>
+        )}
+        <p className="font-bold text-2xl md:text-3xl text-[color:var(--lameem-ink)] inline-block">
           {product.starting_price ?? product.price} <CurrencySymbol currency={priceCurrency} />
         </p>
       </div>
@@ -269,7 +275,7 @@ function ProductDescription({ product }: { product: Product }) {
 
   if (product.has_read_more) {
     return (
-      <div className="product__description leading-7 mb-3">
+      <div className="product__description leading-7 mb-4">
         <article
           ref={articleRef}
           className="article article--main relative leading-8 overflow-hidden transition-[max-height] duration-300 py-4 focus:outline-none"
@@ -300,7 +306,7 @@ function ProductDescription({ product }: { product: Product }) {
   }
 
   return (
-    <div className="product__description leading-7 mb-3">
+    <div className="product__description leading-7 mb-4">
       <article
         className="article--main pb-1"
         onClick={playVideo}
@@ -320,7 +326,7 @@ function ProductQuantityInfo({ product }: { product: Product }) {
   }
 
   return (
-    <div className="mb-5 inline-flex text-sm">
+    <div className="mb-4 inline-flex text-sm">
       {(product.sold_quantity ?? 0) > 0 && (
         <div className="px-4 only:px-0 !text-[color:var(--lameem-sale)]">
           <i className="sicon-fire rtl:ml-1.5 ltr:mr-1.5"></i> {t('pages.products.sold')}{' '}

@@ -120,7 +120,9 @@ export function ProductPage({ product: initialProduct, page }: ProductPageProps)
         <div className="flex flex-col items-start md:flex-row" id={`product-${product.id}`}>
           <ProductGallery product={product} />
 
-          <div className="main-content md:sticky md:overflow-hidden md:top-24 w-full md:w-2/4 md:pb-16">
+          {/* Flex column on phones so the description (`order` in `product.scss`) can
+              sit after the form; from `md` it is a plain block with the description above the form. */}
+          <div className="main-content flex flex-col md:block md:sticky md:overflow-hidden md:top-24 w-full md:w-2/4 md:pb-16">
             <HookSlot name="product:details.start" />
             {/* Loader product: like Twig, the header price stays the unit price; only the SKU and barcode are live */}
             <ProductDetails

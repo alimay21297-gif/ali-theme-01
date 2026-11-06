@@ -10,6 +10,7 @@ import type { Product, ProductImage } from '@salla.sa/twilight-theme-engine/type
 import { ArrowRightIcon } from '../icons';
 import { useHydrated } from '../../hooks/useHydrated';
 import { useMobileViewport } from '../../hooks/useMobileViewport';
+import { cardBadgeText } from '../../lib/cardBadge';
 import { ProductMetadata } from './ProductMetadata';
 
 export interface ProductGalleryProps {
@@ -74,12 +75,17 @@ function sliderObjectFit(raw: unknown): ObjectFit {
  * Upgrade notes: `FORKS.md`.
  */
 export function ProductGallery({ product }: ProductGalleryProps) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const wishlist = useWishlist();
   const { theme } = useTwilight();
   const sliderId = `details-slider-${product.id}`;
   const sliderRef = useRef<ComponentRef<typeof SallaSlider>>(null);
   const objectFit = sliderObjectFit(theme.settings.slider_background_size);
+  // One badge on the image: the merchant's promotion title, else the computed discount
+  // (same text as the card, `lib/cardBadge.ts`). "Sold out" is left out: the form says it.
+  const badge =
+    product.promotion_title?.trim() ||
+    cardBadgeText({ ...product, is_out_of_stock: false }, locale, t);
   const hydrated = useHydrated();
   const isMobile = useMobileViewport();
   // `onAfterInit` fires once Swiper actually finishes laying the slider out —
@@ -145,7 +151,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
     // too, visually shifting the whole gallery down 96px while the content
     // after it (ProductDetails' title / tags) still flowed right where the
     // gallery would have sat unshifted — the two rendered on top of each other.
-    <div className={galleryClassName(product, images[0])}>
+    <div className={galleryClassName(product, images[0], objectFit)}>
       {/* Mobile: a floating bar over the top of the image — back on one side,
           wishlist + share on the other. Hidden until hydrated, then slides
           down into place instead of popping in wherever the page happens to
@@ -199,9 +205,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
           hidePoster();
         }}
       >
-        {product.promotion_title && (
-          <div className="promotion-title">{product.promotion_title}</div>
-        )}
+        {badge && <div className="promotion-title">{badge}</div>}
 
         {product.calories && (
           <div className="absolute z-[2] top-4 rtl:left-4 ltr:right-4 bg-white shadow-sm flex flex-col justify-center items-center rounded-full w-20 h-20 md:w-24 md:h-24">
@@ -274,9 +278,14 @@ export function ProductGallery({ product }: ProductGalleryProps) {
   );
 }
 
-function galleryClassName(product: Product, first: ProductImage | undefined): string {
+function galleryClassName(
+  product: Product,
+  first: ProductImage | undefined,
+  objectFit: ObjectFit
+): string {
   return [
     'product-gallery',
+    objectFit === 'contain' && 'product-gallery--contain',
     first?.three_d_image_url && 'product-gallery--model',
     'sidebar relative md:top-24 w-full md:!w-2/4 rtl:ml-8 ltr:mr-8 pb-8 md:pb-16 overflow-hidden shrink-0',
     !product.has_metadata && 'md:sticky',
@@ -388,7 +397,8 @@ function ThumbSlide({ image, index }: { image: ProductImage; index: number }) {
       <Image
         src={image.url}
         alt={image.alt || ''}
-        className="object-cover w-full h-full bg-gray-100 rounded overflow-hidden"
+        className="w-full h-full rounded overflow-hidden"
+        objectFit="contain"
         title={image.alt}
         priority={index < 5}
         noWrapper

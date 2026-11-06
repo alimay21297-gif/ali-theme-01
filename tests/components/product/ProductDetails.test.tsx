@@ -296,7 +296,7 @@ describe('ProductDetails remaining quantity', () => {
 
   // The sold / remaining box (`mb-5 inline-flex text-sm`).
   const quantityBox = (container: HTMLElement) =>
-    container.querySelector('div.mb-5.inline-flex.text-sm');
+    container.querySelector('div.mb-4.inline-flex.text-sm');
 
   it('leaves no empty gap for a product that sold 0 with the remaining count hidden', async () => {
     const { container } = render(

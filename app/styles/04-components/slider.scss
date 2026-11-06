@@ -12,12 +12,21 @@ salla-slider{
       display: none;
     }
 
+    /* LAMEEM gallery: the main image sits in the same soft `--lameem-light` box as the
+       card photo (`product.scss`, "LAMEEM card surface"). The merchant's
+       `slider_background_size` still decides crop vs whole: the padding and `multiply`
+       only apply to `contain` (`.product-gallery--contain`, set by ProductGallery). */
     .s-slider-container{
-      @apply bg-white border-[1px] rounded;
+      @apply border-[1px] rounded;
+      background-color: var(--lameem-light);
     }
 
     .swiper-slide{
-      @apply relative rounded bg-white ring-1 ring-inset ring-gray-100;
+      @apply relative rounded bg-transparent ring-1 ring-inset ring-gray-100;
+    }
+
+    .s-slider-thumbs .swiper-slide{
+      background-color: var(--lameem-light);
     }
 
     /* Fixed 80×80 thumbnails. The theme `ProductGallery` fork runs the thumbs
@@ -109,9 +118,45 @@ salla-slider{
   }
 }
 
+/* Product photos are shot on white: `multiply` melts that white into the light box.
+   Padding matches the card photo (12px). Videos and 3D models are not images, so
+   `model-viewer` is untouched. The SSR poster (`ProductGallery`) takes the same box so
+   nothing shifts when the slider replaces it. */
+.product-gallery__poster{
+  background-color: var(--lameem-light);
+}
+
+.product-gallery--contain{
+  .details-slider .swiper-slide img,
+  .details-slider .s-slider-thumbs .swiper-slide img,
+  .product-gallery__poster img{
+    @apply box-border;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+  }
+
+  .details-slider .swiper-slide img,
+  .product-gallery__poster img{
+    @apply p-3;
+  }
+
+  .details-slider .s-slider-thumbs .swiper-slide img{
+    @apply p-1;
+  }
+}
+
+/* The one badge on the product page: the merchant's promotion title, or the computed
+   discount when there is none (`ProductGallery`). Same pill as the card badge. */
 .promotion-title{
-  @apply absolute z-10 top-4 rtl:right-0 ltr:left-0 font-bold text-sm bg-red-800 text-white rtl:rounded-l ltr:rounded-r;
-  @apply w-auto m-0 px-3 py-2 #{!important};
+  @apply absolute z-10 font-semibold text-xs leading-none text-white shadow-sm;
+  top: 0.75rem;
+  inset-inline-start: 0.75rem;
+  inset-inline-end: auto;
+  border-radius: 9999px;
+  background-color: var(--lameem-sale);
+  unicode-bidi: plaintext;
+  max-width: calc(100% - 1.5rem);
+  @apply w-auto m-0 px-3 py-1.5 #{!important};
 }
 
 .home-slider {

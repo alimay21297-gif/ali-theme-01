@@ -496,6 +496,17 @@ salla-gifting {
   @apply bg-gray-700;
 }
 
+/* Phone order: gallery, title, price, options, add to cart, then the description.
+   `.main-content` is a flex column below 768px (`ProductPage`), so the description
+   moves after the form and the hook slots that follow it (quick order, merchant blocks).
+   Visual order only: the DOM keeps the description first, as Twig does. */
+@media (max-width: 767px) {
+  .main-content > .product__description {
+    order: 1;
+    margin-top: 1rem;
+  }
+}
+
 /* Add to cart sticky bar */
 @media (max-width: 640px) {
   .is-sticky-product-bar {
