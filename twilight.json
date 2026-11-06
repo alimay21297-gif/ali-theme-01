@@ -2338,6 +2338,75 @@
           "maxLength": 10
         }
       ]
+    },
+    {
+      "key": "f3b7920e-9276-409b-a48f-d0a9cc975438",
+      "title": {
+        "en": "Hero",
+        "ar": "الواجهة الرئيسية"
+      },
+      "icon": "sicon-image",
+      "path": "home.hero",
+      "fields": [
+        {
+          "id": "title",
+          "type": "string",
+          "format": "text",
+          "label": "العنوان الرئيسي",
+          "icon": "sicon-format-text-alt",
+          "multilanguage": true,
+          "required": false,
+          "minLength": 0,
+          "maxLength": 80,
+          "description": "نص عادي بدون تنسيق. يظهر بحجم كبير على خلفية خضراء داكنة.",
+          "placeholder": "اكتب العنوان الرئيسي هنا..."
+        },
+        {
+          "id": "subtitle",
+          "type": "string",
+          "format": "textarea",
+          "label": "الوصف القصير",
+          "icon": "sicon-typography",
+          "multilanguage": true,
+          "required": false,
+          "minLength": 0,
+          "maxLength": 220,
+          "description": "نص عادي بدون تنسيق، يظهر أسفل العنوان.",
+          "placeholder": "اكتب وصفاً قصيراً هنا..."
+        },
+        {
+          "id": "image",
+          "type": "string",
+          "format": "image",
+          "label": "صورة المنتج",
+          "icon": "sicon-image",
+          "required": false,
+          "description": "* يفضّل صورة بخلفية شفافة (PNG أو WebP) بعرض لا يقل عن 1200 بكسل."
+        },
+        {
+          "id": "btnname",
+          "type": "string",
+          "format": "text",
+          "label": "نص الزر (اختياري)",
+          "icon": "sicon-type-square",
+          "multilanguage": true,
+          "required": false,
+          "minLength": 0,
+          "maxLength": 40,
+          "description": "اتركه فارغاً أو اترك الرابط فارغاً لإخفاء الزر.",
+          "placeholder": "مثال: تسوّق الآن"
+        },
+        {
+          "id": "url",
+          "type": "items",
+          "format": "variable-list",
+          "label": "رابط الزر",
+          "icon": "sicon-link",
+          "required": false,
+          "description": "الصفحة التي ينتقل إليها الزائر عند الضغط على الزر.",
+          "source": "custom"
+        }
+      ]
     }
   ],
   "support_url": "https://salla.com/",

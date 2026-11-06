@@ -1,0 +1,120 @@
+/* `hero` home block (components/home/Hero.tsx). Imported in app.scss and
+   critical.scss (it is the first screen), so no image URLs here: the calligraphy
+   pattern comes from calligraphy.scss (full sheet only). Colors are brand tokens
+   through Tailwind (`bg-dark`, `text-white`) and `--lameem-*`; logical properties only.
+
+   Text goes on the inline-start side, the product shot on the other (the grid
+   mirrors in RTL); phones stack them, text first. */
+
+/* Edge to edge against the header: drop the vertical margin `.s-block` adds. */
+.s-block.s-block--hero {
+  margin-block: 0;
+}
+
+.home-hero {
+  /* The same stacking context `.has-calligraphy` makes, repeated because the
+     critical sheet does not include calligraphy.scss. */
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  @apply text-white;
+}
+
+.home-hero__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: 1.5rem;
+  @apply py-10;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3rem;
+    @apply py-16;
+  }
+}
+
+.home-hero__inner--image-only {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.home-hero__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* inline-start in both directions */
+  gap: 1rem;
+  text-align: start;
+}
+
+.home-hero__title {
+  margin: 0;
+  font-size: clamp(1.875rem, 1.2rem + 3vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.25;
+  text-wrap: balance;
+  @apply text-white;
+}
+
+.home-hero__subtitle {
+  margin: 0;
+  max-inline-size: 36rem;
+  font-size: 1rem;
+  line-height: 1.8;
+  white-space: pre-line;
+  color: var(--lameem-muted); /* text on a dark surface only */
+
+  @media (min-width: 768px) {
+    font-size: 1.125rem;
+  }
+}
+
+.home-hero__cta {
+  @apply inline-flex items-center justify-center bg-white font-bold text-dark transition-opacity duration-300 hover:opacity-90;
+  min-block-size: 3rem; /* tap target */
+  margin-block-start: 0.5rem;
+  padding-inline: 2rem;
+  border-radius: 9999px;
+  font-size: 1rem;
+  text-decoration: none;
+
+  &:focus-visible {
+    @apply outline outline-2 outline-offset-2 outline-white;
+  }
+}
+
+/* Fixed-ratio box: the image can load at any size without moving the text. */
+.home-hero__media {
+  inline-size: 100%;
+  max-inline-size: 30rem;
+  margin-inline: auto;
+  aspect-ratio: 1 / 1;
+}
+
+.home-hero__image {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: contain;
+}
+
+/* The calligraphy thins behind the text: about 15% at the text edge, full strength
+   by 65% of the way across. Stacked on phones the text is on top, so it fades
+   downwards; from `lg` the text is on the inline-start side, so it fades towards
+   the inline-end (right in LTR, left in RTL). The mask has no URL, so it is safe
+   in the critical sheet. */
+.home-hero.has-calligraphy::before {
+  -webkit-mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.15), black 65%);
+  mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.15), black 65%);
+
+  @media (min-width: 1024px) {
+    -webkit-mask-image: linear-gradient(to right, rgb(0 0 0 / 0.15), black 65%);
+    mask-image: linear-gradient(to right, rgb(0 0 0 / 0.15), black 65%);
+  }
+}
+
+[dir='rtl'] .home-hero.has-calligraphy::before {
+  @media (min-width: 1024px) {
+    -webkit-mask-image: linear-gradient(to left, rgb(0 0 0 / 0.15), black 65%);
+    mask-image: linear-gradient(to left, rgb(0 0 0 / 0.15), black 65%);
+  }
+}

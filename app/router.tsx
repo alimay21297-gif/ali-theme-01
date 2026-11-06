@@ -15,6 +15,7 @@ import {
   FeaturedProducts,
   featuredProductsConfig,
   FixedProducts,
+  Hero,
   LatestProducts,
   MainLinks,
   PhotosSlider,
@@ -77,6 +78,8 @@ registerHomeComponents({
   'slider-products-with-header': SliderProductsWithHeader,
   'enhanced-square-banners': EnhancedSquareBanners,
   blog: Blog,
+  // First-screen block (LCP): not lazy, see `registerHomeComponentConfig` below.
+  hero: Hero,
 });
 
 // Wrapper `<section>` classes for `featured-products` — the engine only styles
@@ -93,6 +96,12 @@ registerHomeComponentConfig({
   },
   'custom-testimonials': {
     className: 's-block s-block--custom-testimonials s-block--full-bg',
+  },
+  // The page's LCP: mounts on page load (`renderOnMount`) wherever the merchant
+  // puts it, with no reserved height or skeleton because it is never lazy.
+  hero: {
+    className: 's-block s-block--hero',
+    renderOnMount: true,
   },
   // Lazy placements (blocks 4+): reserve the loaded blocks' height and show the
   // same SliderSkeleton the SSR path shows (sized in home-blocks.scss), not the
