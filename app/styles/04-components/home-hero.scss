@@ -57,6 +57,11 @@
     gap: 3rem;
     @apply py-16;
   }
+
+  /* Wide monitors: the product side gets a little more room (the showcase grows to fit). */
+  @media (min-width: 1536px) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  }
 }
 
 .home-hero__inner--image-only {
@@ -116,6 +121,16 @@
   max-inline-size: 30rem;
   margin-inline: auto;
   aspect-ratio: 1 / 1;
+}
+
+/* The animated products set their own size (their canvases' ratio), not the square box. */
+.home-hero__media--showcase {
+  aspect-ratio: auto;
+  max-inline-size: 36rem;
+
+  @media (min-width: 1536px) {
+    max-inline-size: 42rem;
+  }
 }
 
 .home-hero__image {

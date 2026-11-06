@@ -9,9 +9,27 @@ vi.mock('@salla.sa/twilight-theme-engine/common', () => ({
     </a>
   ),
   Image: (props: Record<string, unknown>) => (
-    <img alt={String(props.alt ?? '')} src={String(props.src ?? '')} />
+    <img
+      alt={String(props.alt ?? '')}
+      src={String(props.src ?? '')}
+      className={String(props.className ?? '')}
+    />
   ),
 }));
+
+// The animated products name their links through the translation hook.
+vi.mock('@salla.sa/twilight-theme-engine/i18n', () => ({
+  useTranslation: () => ({ t: (_k: string, fallback?: string) => fallback ?? _k }),
+}));
+
+/** A complete animated product: its page, front image and layers. */
+const products = {
+  animate_products: true,
+  p1_link: '/wallet',
+  p1_name: 'Wallet',
+  p1_body: 'https://cdn.example/wallet-body.webp',
+  p1_layers: [{ image: 'https://cdn.example/card-1.webp' }],
+};
 
 vi.mock('../../../app/hooks/useCalligraphy', () => ({
   useCalligraphy: () => ({ className: 'has-calligraphy', style: undefined }),
@@ -58,6 +76,45 @@ describe('Hero', () => {
   it('draws no radar without a product shot', () => {
     const { container } = render(<Hero data={{ title: 'T' }} />);
     expect(container.querySelector('.home-hero__radar')).toBeNull();
+  });
+
+  describe('animated products', () => {
+    const image = 'https://cdn.example/p.png';
+
+    it('shows them instead of the single image when the switch is on and they are complete', () => {
+      const { container } = render(<Hero data={{ title: 'T', image, ...products }} />);
+      expect(container.querySelector('.product-showcase')).not.toBeNull();
+      expect(container.querySelector('.home-hero__media--showcase')).not.toBeNull();
+      expect(container.querySelector('.home-hero__image')).toBeNull();
+      expect(container.querySelector('a[href="/wallet"]')).not.toBeNull();
+    });
+
+    it('falls back to the single image when the switch is off', () => {
+      const { container } = render(
+        <Hero data={{ title: 'T', image, ...products, animate_products: false }} />
+      );
+      expect(container.querySelector('.product-showcase')).toBeNull();
+      expect(container.querySelector('.home-hero__image')).not.toBeNull();
+    });
+
+    it('falls back to the single image when the layers are missing', () => {
+      const { container } = render(
+        <Hero data={{ title: 'T', image, ...products, p1_layers: [] }} />
+      );
+      expect(container.querySelector('.product-showcase')).toBeNull();
+      expect(container.querySelector('.home-hero__image')).not.toBeNull();
+    });
+
+    it('falls back to text only when there is no single image either', () => {
+      const { container } = render(<Hero data={{ title: 'T', ...products, p1_layers: [] }} />);
+      expect(container.querySelector('.home-hero__media')).toBeNull();
+      expect(container.querySelector('h2')?.textContent).toBe('T');
+    });
+
+    it('renders for products alone, with no title and no single image', () => {
+      const { container } = render(<Hero data={products} />);
+      expect(container.querySelector('.product-showcase')).not.toBeNull();
+    });
   });
 
   it('renders an image-only hero without a text column', () => {

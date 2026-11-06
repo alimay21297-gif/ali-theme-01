@@ -1,0 +1,173 @@
+/* Layered, animated products (components/home/ProductShowcase.tsx). Imported in
+   app.scss and critical.scss (the hero shows it on the first screen), so no image
+   URLs here. Colors: black shadows only.
+
+   Every layer of a product shares one canvas, so they all sit at inset 0. The
+   body is in front (z 5); the other layers are behind it, closed:
+     slide - the cards lie under the body and translate to the physical RIGHT
+             (`--open-x`, a % of the canvas width; the row is dir=ltr, so the
+             art never mirrors in RTL);
+     swing - the blades are turned back (`--closed-rotate`) and hidden, then swing
+             out around the pivot (`--pivot-x` / `--pivot-y`).
+   `--delay` staggers the layers. The "open" look is one mixin, used by hover and
+   focus (desktop), `.is-open` (touch: set by JS), `.is-static` (reduced motion,
+   set by JS) and the reduced-motion media query (covers the time before JS runs). */
+
+@mixin product-open {
+  .product-showcase__stage {
+    transform: rotateY(var(--tilt)) translateY(1.1%);
+  }
+
+  /* `&` is the including selector (the item), so these stay per animation type. */
+  &.product-showcase__item--slide .product-showcase__layer {
+    transform: translateX(var(--open-x));
+  }
+
+  &.product-showcase__item--swing .product-showcase__layer {
+    transform: rotate(var(--open-rotate));
+    opacity: 1;
+  }
+
+  .product-showcase__shadow {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+.product-showcase {
+  position: relative;
+  z-index: 1; /* above the radar rings */
+  display: grid;
+  align-items: center;
+  inline-size: 100%;
+  /* Height is capped at --showcase-height: the row is as wide as its ratio times that. */
+  --showcase-height: 28rem;
+  max-inline-size: calc(var(--showcase-height) * var(--showcase-ratio, 1));
+  margin-inline: auto;
+}
+
+/* Large monitors: a bigger box (same ratio, so the reserved space scales with it). */
+@media (min-width: 1536px) {
+  .product-showcase {
+    --showcase-height: 32rem;
+  }
+}
+
+.product-showcase__item {
+  --tilt: -14deg;
+  position: relative;
+  display: block;
+  perspective: 900px;
+  border-radius: 1rem;
+  color: inherit;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+
+  &--swing {
+    --tilt: 14deg;
+  }
+
+  &:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 0.5rem;
+  }
+}
+
+.product-showcase__stage {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.product-showcase__layer,
+.product-showcase__body {
+  position: absolute;
+  inset: 0;
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+.product-showcase__body {
+  z-index: 5;
+  filter: drop-shadow(0 18px 24px rgb(0 0 0 / 0.45));
+}
+
+.product-showcase__layer {
+  filter: drop-shadow(0 6px 12px rgb(0 0 0 / 0.35));
+  transition-delay: var(--delay, 0ms);
+}
+
+.product-showcase__item--slide .product-showcase__layer {
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--delay, 0ms);
+}
+
+.product-showcase__item--swing .product-showcase__layer {
+  transform-origin: var(--pivot-x, 53%) var(--pivot-y, 71.1%);
+  transform: rotate(var(--closed-rotate, -40deg));
+  opacity: 0;
+  /* A slight spring: the easing overshoots a little. */
+  transition:
+    transform 0.8s cubic-bezier(0.34, 1.4, 0.64, 1),
+    opacity 0.35s ease;
+  transition-delay: var(--delay, 0ms);
+}
+
+/* The floor shadow under the product. */
+.product-showcase__shadow {
+  position: absolute;
+  inset-inline: 12%;
+  inset-block-end: -1%;
+  block-size: 4%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(0 0 0 / 0.55), transparent);
+  pointer-events: none;
+  transition:
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.6s ease;
+}
+
+/* Open: on hover (only where there is a pointer) and on keyboard focus... */
+@media (hover: hover) {
+  .product-showcase__item:hover {
+    @include product-open;
+  }
+}
+
+.product-showcase__item:focus-visible,
+/* ...once on touch screens (class set by JS)... */
+.product-showcase__item.is-open {
+  @include product-open;
+}
+
+/* ...and always, without motion, for visitors who asked for reduced motion. */
+.product-showcase__item.is-static,
+.product-showcase__item.is-static .product-showcase__stage,
+.product-showcase__item.is-static .product-showcase__layer,
+.product-showcase__item.is-static .product-showcase__shadow {
+  transition: none !important;
+}
+
+.product-showcase__item.is-static {
+  @include product-open;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-showcase__item,
+  .product-showcase__stage,
+  .product-showcase__layer,
+  .product-showcase__shadow {
+    transition: none !important;
+  }
+
+  .product-showcase__item {
+    @include product-open;
+  }
+}

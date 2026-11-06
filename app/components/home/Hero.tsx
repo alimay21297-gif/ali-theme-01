@@ -1,6 +1,9 @@
 import { memo } from 'react';
 import { Image, Link } from '@salla.sa/twilight-theme-engine/common';
 import { useCalligraphy } from '../../hooks/useCalligraphy';
+import { parseShowcase } from '../../lib/heroShowcase';
+import { safeUrl } from '../../lib/safeUrl';
+import { ProductShowcase } from './ProductShowcase';
 
 export interface HeroProps {
   data: {
@@ -9,6 +12,8 @@ export interface HeroProps {
     image?: string;
     btnname?: string;
     url?: string;
+    /** Animated products (twilight.json `animate_products`, `p1_*`, `p2_*`): see `lib/heroShowcase.ts`. */
+    animate_products?: boolean;
     position?: number;
     [key: string]: unknown;
   };
@@ -35,14 +40,6 @@ function Radar() {
   );
 }
 
-/** Links the merchant may set: a path or an http(s) address. Anything else (`javascript:`) is dropped. */
-function safeUrl(url: unknown): string | undefined {
-  if (typeof url !== 'string') return undefined;
-  const value = url.trim();
-  if (!value) return undefined;
-  return /^(\/|https?:\/\/|#)/i.test(value) ? value : undefined;
-}
-
 /**
  * `hero` home block (`s-block--hero`): the first screen of the home page. A dark
  * green surface with a radial glow behind the product, radar rings and the
@@ -55,8 +52,12 @@ function safeUrl(url: unknown): string | undefined {
  * sits in a fixed-ratio box (no layout shift). The page's `<h1>` is the store name
  * in the header, so the headline is an `<h2>`.
  *
- * Empty data: no title AND no image renders nothing; no button text or no link
- * renders no button.
+ * With `animate_products` on and the products complete, the single image gives way
+ * to the layered, animated products ({@link ProductShowcase}); otherwise the single
+ * image is the fallback.
+ *
+ * Empty data: no title AND no image AND no products renders nothing; no button text
+ * or no link renders no button.
  */
 export const Hero = memo(function Hero({ data }: HeroProps) {
   const calligraphy = useCalligraphy();
@@ -65,8 +66,9 @@ export const Hero = memo(function Hero({ data }: HeroProps) {
   const btnname = data.btnname?.trim();
   const url = safeUrl(data.url);
   const image = data.image || undefined;
+  const showcase = parseShowcase(data);
 
-  if (!title && !image) return null;
+  if (!title && !image && showcase.length === 0) return null;
 
   const hasText = Boolean(title || subtitle || (btnname && url));
 
@@ -87,7 +89,12 @@ export const Hero = memo(function Hero({ data }: HeroProps) {
             )}
           </div>
         )}
-        {image && (
+        {showcase.length > 0 ? (
+          <div className="home-hero__media home-hero__media--showcase">
+            <Radar />
+            <ProductShowcase products={showcase} />
+          </div>
+        ) : image ? (
           <div className="home-hero__media">
             <Radar />
             <Image
@@ -102,7 +109,7 @@ export const Hero = memo(function Hero({ data }: HeroProps) {
               className="home-hero__image"
             />
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );
