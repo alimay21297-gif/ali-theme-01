@@ -1,15 +1,180 @@
-.s-gifting-modal{
-    .s-checkbox{
-        background-color: #fff !important;
-        border: 1px solid #ccc !important;
-        &:focus{
-            --tw-ring-color: transparent !important;
-        }
-    }
-    .s-gifting-filepond-placeholder-icon svg{
-        fill: #ccc !important;
-    }
-}
-.s-gifting-widget .s-list-tile-item{
+/*
+  <salla-gifting> in LAMEEM tokens. The component, its <salla-modal> and the fields
+  inside (select, tel input, searchable dropdown, datetime picker) are all light
+  DOM, so theme selectors reach them. Layout and spacing only on the "Send as gift"
+  trigger: its colour stays merchant-controlled (--color-primary). Inside the modal
+  the primary buttons also stay merchant-controlled; fields, labels, help text and
+  the close button use the --lameem-* tokens.
+
+  Every modal rule is scoped under `salla-modal.s-gifting-modal`: the extra element
+  selector wins over the component's own `.s-gifting-modal .s-searchable-dropdown-
+  trigger:hover:not(...)` rule without !important.
+
+  The gift-image thumbnails (`a.s-gifting-image`) have NO selected state in the
+  markup: the component only paints the chosen image into `.filepond-bg` as an
+  inline background, so CSS cannot tell which thumbnail is picked. Not styled.
+*/
+
+/* Trigger card on the product page: the button is the 44px target. */
+.s-gifting-widget {
+  .s-list-tile-item {
     @apply border-none rounded-t-none;
+  }
+
+  .s-gifting-widget-action button {
+    min-height: 2.75rem;
+  }
+
+  .s-list-tile-item-subtitle {
+    color: theme('colors.gray.600');
+  }
+}
+
+salla-modal.s-gifting-modal {
+  /* Close button: 44px target at the logical end (the component puts it on the
+     right in LTR and the left in RTL), ring on keyboard focus. */
+  .s-modal-close {
+    display: grid;
+    place-items: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    border-radius: 0.5rem;
+
+    svg,
+    svg:hover {
+      fill: theme('colors.gray.600');
+    }
+
+    &:hover svg {
+      fill: var(--lameem-ink);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--lameem-primary);
+      outline-offset: -2px;
+    }
+  }
+
+  /* Labels and the select/uploader headings. */
+  .s-form-label,
+  .s-gifting-modal-uploader-title {
+    color: var(--lameem-ink);
+  }
+
+  /* Fields: 44px, a brand-tinted border (about 3.7:1 on white) and a brand focus.
+     Same values as product-options.scss. The searchable dropdown's open state
+     counts as focus. */
+  .s-form-control,
+  .s-tel-input-control,
+  .s-datetime-picker-input,
+  .s-searchable-dropdown-trigger {
+    min-height: 2.75rem;
+    border-color: color-mix(in srgb, var(--lameem-primary) 55%, white);
+    transition: border-color 0.15s;
+
+    &:hover:not(.s-searchable-dropdown-trigger--disabled) {
+      border-color: var(--lameem-primary);
+    }
+
+    &:focus,
+    &:focus-visible,
+    &.s-searchable-dropdown-trigger--open {
+      border-color: var(--lameem-primary);
+      box-shadow: none;
+      outline: 2px solid var(--lameem-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  .s-searchable-dropdown-trigger-placeholder {
+    color: theme('colors.gray.600');
+  }
+
+  .s-searchable-dropdown-item {
+    min-height: 2.75rem;
+  }
+
+  /* Validation: declared after the field rules so an error border wins them. */
+  .s-form-has-error {
+    .s-form-control,
+    .s-tel-input-control,
+    .s-datetime-picker-input,
+    .s-searchable-dropdown-trigger {
+      border-color: var(--lameem-sale);
+    }
+
+    .s-form-label {
+      color: var(--lameem-sale);
+    }
+  }
+
+  .s-gifting-error,
+  .s-gifting-textarea-counter.limit {
+    color: var(--lameem-sale);
+  }
+
+  /* Help text: gray-600 (the component uses gray-500 and red-600). */
+  .s-gifting-textarea-counter,
+  .s-gifting-calendar-hint,
+  .s-gifting-filepond-placeholder-text {
+    color: theme('colors.gray.600');
+  }
+
+  /* The placeholder is min-width 18rem (288px), too wide for 375px minus the
+     modal padding. */
+  .s-gifting-filepond-placeholder-text {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .s-gifting-filepond-placeholder-icon svg {
+    fill: theme('colors.gray.400');
+  }
+
+  /* "Send later" checkbox: the label row is the 44px target. */
+  .s-gifting-schedule {
+    min-height: 2.75rem;
+  }
+
+  .s-checkbox {
+    background-color: white;
+    border-color: color-mix(in srgb, var(--lameem-primary) 55%, white);
+
+    &:focus {
+      --tw-ring-color: transparent;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--lameem-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  /* Image slider arrows (35px in the component) and the preview-remove button
+     (20px): bigger hit areas without changing how they look. */
+  .s-gifting-step-one {
+    .s-slider-button-next button,
+    .s-slider-button-prev button {
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+  }
+
+  .s-gifting-remove-preview::after {
+    content: '';
+    position: absolute;
+    inset: -0.75rem;
+  }
+
+  /* Back link in step 2. */
+  .s-gifting-step-two-footer a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+
+    &:focus-visible {
+      outline: 2px solid var(--lameem-primary);
+      outline-offset: 2px;
+    }
+  }
 }
