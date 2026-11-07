@@ -324,8 +324,8 @@ export function CartItem({ item, isFirst = false, onMutated }: CartItemProps) {
       <section className="cart-item relative border-b border-gray-200 pb-6 mb-6">
         <input type="hidden" name="id" value={item.id} />
 
-        <div className="md:flex rtl:space-x-reverse md:space-x-12 items-start justify-between mb-4 last:mb-0">
-          <div className="flex flex-1 rtl:space-x-reverse space-x-4">
+        <div className="md:flex md:gap-12 items-start justify-between mb-4 last:mb-0">
+          <div className="flex flex-1 gap-4">
             <Link to={item.url} className="relative overflow-hidden shrink-0">
               <Image
                 src={item.product_image}
@@ -336,7 +336,7 @@ export function CartItem({ item, isFirst = false, onMutated }: CartItemProps) {
               />
 
               {isFreeProduct && (
-                <div className="free-ribbon absolute top-[11px] right-[-38px] w-32 text-white text-xs font-bold text-center py-1 rotate-45 shadow-md">
+                <div className="free-ribbon absolute top-[11px] end-[-38px] w-32 text-white text-xs font-bold text-center py-1 rotate-45 rtl:-rotate-45 shadow-md">
                   {t('pages.loyalty_program.free_product', 'Free')}
                 </div>
               )}

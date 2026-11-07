@@ -136,7 +136,7 @@ function CartPageContent({ page }: CartPageProps) {
         <div className="main-content w-full lg:w-[calc(100%-384px)]">
           <HookSlot name="cart:items.start" context={{ cartItems: cartData.items }} />
 
-          <div className="cart-titles hidden md:flex rtl:space-x-reverse md:space-x-12 items-center border-b border-gray-200 pb-4 text-sm font-bold text-gray-900 mb-5">
+          <div className="cart-titles hidden md:flex md:gap-12 items-center border-b border-gray-200 pb-4 text-sm font-bold text-gray-900 mb-5">
             <span className="flex-1">
               {t('blocks.cart.products', 'Products')} ({cartData.items.length})
             </span>
