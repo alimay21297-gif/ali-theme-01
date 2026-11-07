@@ -15,6 +15,7 @@
     "ask": [
       "Bash(git commit:*)",
       "Bash(git push:*)",
+      "Bash(git stash:*)",
       "Bash(salla theme publish:*)",
       "Bash(salla theme create:*)",
       "Bash(pnpm add:*)",
