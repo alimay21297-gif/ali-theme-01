@@ -85,7 +85,7 @@ export function ProductDetails({
             On mobile these move to the gallery overlay bar (`ProductGallery`),
             so this copy is hidden — see `product.scss`. */}
         <div className="product-details__title-actions flex shrink-0">
-          <SallaSocialShare className="inline-flex" aria-label="social share" />
+          <SallaSocialShare className="inline-flex" aria-label={t('pages.products.social_share', 'Share this product')} />
 
           <TitleWishlistButton productId={Number(product.id)} />
         </div>

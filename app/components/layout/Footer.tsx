@@ -108,7 +108,7 @@ function FooterSbc({ dark }: { dark: boolean }) {
     >
       <img
         src={SBC_ICON_URL}
-        alt={`SBC ${id}`}
+        alt={t('blocks.footer.sbc_alt', 'Saudi Business Center certificate {{id}}', { id })}
         width={56}
         height={40}
         loading="lazy"

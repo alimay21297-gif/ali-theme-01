@@ -39,3 +39,14 @@
     color: var(--lameem-primary);
   }
 }
+
+/*
+  The engine's 404 page (`ErrorPage`) is the only heading on that page: a big "404" in
+  `text-gray-300` (about 1.5:1 on white). Raise it to gray-500 (4.8:1). The child combinator
+  plus the attribute outrank the engine's single utility class, so no `!important` is
+  needed. The page text comes from the store's own translations and the home button has an
+  inline style from the engine, so neither is touched here.
+*/
+.container > h1[data-testid='error-code'] {
+  @apply text-gray-500;
+}
