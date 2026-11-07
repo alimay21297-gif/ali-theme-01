@@ -1255,7 +1255,7 @@ salla-gifting {
   }
 
   .s-quantity-input-input {
-    @apply h-11 w-10;
+    @apply h-11 w-11;
   }
 }
 
@@ -1301,6 +1301,7 @@ salla-gifting {
   .s-skeleton-button,
   .s-skeleton-input .s-skeleton-pulse,
   .s-skeleton-button .s-skeleton-pulse {
+    /* !important: overrides the SDK skeleton's inline height */
     height: 48px !important;
   }
 }

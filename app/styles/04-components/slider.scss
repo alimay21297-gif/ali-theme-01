@@ -148,7 +148,7 @@ salla-slider{
 /* The one badge on the product page: the merchant's promotion title, or the computed
    discount when there is none (`ProductGallery`). Same pill as the card badge. */
 .promotion-title{
-  @apply absolute z-10 font-semibold text-xs leading-none text-white shadow-sm;
+  @apply absolute z-10 font-semibold text-xs leading-tight text-white shadow-sm;
   top: 0.75rem;
   inset-inline-start: 0.75rem;
   inset-inline-end: auto;

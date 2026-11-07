@@ -170,7 +170,9 @@ export function ProductGallery({ product }: ProductGalleryProps) {
         </button>
         {/* Waits for the slider itself (`sliderReady`, not just `hydrated`) so
             it doesn't slide in while the images underneath are still loading. */}
-        <div className={`product-gallery__bar-actions${sliderReady ? ' is-visible' : ''}`}>
+        <div
+          className={`product-gallery__bar-actions${sliderReady || images.length === 0 ? ' is-visible' : ''}`}
+        >
           <button
             type="button"
             className={`product-gallery__bar-btn btn--wishlist ${wishlist.has(Number(product.id)) ? 'is-added' : 'not-added'}`}
@@ -188,6 +190,13 @@ export function ProductGallery({ product }: ProductGalleryProps) {
         </div>
       </div>
 
+      {images.length === 0 ? (
+        // No media at all: an empty box, not an empty slider or a broken <img>.
+        <div
+          className="product-gallery__empty aspect-square w-full rounded bg-[color:var(--lameem-light)]"
+          aria-hidden="true"
+        />
+      ) : (
       <SallaSlider
         ref={sliderRef}
         id={sliderId}
@@ -247,6 +256,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
           </div>
         )}
       </SallaSlider>
+      )}
 
       {posterUrl && (
         <div className="product-gallery__poster" aria-hidden="true">

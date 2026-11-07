@@ -109,6 +109,18 @@ describe('ProductGallery media', () => {
   });
 });
 
+describe('ProductGallery with no media', () => {
+  it('shows an empty box, with no <img> and no slider, when there are no images and no image', () => {
+    const empty = { id: 5, name: 'Bare', images: [] } as unknown as Product;
+    const { container } = render(<ProductGallery product={empty} />);
+
+    expect(container.querySelector('.product-gallery__empty')).toBeTruthy();
+    expect(container.querySelector('img')).toBeNull();
+    expect(container.querySelector('#details-slider-5')).toBeNull();
+    expect(container.querySelector('a[data-fslightbox]')).toBeNull();
+  });
+});
+
 describe('ProductGallery image fit', () => {
   // Every slide image and the server-rendered poster.
   const fitClasses = (container: HTMLElement) =>
