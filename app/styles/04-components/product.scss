@@ -581,23 +581,151 @@ salla-gifting {
 .s-tabs-header * {
   pointer-events: auto !important;
 }
+/* Merchant description. Salla's editor strips <style>, so ALL description styling lives
+   here, under this one class (the wrapper `ProductDescription` renders). Element
+   selectors only: no `!important`, so a merchant's inline styles still win. */
 .product__description {
+  overflow-wrap: break-word;
+
+  h2,
+  h3,
+  h4 {
+    font-family: var(--lameem-font-display);
+    color: var(--lameem-ink);
+    font-weight: 600;
+    line-height: 1.4;
+    margin-block: 1.5rem 0.75rem;
+  }
+
+  h2 {
+    @apply text-2xl;
+  }
+
+  h3 {
+    @apply text-xl;
+  }
+
+  h4 {
+    @apply text-lg;
+  }
+
+  p {
+    @apply text-gray-700;
+    line-height: 1.85;
+    margin-block: 0 1rem;
+  }
+
   ul,
+  ol {
+    @apply text-gray-700;
+    padding-inline-start: 1.5rem;
+    margin-block: 0 1rem;
+  }
+
+  ul {
+    list-style: disc;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
   li {
-    list-style: inherit !important;
-  }
-
-  ul,
-  ol {
-    @apply px-6;
-  }
-
-  ol {
-    list-style: auto !important;
+    line-height: 1.85;
+    margin-block-end: 0.25rem;
   }
 
   a {
-    @apply text-blue-700;
+    color: var(--lameem-primary);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+
+    &:focus-visible {
+      outline: 2px solid var(--lameem-primary);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+  }
+
+  /* No wrapper element exists in the markup, so the table itself scrolls sideways
+     (display: block + overflow) instead of widening the page. */
+  table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    margin-block: 0 1rem;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    @apply border border-gray-300 text-gray-700;
+    padding: 0.5rem 0.75rem;
+    text-align: start;
+  }
+
+  th {
+    background-color: var(--lameem-light);
+    color: var(--lameem-ink);
+    font-weight: 600;
+  }
+
+  hr {
+    @apply border-gray-300;
+    margin-block: 1.5rem;
+  }
+
+  blockquote {
+    @apply text-gray-700;
+    margin-block: 0 1rem;
+    margin-inline: 0;
+    padding-block: 0.25rem;
+    padding-inline: 1rem 0;
+    border-inline-start: 4px solid var(--lameem-primary);
+  }
+
+  /* Embedded players and the YouTube thumbnail that stands in for one
+     (lib/descriptionVideos.ts): same 16:9 box. */
+  iframe,
+  .video-facade {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    border: 0;
+  }
+
+  .video-facade {
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+    background: theme('colors.black');
+    cursor: pointer;
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+      object-fit: cover;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 50% auto auto 50%;
+      width: 68px;
+      height: 48px;
+      translate: -50% -50%;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 68 48'%3E%3Cpath d='M66.5 7.7a8.5 8.5 0 0 0-6-6C55.2.2 34 .2 34 .2s-21.2 0-26.5 1.5a8.5 8.5 0 0 0-6 6C0 13 0 24 0 24s0 11 1.5 16.3a8.5 8.5 0 0 0 6 6c5.3 1.5 26.5 1.5 26.5 1.5s21.2 0 26.5-1.5a8.5 8.5 0 0 0 6-6C68 35 68 24 68 24s0-11-1.5-16.3z' fill='%23f00'/%3E%3Cpath d='M45 24 27 14v20z' fill='%23fff'/%3E%3C/svg%3E")
+        center / contain no-repeat;
+    }
   }
 }
 
