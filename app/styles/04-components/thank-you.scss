@@ -3,22 +3,23 @@
   .app-inner .s-thank-you-page-wrapper {
     .s-order-shipments-cta,
     .s-order-branch-cta {
-      left: 16px;
-      right: 16px;
-      bottom: calc(70px + env(safe-area-inset-bottom));
+      inset-inline: 1rem;
+      /* Same offset as the product page's sticky bar (product.scss): nav 52 + gap 12 + air 12. */
+      bottom: calc(76px + var(--safe-bottom));
       border-width: 0;
       border-radius: 1.5rem;
-      box-shadow: -1px -2px 9px 0 rgba(0, 0, 0, 0.05);
+      box-shadow: var(--lameem-card-shadow);
       padding-bottom: 1rem;
     }
   }
 
-  /* Page end clears the nav and the bar: 82px + the bar's height. */
+  /* Page end clears the nav and the bar: the 76px offset + 12px air + the bar's height
+     (bar offset rose from 70px to 76px, so both values grew by 6px). */
   .app-inner:has(.s-thank-you-page-wrapper .s-order-shipments-cta) {
-    padding-bottom: calc(162px + env(safe-area-inset-bottom));
+    padding-bottom: calc(168px + var(--safe-bottom));
   }
 
   .app-inner:has(.s-thank-you-page-wrapper .s-order-branch-cta) {
-    padding-bottom: calc(194px + env(safe-area-inset-bottom));
+    padding-bottom: calc(200px + var(--safe-bottom));
   }
 }
