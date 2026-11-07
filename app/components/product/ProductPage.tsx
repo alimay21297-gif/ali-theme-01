@@ -143,7 +143,12 @@ export function ProductPage({ product: initialProduct, page }: ProductPageProps)
             <SallaQuickOrder className="mt-5 md:-mb-2 block" />
           </div>
         </div>
+      </div>
 
+      {/* Full-bleed `--lameem-light` band like the reviews below it; the offers
+          sit in a `container` inside (`product-offers.scss`). Zero height when
+          the component renders nothing. */}
+      <div className="product-offers">
         <SallaOffer />
       </div>
 

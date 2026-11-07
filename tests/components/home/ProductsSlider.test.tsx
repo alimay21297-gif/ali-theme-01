@@ -146,11 +146,43 @@ describe('ProductsSlider', () => {
         onResolve={onResolve}
       />
     );
-    await waitFor(() => expect(container.firstChild).toBeNull());
+    // The query keeps its one retry (about 1 s of backoff), so wait past it.
+    await waitFor(() => expect(container.firstChild).toBeNull(), { timeout: 4000 });
     // A fetch failure isn't the same thing as "resolved with 0 products" —
     // the caller shouldn't hear a count for a request that never succeeded.
     expect(onResolve).not.toHaveBeenCalled();
   });
+
+  it('drops the block at once on a 403 and tells the parent there is nothing to show', async () => {
+    listMock.mockRejectedValue(Object.assign(new Error('Forbidden'), { response: { status: 403 } }));
+    const onResolve = vi.fn();
+    const { container } = renderWithClient(
+      <ProductsSlider
+        data={{ products: { source: 'related', source_value: 1 }, title: 'Similar products' }}
+        onResolve={onResolve}
+      />
+    );
+    await waitFor(() => expect(onResolve).toHaveBeenCalledWith(0));
+    expect(container.firstChild).toBeNull();
+    expect(listMock).toHaveBeenCalledTimes(1);
+  });
+
+  it.each([408, 429])(
+    'keeps the normal retry on a temporary %i and does not report 0',
+    async (status) => {
+      listMock.mockRejectedValue(Object.assign(new Error('Temporary'), { response: { status } }));
+      const onResolve = vi.fn();
+      const { container } = renderWithClient(
+        <ProductsSlider
+          data={{ products: { source: 'related', source_value: 1 }, title: 'Similar products' }}
+          onResolve={onResolve}
+        />
+      );
+      await waitFor(() => expect(container.firstChild).toBeNull(), { timeout: 4000 });
+      expect(listMock).toHaveBeenCalledTimes(2);
+      expect(onResolve).not.toHaveBeenCalled();
+    }
+  );
 
   it('renders the title and a display-all link', async () => {
     const { getByText } = renderWithClient(

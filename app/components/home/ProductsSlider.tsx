@@ -27,6 +27,16 @@ export interface ProductsSliderProps {
   onResolve?: (count: number) => void;
 }
 
+/**
+ * True for a final HTTP 4xx answer: the server refused the request, retrying will
+ * not help. 408 (timeout) and 429 (rate limit) are temporary, so they are not final.
+ */
+function isClientError(error: unknown): boolean {
+  const e = error as { status?: unknown; response?: { status?: unknown } } | null;
+  const status = e?.response?.status ?? e?.status;
+  return typeof status === 'number' && status >= 400 && status < 500 && status !== 408 && status !== 429;
+}
+
 function ProductsHeading({ title, displayAllUrl }: { title?: string; displayAllUrl: string }) {
   const { t } = useTranslation();
   return (
@@ -67,9 +77,14 @@ export function ProductsSlider({ data, onResolve }: ProductsSliderProps) {
     data: result,
     isSuccess,
     isError,
+    error,
   } = useQuery({
     ...product.queries.list({ source: source as ProductsListSource, sourceValue, perPage: limit }),
     enabled: !!source,
+    // The engine default is one retry. A 4xx (e.g. the 403 the demo store
+    // returns for recommendations) will not change on a retry: fail at once so
+    // the title + skeleton do not linger. Network errors and 5xx keep the one retry.
+    retry: (failureCount, err) => !isClientError(err) && failureCount < 1,
   });
   // Some sources return a full page whatever `perPage` asks for.
   const items = result?.items?.slice(0, limit);
@@ -81,12 +96,16 @@ export function ProductsSlider({ data, onResolve }: ProductsSliderProps) {
     onResolveRef.current = onResolve;
   });
 
-  // Only a genuinely successful result reports its count. An error (after
-  // React Query's own retries) leaves the block hidden below without ever
-  // calling `onResolve(0)` — the old code treated a fetch failure exactly
-  // like a real empty result, which could make a parent drop its wrapper for
-  // good over what might have just been a transient blip.
+  // A successful result reports its count. A transient error (network, 5xx,
+  // after React Query's retries) leaves the block hidden below without calling
+  // `onResolve(0)`, so a parent does not drop its wrapper over a blip. A 4xx is
+  // final (the request is refused, not flaky), so it reports 0 and the parent
+  // drops its wrapper too.
   useEffect(() => {
+    if (isError && isClientError(error)) {
+      onResolveRef.current?.(0);
+      return;
+    }
     // This *is* the parent notification, not something that could be lifted:
     // `onResolve` exists so a page-specific wrapper (e.g. the product page's
     // "similar products" rail) can drop itself once it knows this block came
@@ -95,7 +114,7 @@ export function ProductsSlider({ data, onResolve }: ProductsSliderProps) {
     // that boundary once the query settles. See .react-doctor/false-positives.md.
     // react-doctor-disable-next-line react-doctor/no-pass-data-to-parent
     if (isSuccess) onResolveRef.current?.(items?.length ?? 0);
-  }, [isSuccess, items?.length]);
+  }, [isSuccess, isError, error, items?.length]);
 
   if (!source) return null;
   // Nothing to show: a genuinely empty result, or the request ultimately

@@ -36,3 +36,24 @@ salla-offer {
     text-align: start;
   }
 }
+
+/* Product page only (`ProductPage` wraps `<SallaOffer />` in `.product-offers`,
+   outside the page `container`): a full-bleed band with the same ground and
+   `container` width as the reviews band (`reviews.scss`), so the two read as one
+   shape with no white strip between. The component's own bottom margin was that
+   strip. No offers = the wrapper never renders, so nothing is left behind. */
+.product-offers {
+  &:has(.s-offer-wrapper) {
+    background-color: var(--lameem-light);
+    /* same colour as the reviews band, so the padding between them is not a gap */
+    padding-block: theme('spacing.8');
+  }
+
+  salla-offer .s-offer-wrapper {
+    @apply container;
+    margin-bottom: 0;
+    border-radius: 0;
+    background-color: transparent;
+    padding-block: 0;
+  }
+}
