@@ -154,7 +154,7 @@ function CartItemInfo({ item }: { item: CartItemType }) {
   return (
     <div className="space-y-1">
       <div className="text-gray-900 leading-6 text-lg font-bold">
-        <Link to={item.url} className="text-base">
+        <Link to={item.url} className="cart-item__name text-base">
           {item.product_name}
         </Link>
       </div>
@@ -356,7 +356,7 @@ export function CartItem({ item, isFirst = false, onMutated }: CartItemProps) {
 
             <button
               type="button"
-              className="cart-item__delete shrink-0 text-gray-400 transition-colors"
+              className="cart-item__delete shrink-0 transition-colors"
               aria-label={t('common.elements.remove', 'Remove from the cart')}
               aria-busy={deleting}
               disabled={deleting}

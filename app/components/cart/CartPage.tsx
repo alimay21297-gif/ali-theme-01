@@ -141,7 +141,7 @@ function CartPageContent({ page }: CartPageProps) {
               {t('blocks.cart.products', 'Products')} ({cartData.items.length})
             </span>
             <span className="flex gap-6 md:gap-8">
-              <span className="w-[120px] text-center">
+              <span className="text-center">
                 {t('pages.products.quantity', 'Quantity')}
               </span>
               <span>{t('blocks.cart.item_total', 'Total')}</span>

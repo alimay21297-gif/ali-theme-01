@@ -2,9 +2,14 @@
   Cart page — column-heading row above flat item rows.
   Markup: app/components/cart/{CartPage,CartItem}.tsx
 */
+/* The quantity column: the stepper pill and its heading share this width.
+   136px = 2px border + 2px padding + two 44px buttons + a 44px number box. */
+$cart-qty-width: 8.5rem;
+
 .cart-titles {
   span span:first-child {
-    @apply w-[120px] text-center;
+    @apply text-center;
+    width: $cart-qty-width;
   }
 }
 
@@ -13,13 +18,56 @@
     @apply md:justify-end;
   }
 
-  /* line the stepper up under the "Quantity" heading (fixed 120px column) */
-  &__controls .s-quantity-input .s-quantity-input-container {
-    @apply w-[120px];
+  /* The shared stepper (quantity-stepper.scss) keeps its 32px buttons; in the cart
+     the − / + are 44px targets inside a 48px pill, the number box is 44px with a
+     keyboard ring, and the pill lines up under the "Quantity" heading. */
+  &__controls .s-quantity-input {
+    .s-quantity-input-container {
+      @apply h-12 gap-0 p-px;
+      width: $cart-qty-width;
+    }
+
+    .s-quantity-input-button {
+      @apply h-11 w-11;
+
+      svg {
+        @apply h-5 w-5;
+      }
+    }
+
+    .s-quantity-input-input {
+      @apply h-11 w-11;
+
+      /* the shared rule removes the ring on :focus; inputs are not in the global ring */
+      &:focus-visible {
+        outline: 2px solid var(--lameem-primary);
+        outline-offset: -2px;
+      }
+    }
   }
 
+  /* product name: the link keeps its text size; an invisible block widens the tap area to 44px */
+  &__name {
+    @apply relative inline-block;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset-inline: 0;
+      inset-block: -0.625rem;
+    }
+  }
+
+  /* 20px icon, 44×44 hit area: the box keeps its 20px layout width (the column
+     heading spacer is w-5) and the ::after reaches 12px past each side */
   &__delete {
-    @apply w-5;
+    @apply relative w-5 text-gray-500;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: -0.75rem;
+    }
 
     &:hover:not(:disabled) {
       color: var(--lameem-sale);
