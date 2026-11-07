@@ -331,7 +331,11 @@ body.footer-is-dark .store-footer--sheet {
 }
 
 .account-sheet .bottom-sheet__close {
-  @apply text-[#ff443a] hover:text-[#ff443a];
+  color: var(--lameem-sale);
+
+  &:hover {
+    color: var(--lameem-sale);
+  }
 
   svg {
     @apply h-6 w-6;
@@ -424,14 +428,14 @@ body.footer-is-dark .store-footer--sheet {
    marks it with this class on the `<li>` itself (always the last item --
    see salla-user-menu.tsx), not a separate wrapper. */
 .account-sheet__user-menu .s-user-menu-dropdown-item-logout .s-user-menu-dropdown-item-link {
-  @apply text-[#ff443a];
+  color: var(--lameem-sale);
 
   &:hover {
     @apply bg-red-50;
   }
 
   .s-user-menu-dropdown-item-prefix {
-    @apply text-[#ff443a];
+    color: var(--lameem-sale);
   }
 
   &::after {

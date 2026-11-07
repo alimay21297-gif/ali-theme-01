@@ -56,7 +56,7 @@ body:has(.profile-header) {
 .single-order-header-item {
   .s-button-small,
   .salla-button.salla-button--small {
-    @apply rounded-full;
+    @apply min-h-11 rounded-full;
 
     @media (min-width: 769px) {
       @apply px-5 py-2.5 text-sm;
@@ -85,7 +85,7 @@ body:has(.profile-header) {
        in product.scss target that utility in a compound selector, and Tailwind's
        `@apply` carries such rules over onto anything else applying the same
        utility, silently zeroing this pill's radius/padding. Plain CSS avoids it. */
-    @apply rounded-full border border-gray-200 px-4 py-2 text-sm text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900;
+    @apply inline-flex min-h-11 items-center rounded-full border border-gray-200 px-4 py-2 text-sm text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-900;
     background-color: white;
 
     &-active {
@@ -158,8 +158,7 @@ body:has(.profile-header) {
       &-icon {
         @apply mb-1;
         i {
-          color: #7c8082;
-          @apply text-xl;
+          @apply text-xl text-gray-500;
         }
       }
     }
@@ -239,6 +238,12 @@ body.thank-you #main-content:not(:has(salla-thank-you-page)) {
 .blog-single aside > [class~='rounded-md'][class~='p-5'] {
   padding: 0;
 }
+/* Notification rows are whole-row links (engine `NotificationsPage`); a one-line title
+   could leave one under 44px, so give them a floor. */
+.s-notifications-item {
+  @apply min-h-11;
+}
+
 /* Wishlist "Share" bar — dropdown (share the list / share specific items) and the
    selection mode that puts a checkbox on each card. Markup: theme-engine's
    account/wishlist/WishlistShare.tsx. */
@@ -274,8 +279,40 @@ body.thank-you #main-content:not(:has(salla-thank-you-page)) {
     @apply ring-2 ring-primary;
   }
 
-  .s-wishlist-select {
-    @apply h-5 w-5 accent-primary;
+  /* Selection checkbox: a native 20px box has no room for a 44px hit area (an input takes
+     no `::after`, and padding does not grow a native checkbox), so the input itself is the
+     44px target and its `::before` draws the same 20px box. The checked fill is still the
+     merchant colour (it was `accent-primary`). The tick is an inline SVG with the named
+     colour `white`. Specificity (3 classes on `:checked`) outranks the forms plugin's
+     `[type='checkbox']:checked`, so no `!important`. */
+  .s-wishlist-select,
+  .s-wishlist-select:checked {
+    @apply m-0 grid h-11 w-11 cursor-pointer place-content-center rounded-none border-0 bg-transparent p-0;
+    appearance: none;
+    background-image: none;
+    color: inherit;
+
+    &::before {
+      content: '';
+      @apply box-border h-5 w-5 rounded border-2 border-gray-500 bg-white bg-center bg-no-repeat;
+    }
+
+    &:focus-visible::before {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  .s-wishlist-select:checked::before {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-6.5' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-size: 100% 100%;
+  }
+
+  /* Sale price: the functional sale red, not the engine's text-red-400. */
+  h4.text-red-400 {
+    color: var(--lameem-sale);
   }
 
   /* `salla-add-product-button`'s own inner wrapper skips `w-full` whenever the
