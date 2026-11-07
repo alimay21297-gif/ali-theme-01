@@ -13,6 +13,7 @@ import { SallaInstallment } from '@salla.sa/twilight-components-react/installmen
 import { useHydrated } from '../../hooks/useHydrated';
 import { useMobileViewport } from '../../hooks/useMobileViewport';
 import { youtubeFacades } from '../../lib/descriptionVideos';
+import { sanitizeRichHtml } from '../../lib/sanitizeHtml';
 import { ProductMetadata } from './ProductMetadata';
 import { WishlistHeartButton } from './WishlistHeartButton';
 
@@ -259,8 +260,10 @@ function ProductDescription({ product }: { product: Product }) {
 
   if (!product.description) return null;
 
+  // Merchant HTML: sanitise first (allow-list), then lazy iframes, then YouTube thumbnails.
+  // `&nbsp;` is swapped before parsing, because the sanitiser would decode it to a raw U+00A0.
   const description = youtubeFacades(
-    lazyIframes(product.description.replace(/&nbsp;/g, '\n')),
+    lazyIframes(sanitizeRichHtml(product.description.replace(/&nbsp;/g, '\n'))),
     playingVideos,
     t('pages.products.play_video', 'Play video')
   );

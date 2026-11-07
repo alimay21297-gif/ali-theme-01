@@ -337,24 +337,23 @@ describe('ProductDetails brand logo', () => {
 });
 
 describe('ProductDetails description embeds', () => {
-  it('loads iframes lazily unless the merchant set their own loading', async () => {
+  it('keeps only YouTube / Vimeo players, all lazy-loaded whatever the merchant set', async () => {
     const description =
-      '<p>Intro</p><iframe class="ql-video" src="https://www.youtube.com/embed/x"></iframe>' +
+      '<p>Intro</p><iframe class="ql-video" src="https://player.vimeo.com/video/1"></iframe>' +
+      '<iframe loading="eager" src="https://player.vimeo.com/video/2"></iframe>' +
+      '<iframe title="A > B" loading = "eager" src="https://player.vimeo.com/video/3"></iframe>' +
       '<iframe loading="eager" src="https://maps.test/embed"></iframe>' +
-      '<iframe loading = "eager" src="https://maps.test/spaced"></iframe>' +
-      '<iframe title="A > B" loading="eager" src="https://maps.test/quoted"></iframe>' +
-      '<iframe title="no loading=here" src="https://player.vimeo.com/video/1"></iframe>';
+      '<iframe src="https://www.youtube.com/embed/x"></iframe>';
     const { container } = render(<ProductDetails product={makeProduct({ description })} />);
 
     const frames = () => [...container.querySelectorAll('.product__description iframe')];
-    await waitFor(() => expect(frames()).toHaveLength(5));
-    expect(frames().map((frame) => frame.getAttribute('loading'))).toEqual([
-      'lazy',
-      'eager',
-      'eager',
-      'eager',
-      'lazy',
+    await waitFor(() => expect(frames()).toHaveLength(3));
+    expect(frames().map((frame) => frame.getAttribute('src'))).toEqual([
+      'https://player.vimeo.com/video/1',
+      'https://player.vimeo.com/video/2',
+      'https://player.vimeo.com/video/3',
     ]);
+    expect(frames().map((frame) => frame.getAttribute('loading'))).toEqual(['lazy', 'lazy', 'lazy']);
   });
 
   it('shows a YouTube video as a thumbnail and loads the player only once it is played', async () => {

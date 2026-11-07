@@ -23,6 +23,7 @@
     "@tanstack/virtual-file-routes": "~1.162.0",
     "@uidotdev/usehooks": "^2.4.1",
     "fslightbox": "^3.8.0",
+    "htmlparser2": "^12.0.0",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
