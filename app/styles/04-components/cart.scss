@@ -109,6 +109,13 @@ $cart-qty-width: 8.5rem;
   @apply lg:ms-[112px];
 }
 
+/* The product-name link's 44px tap area (::after) reaches over the options below;
+   the panel sits above it so its chips keep their clicks. */
+.cart-item .options-panel {
+  position: relative;
+  z-index: 10;
+}
+
 /*
   Sidebar cards (engine): loyalty, gifting, free-shipping and Order Summary all
   carry `shadow-default bg-white`. On the cart page they take the same white card

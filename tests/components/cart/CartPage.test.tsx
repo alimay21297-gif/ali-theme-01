@@ -221,6 +221,8 @@ describe('CartPage', () => {
       await waitFor(() =>
         expect(getByRole('heading', { name: 'blocks.cart.empty_title' })).toBeTruthy()
       );
+      // the sr-only page heading comes first, so the visible <h2> is not the first heading
+      expect(getByRole('heading', { level: 1 }).textContent).toBe('common.titles.cart');
       expect(queryByTestId('skeleton')).toBeNull();
     });
   });

@@ -83,10 +83,15 @@ function CartPageContent({ page }: CartPageProps) {
   // The SDK knew of no cart, or the API no longer has it.
   const noCart = (cartIdQuery.isSuccess && cartId == null) || cartGone;
 
+  // The page's first heading in every state, so the visible <h2> of the empty and
+  // error states is never the first one on the page.
+  const pageHeading = <h1 className="sr-only">{t('common.titles.cart', 'Cart')}</h1>;
+
   if (failed) {
     return (
       <div className="container">
         <Breadcrumb page={page} />
+        {pageHeading}
         <EmptyState
           icon={<ShoppingBagIcon />}
           title={t('common.errors.error_occurred', 'Something went wrong')}
@@ -115,6 +120,7 @@ function CartPageContent({ page }: CartPageProps) {
     return (
       <div className="container">
         <Breadcrumb page={page} />
+        {pageHeading}
         <CartEmpty />
       </div>
     );
@@ -126,7 +132,7 @@ function CartPageContent({ page }: CartPageProps) {
       <SeoCartWidget cart={cartData} />
 
       <Breadcrumb page={page} />
-      <h1 className="sr-only">{t('common.titles.cart', 'Cart')}</h1>
+      {pageHeading}
       <SallaConditionalOffer />
 
       <HookSlot name="cart:start" />
