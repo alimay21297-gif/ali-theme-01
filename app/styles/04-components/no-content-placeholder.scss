@@ -10,6 +10,36 @@
     }
 }
 
+/*
+  The engine `NoContent` (brands, blog lists, wishlist, wallet, notifications, the home
+  LatestProducts fallback) looks like our `EmptyState`: an icon in a `--lameem-light`
+  circle, readable gray-600 text and the link as a 44px brand pill. `:not(.s-empty-state)`
+  keeps this off our own `EmptyState`, which carries the same class and is styled in
+  `empty-state.scss`. The layout rule above stays shared. The icon is an icon-font `<i>`
+  and the engine gives it no heading, so this stays a restyle, not a rebuild.
+*/
+.no-content-placeholder:not(.s-empty-state) {
+  @apply px-4 text-center;
+
+  .icon {
+    @apply mb-4 h-24 w-24 text-4xl text-gray-500;
+    background-color: var(--lameem-light);
+  }
+
+  p {
+    @apply mb-6 max-w-sm text-base text-gray-600;
+  }
+
+  .btn {
+    @apply inline-flex min-h-11 items-center justify-center rounded-full border-0 px-6 text-sm font-bold text-white transition-colors;
+    background-color: var(--lameem-primary);
+
+    &:hover {
+      background-color: var(--lameem-glow);
+    }
+  }
+}
+
 // ItemsList empty state styling
 .s-items-list-empty {
   @apply w-full min-h-[200px] flex items-center justify-center;

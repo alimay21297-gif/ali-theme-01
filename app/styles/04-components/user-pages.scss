@@ -203,7 +203,7 @@ body.thank-you #main-content:not(:has(salla-thank-you-page)) {
   @apply flex items-center gap-2;
   salla-button {
     button {
-      @apply rounded mx-0 w-8 h-8 #{!important}
+      @apply rounded mx-0 w-11 h-11 #{!important}
     }
   }
 }
@@ -213,6 +213,22 @@ body.thank-you #main-content:not(:has(salla-thank-you-page)) {
 */
 .blog-single .s-comments-item-user-info-name{
   @apply mx-0
+}
+
+/* 44px tap targets for the article's like button and the tags "+N" toggle (engine
+   `BlogSinglePage` / `BlogTags`). They only add a minimum size, so the engine's own
+   classes (padding, colour, flex) are not fought. */
+#blog-like {
+  @apply min-h-11 min-w-11 justify-center px-2;
+}
+
+.s-blog-tags .s-blog-tags-more {
+  @apply inline-flex min-h-11 min-w-11 items-center justify-center;
+}
+
+/* The tag links are inline-flex pills already; only the height grows. */
+.s-blog-tags .s-blog-tags-item {
+  @apply min-h-11;
 }
 
 /* Related articles in the sidebar (theme-engine's blog/BlogSinglePage.tsx):
