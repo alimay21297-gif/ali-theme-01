@@ -2,48 +2,91 @@
    Product reviews — restyle of the engine `<salla-comments>` web component
    (light DOM, `.s-*` classes) to a card layout:
 
-     · desktop: rating summary in a sticky left rail, review list on the right
-     · summary: big average + brown stars, brown breakdown bars
-     · each review: avatar + name row, a compact star pill at the inline-start,
+     · the section is a `--lameem-light` band (like the home reviews); the
+       summary, the form and every review are white cards
+     · desktop: rating summary in a sticky rail beside the review list
+     · summary: big average + amber stars, amber breakdown bars
+     · each review: avatar + name row, a compact star pill at the inline-end,
        body text, and a footer strip (ghost "helpful" button + date)
+     · 0 reviews: no empty header strip, one white "no reviews yet" card
 
    Nothing here changes markup — it's all overrides on the classes the
-   component renders. Scoped to `.s-comments-product` so the account-page /
-   blog comment lists keep the engine look. Mounted from
-   `app/components/product/ProductPage.tsx`.
+   component renders (light DOM). Scoped to `.s-comments-product` so the
+   account-page / blog comment lists keep the engine look. Mounted from
+   `app/components/product/ProductPage.tsx`. The review "Submit" and the
+   "Rate product" button keep the merchant colour: only size and layout here.
    ========================================================================= */
 
 .s-comments-product {
-  /* Rating accent — a warm brown that reads as "rating" regardless of the
-     store's primary colour (same rationale as the cart-count badge). */
-  --rev-accent: theme("colors.amber.400");
-  --rev-accent-d: theme("colors.amber.600");
-  --rev-line: theme("colors.gray.100");
-  --rev-muted: theme("colors.gray.400");
-  --rev-ink: theme("colors.gray.800");
+  /* Stars: the same filled / empty colours as the home reviews cards (tokens in
+     01-settings/global.scss). Amber is a functional rating colour, not the brand. */
+  --rev-accent: var(--lameem-star-on);
+  --rev-star-off: var(--lameem-star-off);
+  /* amber-800 (7:1) for the few places where amber is TEXT (liked / hover) */
+  --rev-accent-text: theme("colors.amber.800");
+  --rev-line: theme("colors.gray.200");
+  --rev-muted: theme("colors.gray.600");
+  --rev-ink: var(--lameem-ink);
+  /* Same brand-tinted field border as product-options.scss / gifting.scss. */
+  --rev-field-border: color-mix(in srgb, var(--lameem-primary) 55%, white);
 
-  /* ---- section heading + comment form (full-width band) ---------------- */
+  /* Section surface: the light band of the home reviews, white cards on top. */
+  background-color: var(--lameem-light);
+  @apply py-8 md:py-14;
+
+  .s-comments-container {
+    @apply container;
+  }
+
+  /* ---- section heading + comment form --------------------------------- */
   .s-comments-title {
     @apply mb-5 text-xl font-bold;
     color: var(--rev-ink);
   }
 
-  .s-comment-form-input {
-    @apply w-full rounded border border-gray-200 px-4 py-3 text-sm;
+  .s-comment-form-wrapper {
+    @apply mb-6 rounded-2xl bg-white p-4 md:p-5;
+    box-shadow: var(--lameem-card-shadow);
+  }
 
-    &:focus {
-      @apply outline-none;
-      border-color: var(--rev-accent);
+  .s-comment-form-input {
+    @apply w-full rounded border bg-white px-4 py-3 text-sm;
+    min-height: 6rem;
+    border-color: var(--rev-field-border);
+    color: var(--rev-ink);
+    transition: border-color 0.15s;
+
+    &:hover {
+      border-color: var(--lameem-primary);
+    }
+
+    &:focus,
+    &:focus-visible {
+      border-color: var(--lameem-primary);
+      box-shadow: none;
+      outline: 2px solid var(--lameem-primary);
+      outline-offset: 2px;
     }
   }
 
   .s-comment-form-action {
-    @apply mt-3;
+    @apply mb-0 mt-3;
+
+    /* 44px target; the colour stays the merchant's */
+    salla-button button {
+      min-height: 2.75rem;
+    }
   }
 
   /* ---- two-column layout (desktop) ----------------------------------- */
+  /* Without a rendered summary (0 reviews, or the store hides it) there is only
+     one column: keep it a readable width instead of leaving half the row blank. */
+  .s-comments-container:not(:has(> salla-reviews-summary > *)) {
+    max-width: 48rem;
+  }
+
   @media (min-width: 1024px) {
-    .s-comments-container {
+    .s-comments-container:has(> salla-reviews-summary > *) {
       display: grid;
       /* two equal halves — list track first (inline-start), summary last */
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -70,7 +113,8 @@
 
   /* ---- rating summary ------------------------------------------------- */
   .s-reviews-summary-wrapper {
-    @apply block;
+    @apply mb-6 block rounded-2xl bg-white p-5 md:p-6;
+    box-shadow: var(--lameem-card-shadow);
   }
 
   .s-reviews-summary-header {
@@ -184,9 +228,14 @@
     }
   }
 
-  /* brown stars in the summary's big rating */
-  .s-reviews-summary-overall-row .s-rating-stars-btn-star.s-rating-stars-selected {
-    fill: var(--rev-accent);
+  /* every star in the section (summary and reviews): filled amber, empty gray.
+     The component's own empty star is #d1d5db (1.5:1) and its filled one #fbbf24. */
+  .s-rating-stars-btn-star {
+    fill: var(--rev-star-off);
+
+    &.s-rating-stars-selected {
+      fill: var(--rev-accent);
+    }
   }
 
   /* ---- list header ("N تعليقات" + sort) ----------------------------- */
@@ -194,8 +243,9 @@
     @apply mb-4 flex items-center justify-between border-b pb-3;
     border-color: var(--rev-line);
 
-    &.has-total {
-      @apply flex;
+    /* 0 reviews: no count and no sort, so no empty strip with a rule under it */
+    &:not(.has-total) {
+      display: none;
     }
   }
 
@@ -214,7 +264,22 @@
   }
 
   .s-comments-sort-input {
-    @apply rounded-full border border-gray-200 bg-white py-1.5 pe-8 ps-3.5 text-xs;
+    @apply rounded-full border bg-white pe-8 ps-3.5 text-xs;
+    min-height: 2.75rem;
+    border-color: var(--rev-field-border);
+    color: var(--rev-ink);
+
+    &:hover {
+      border-color: var(--lameem-primary);
+    }
+
+    &:focus,
+    &:focus-visible {
+      border-color: var(--lameem-primary);
+      box-shadow: none;
+      outline: 2px solid var(--lameem-primary);
+      outline-offset: 2px;
+    }
   }
 
   .s-translate-all-wrap {
@@ -223,11 +288,8 @@
 
   /* ---- one review --------------------------------------------------- */
   .s-comments-item {
-    @apply block mb-6 pb-6;
-
-    &:not(:last-child) {
-      border-bottom: 1px solid var(--rev-line);
-    }
+    @apply mb-4 block rounded-2xl bg-white p-5 md:p-6;
+    box-shadow: var(--lameem-card-shadow);
   }
 
   .s-comments-item-wrapper {
@@ -304,10 +366,6 @@
         @apply h-3 w-3;
       }
     }
-
-    .s-rating-stars-btn-star.s-rating-stars-selected {
-      fill: var(--rev-accent);
-    }
   }
 
   /* the factors toggle ("التفاصيل ⌃"), when a review has rating factors */
@@ -339,12 +397,15 @@
 
   .s-comments-item-like-btn .s-button-btn {
     @apply h-auto gap-1.5 border-0 p-0 text-xs;
+    /* 44px target around the small ghost label */
+    min-height: 2.75rem;
+    padding-inline: 0.5rem;
     background: transparent !important;
     color: var(--rev-muted) !important;
 
     &:hover {
       background: transparent !important;
-      color: var(--rev-accent) !important;
+      color: var(--rev-accent-text) !important;
       opacity: 1;
     }
 
@@ -359,11 +420,13 @@
   }
 
   .s-comments-item-like-btn.liked .s-button-btn {
-    color: var(--rev-accent-d) !important;
+    color: var(--rev-accent-text) !important;
   }
 
+  /* gray-600 at full strength: at 60% opacity the date failed contrast */
   .s-comments-item-timestamp {
-    @apply m-0 text-xs opacity-60;
+    @apply m-0 text-xs;
+    color: var(--rev-muted);
   }
 
   /* "- HH:MM" tail — drop it, the date alone is enough */
@@ -377,6 +440,57 @@
       color: var(--rev-accent);
       fill: var(--rev-accent);
     }
+  }
+
+  /* ---- 0 reviews ------------------------------------------------------
+     The component renders `.s-comments-placeholder` (a chat-bubble icon in a
+     big gray circle and a gray-400 line) inside the list wrapper. It becomes
+     one centred white card: a smaller icon circle, readable gray-600 text. With
+     no summary and no title (nothing to show yet) this card, plus the comment
+     form for customers who may review, is the whole section. */
+  .s-comments-placeholder {
+    @apply rounded-2xl bg-white px-6 py-10 text-center;
+    box-shadow: var(--lameem-card-shadow);
+    color: var(--rev-muted);
+
+    span {
+      @apply mb-3 h-20 w-20;
+      background-color: var(--lameem-light);
+
+      svg {
+        @apply h-10 w-10;
+        fill: var(--lameem-muted);
+      }
+    }
+
+    p {
+      @apply m-0 pt-0 text-base;
+      color: var(--rev-muted);
+    }
+  }
+}
+
+/* The "Rate this product" card (`<salla-verified-review>`, light DOM, shown to
+   signed-in customers): its glow and badge tint come from the merchant colour
+   (pink on the dev store); here they take the brand green. The button keeps the
+   merchant colour and only gets a 44px height. Prefixed with the element so
+   these beat the component's own runtime-injected rules without `!important`. */
+salla-verified-review {
+  .s-verified-review-glow {
+    background: var(--lameem-primary);
+  }
+
+  .s-verified-review-badge {
+    background: color-mix(in srgb, var(--lameem-primary) 10%, transparent);
+    color: var(--lameem-primary);
+  }
+
+  .s-verified-review-image {
+    background: var(--lameem-light);
+  }
+
+  .s-verified-review-cta button {
+    min-height: 2.75rem;
   }
 }
 

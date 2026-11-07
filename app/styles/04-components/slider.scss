@@ -236,29 +236,6 @@ salla-slider{
 }
 
 
-// Offer slider
-.offer-slider .s-slider-block__title{
-  @apply mb-5 relative; 
-
-  &:before{
-    @apply text-5xl font-normal text-red-50 absolute leading-none top-4 rtl:right-0 ltr:left-0;
-    content: "\ee30";
-    font-family: 'sallaicons';
-  }
-
-  h2{
-    @apply text-lg text-red-400;
-  }
-
-  p{
-    @apply mt-1 leading-6 line-clamp-none;
-  }
-}
-
-.bank-offer .s-slider-block__title {
-  @apply hidden;
-}
-
 // move to slider component
 model-viewer[style*="width"]:before{
   @apply hidden;

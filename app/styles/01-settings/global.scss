@@ -31,6 +31,11 @@ $main-text-color: var(--main-text-color);
   /* Functional sale colour (Tailwind red-700, 6.5:1 on white), like the gold stars:
      independent of the merchant --color-primary; used for sale prices and the promotion badge. */
   --lameem-sale: #b91c1c;
+  /* Rating stars, shared by the home reviews cards and the product page reviews:
+     filled = Tailwind amber-600 (3.2:1), empty = gray-500 (4.8:1). Review cards share one soft shadow. */
+  --lameem-star-on: #d97706;
+  --lameem-star-off: #6b7280;
+  --lameem-card-shadow: 0 4px 20px rgb(17 17 17 / 7%);
 
   --infinte-color: #c9c9c9;
   --main-text-color: var(--lameem-ink);

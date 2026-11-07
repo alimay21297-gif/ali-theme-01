@@ -1,0 +1,38 @@
+/*
+  <salla-offer> ("عروض المنتج" band) in LAMEEM tokens. The component is light DOM
+  and ships `.s-offer-wrapper` with a pink Tailwind red-50 ground; it renders on
+  the product page and also on the cart page, so the band looks the same in both.
+
+  The component's CSS is injected at runtime after the theme's, so every rule is
+  prefixed with the `salla-offer` element: one element more specific, no
+  `!important`. Colours come from --lameem-*, never the merchant --color-primary.
+  Only the band, its cards and its text direction are set here; the slider
+  controls and the "all offers" drawer keep the component's look.
+*/
+salla-offer {
+  /* pink band -> the light section surface, white cards on top (like the reviews) */
+  .s-offer-wrapper {
+    background-color: var(--lameem-light);
+  }
+
+  /* a faint sallaicons watermark behind the title, painted in the old pink so it
+     was invisible against it; on the new surface it would show, so it goes */
+  .s-offer-wrapper .s-slider-block__title::before {
+    content: none;
+  }
+
+  .s-offer-card {
+    border-radius: var(--s-radius);
+    box-shadow: var(--lameem-card-shadow);
+  }
+
+  .s-offer-card-icon {
+    background-color: var(--lameem-light);
+    color: var(--lameem-primary);
+  }
+
+  /* the component hard-codes `text-align: right`, which is the wrong side in English */
+  .s-offer-card-content {
+    text-align: start;
+  }
+}

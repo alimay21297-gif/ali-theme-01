@@ -1267,7 +1267,7 @@ salla-reviews:not(:has(.s-reviews-swiper-slide)) {
 /* Three whole cards on desktop; with one or two the row is centred and the cards keep their width. */
 .testimonial-card {
   @apply m-0 flex flex-col gap-4 rounded-2xl bg-white p-5 lg:p-7;
-  box-shadow: 0 4px 20px rgb(17 17 17 / 7%);
+  box-shadow: var(--lameem-card-shadow);
   flex: 1 0 calc(100% - 2.5rem);
   scroll-snap-align: start;
 
@@ -1293,10 +1293,11 @@ salla-reviews:not(:has(.s-reviews-swiper-slide)) {
     @apply inline-flex shrink-0 gap-0.5;
 
     svg {
-      @apply h-4 w-4 fill-current text-gray-500 lg:h-[18px] lg:w-[18px];
+      @apply h-4 w-4 fill-current lg:h-[18px] lg:w-[18px];
+      color: var(--lameem-star-off);
 
       &.is-on {
-        @apply text-amber-600;
+        color: var(--lameem-star-on);
       }
     }
   }

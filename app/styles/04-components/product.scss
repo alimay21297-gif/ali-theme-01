@@ -15,18 +15,9 @@
   }
 }
 
-.s-comments {
-  &-page {
-    @apply pt-16;
-  }
-
-  &-product {
-    @apply border-y border-gray-200 py-4 md:py-14;
-
-    .s-comments-container {
-      @apply container;
-    }
-  }
+// Product-page reviews (`.s-comments-product`) are styled in reviews.scss.
+.s-comments-page {
+  @apply pt-16;
 }
 
 // share list
