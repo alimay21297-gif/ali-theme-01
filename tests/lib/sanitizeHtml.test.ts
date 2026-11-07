@@ -130,6 +130,35 @@ describe('sanitizeRichHtml', () => {
     expect(sanitizeRichHtml('<iframe srcdoc="<script>1</script>"></iframe>')).toBe('');
   });
 
+  it('keeps a Google Maps embed and forces referrer policy and lazy loading', () => {
+    const src = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3624.5!2d46.67!3d24.71';
+    const out = sanitizeRichHtml(`<iframe src="${src}" width="600" height="450" allowfullscreen loading="eager"></iframe>`);
+    expect(out).toContain(`src="${src}"`);
+    expect(out).toContain('referrerpolicy="strict-origin-when-cross-origin"');
+    expect(out).toContain('loading="lazy"');
+    expect(out).not.toContain('eager');
+  });
+
+  it('drops Google Maps look-alikes and other Google paths', () => {
+    for (const src of [
+      'https://www.google.com/maps/place/Riyadh',
+      'https://www.google.com/maps/embed',
+      'https://www.google.com/maps/embed/v1/place?key=x',
+      'https://www.google.com/maps/embed?pb=1 onload=x',
+      'http://www.google.com/maps/embed?pb=1',
+      'https://evil.com/maps/embed?pb=1',
+      'https://www.google.com.evil.com/maps/embed?pb=1',
+      'https://google.com/maps/embed?pb=1',
+      'https://www.google.com/maps/embed?pb=<script>',
+    ]) {
+      expect(sanitizeRichHtml(`<p>k</p><iframe src="${src}"></iframe>`), src).toBe('<p>k</p>');
+    }
+  });
+
+  it('does not allow a Google Maps embed in inline mode', () => {
+    expect(sanitizeInlineHtml('<iframe src="https://www.google.com/maps/embed?pb=1"></iframe>')).toBe('');
+  });
+
   it('strips srcdoc and sandbox-ish extras from an allowed iframe', () => {
     const out = sanitizeRichHtml(`<iframe src="${YT}" srcdoc="<b>x</b>" onload="x()"></iframe>`);
     expect(out).not.toMatch(/srcdoc|onload/);

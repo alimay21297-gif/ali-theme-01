@@ -27,11 +27,13 @@ const DROP_WITH_CONTENT = new Set([
 
 const LINK_SCHEMES = new Set(['http', 'https', 'mailto', 'tel']);
 
-/** The only players that may be embedded. The id part is checked, not just the host. */
+/** The only embeds allowed (players and a Google map). The path/id is checked, not just the host. */
 const IFRAME_SRC = [
   /^https:\/\/www\.youtube\.com\/embed\/[\w-]{11}(?:[?#]\S*)?$/,
   /^https:\/\/www\.youtube-nocookie\.com\/embed\/[\w-]{11}(?:[?#]\S*)?$/,
   /^https:\/\/player\.vimeo\.com\/video\/\d+(?:[?#]\S*)?$/,
+  // Google Maps "Share > Embed a map": that host and that exact path, then query characters only.
+  /^https:\/\/www\.google\.com\/maps\/embed\?[\w\-.~%!$&'()*+,;=:@/?]+$/,
 ];
 
 /** `allow` features a player may ask for; anything else is dropped from the list. */

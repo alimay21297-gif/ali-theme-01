@@ -95,6 +95,28 @@ describe('PageSingle', () => {
       expect(comments?.getAttribute('data-item-id')).toBe('42');
     });
 
+    it('keeps formatting and links but drops script and event handlers from the content', () => {
+      const { container } = render(
+        <PageSingle
+          page={makePage({
+            content:
+              '<p>Hi&nbsp;<strong>bold</strong> <a href="https://a.com/x">link</a></p>' +
+              '<script>window.pwned=1</script><img src="https://a.com/i.png" onerror="window.pwned=2">' +
+              '<a href="javascript:alert(1)" onclick="x()">bad</a>',
+          })}
+        />
+      );
+
+      const content = container.querySelector('.content-entry') as HTMLElement;
+      expect(content.querySelector('script')).toBeNull();
+      expect(content.innerHTML).not.toMatch(/onerror|onclick|javascript:|pwned/);
+      expect(content.querySelector('strong')?.textContent).toBe('bold');
+      expect(content.querySelector('a[href="https://a.com/x"]')?.textContent).toBe('link');
+      expect(content.querySelector('img')?.getAttribute('src')).toBe('https://a.com/i.png');
+      // the `&nbsp;` swap still happens before the sanitiser
+      expect(content.textContent).toContain('Hi bold');
+    });
+
     it('omits the content block when the page has no content', () => {
       const { container } = render(<PageSingle page={makePage({ content: undefined })} />);
       expect(container.querySelector('.content-entry')).toBeNull();

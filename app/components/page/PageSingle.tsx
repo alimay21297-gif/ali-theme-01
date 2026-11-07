@@ -4,6 +4,7 @@ import type { StaticPage } from '@salla.sa/twilight-theme-engine/routes/page';
 import { Breadcrumb } from '@salla.sa/twilight-theme-engine/common';
 import { useComments } from '@salla.sa/twilight-theme-engine/hooks/useComments';
 import { BlockHookSlot } from '../common';
+import { sanitizeRichHtml } from '../../lib/sanitizeHtml';
 
 /** Engine `StaticPage` plus the `type` our forked loader threads through. */
 export type PageWithType = StaticPage & { type?: string };
@@ -26,9 +27,10 @@ export interface PageSingleProps {
 export function PageSingle({ page }: PageSingleProps) {
   const { commentsKey } = useComments();
 
-  // Matches the engine: strip `&nbsp;` from the merchant-authored HTML.
+  // Matches the engine: strip `&nbsp;` from the merchant-authored HTML, then allow-list it
+  // (the page body is merchant input and is injected as HTML).
   const cleanContent = useMemo(
-    () => (page.content ? page.content.replace(/&nbsp;/g, ' ') : ''),
+    () => (page.content ? sanitizeRichHtml(page.content.replace(/&nbsp;/g, ' ')) : ''),
     [page.content]
   );
 
