@@ -4,13 +4,16 @@ import { SallaConditionalOffer } from '@salla.sa/twilight-components-react/condi
 import { SallaOffer } from '@salla.sa/twilight-components-react/offer';
 import { HookSlot, usePageConfig } from '@salla.sa/twilight-theme-engine/hooks';
 import { useTranslation } from '@salla.sa/twilight-theme-engine/i18n';
-import { Breadcrumb, NoContent } from '@salla.sa/twilight-theme-engine/common';
+import { Breadcrumb } from '@salla.sa/twilight-theme-engine/common';
 import { CartSummary, SeoCartWidget } from '@salla.sa/twilight-theme-engine/cart';
 import { useTwilight } from '@salla.sa/twilight-theme-engine/providers';
 import { CartSkeleton } from '@salla.sa/twilight-theme-engine/skeleton';
 import { loyalty } from '@salla.sa/twilight-theme-engine/api/loyalty';
 import { cart } from '@salla.sa/twilight-theme-engine/api/cart';
 import type { CartPageProps } from '@salla.sa/twilight-theme-engine/routes/cart';
+import { ShoppingBagIcon } from '../icons';
+import { EmptyState } from '../common/EmptyState';
+import { CartEmpty } from './CartEmpty';
 import { CartItem } from './CartItem';
 
 /** Whether a failed request was answered 404 (the engine's API client throws ky's `HTTPError`). */
@@ -84,12 +87,13 @@ function CartPageContent({ page }: CartPageProps) {
     return (
       <div className="container">
         <Breadcrumb page={page} />
-        <div className="no-content-placeholder">
-          <i className="sicon-shopping-bag icon"></i>
-          <p>{t('common.errors.error_occurred', 'Something went wrong')}</p>
+        <EmptyState
+          icon={<ShoppingBagIcon />}
+          title={t('common.errors.error_occurred', 'Something went wrong')}
+        >
           <button
             type="button"
-            className="btn btn--outline-primary btn--rounded-full"
+            className="s-empty-state__action"
             onClick={() => {
               if (cartIdQuery.isError) cartIdQuery.refetch();
               else cartQuery.refetch();
@@ -97,7 +101,7 @@ function CartPageContent({ page }: CartPageProps) {
           >
             {t('common.elements.try_again', 'Try again')}
           </button>
-        </div>
+        </EmptyState>
       </div>
     );
   }
@@ -111,12 +115,7 @@ function CartPageContent({ page }: CartPageProps) {
     return (
       <div className="container">
         <Breadcrumb page={page} />
-        <NoContent
-          icon="sicon-shopping-bag"
-          message={t('pages.cart.empty_cart', 'Your cart is empty')}
-          actionLabel={t('common.elements.back_home', 'Back to Home')}
-          actionUrl="/"
-        />
+        <CartEmpty />
       </div>
     );
   }

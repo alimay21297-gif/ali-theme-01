@@ -52,7 +52,6 @@ vi.mock('@salla.sa/twilight-theme-engine/i18n', () => ({
 }));
 vi.mock('@salla.sa/twilight-theme-engine/common', () => ({
   Breadcrumb: () => null,
-  NoContent: ({ message }: { message: string }) => <p data-testid="cart-empty-message">{message}</p>,
   Link: ({ children }: { children?: unknown }) => <a>{children as never}</a>,
   Image: () => <img alt="" />,
 }));
@@ -198,10 +197,10 @@ describe('CartPage', () => {
       cartError = Object.assign(new Error('Request failed with status code 404'), {
         response: { status: 404 },
       });
-      const { getByTestId, queryByText } = renderPage();
+      const { getByRole, queryByText } = renderPage();
 
       await waitFor(() =>
-        expect(getByTestId('cart-empty-message').textContent).toBe('pages.cart.empty_cart')
+        expect(getByRole('heading', { name: 'blocks.cart.empty_title' })).toBeTruthy()
       );
       expect(reset).toHaveBeenCalledTimes(1);
       expect(queryByText('common.errors.error_occurred')).toBeNull();
@@ -217,10 +216,10 @@ describe('CartPage', () => {
 
     it('shows the empty cart, not the skeleton, when the SDK knows of no cart', async () => {
       getCurrentCartId.mockImplementation(() => Promise.resolve(null));
-      const { getByTestId, queryByTestId } = renderPage();
+      const { getByRole, queryByTestId } = renderPage();
 
       await waitFor(() =>
-        expect(getByTestId('cart-empty-message').textContent).toBe('pages.cart.empty_cart')
+        expect(getByRole('heading', { name: 'blocks.cart.empty_title' })).toBeTruthy()
       );
       expect(queryByTestId('skeleton')).toBeNull();
     });

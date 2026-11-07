@@ -46,7 +46,7 @@ describe('ListingEmpty', () => {
 
   it('hides the decorative icon from assistive tech', () => {
     const { container } = render(<ListingEmpty hasFilters />);
-    expect(container.querySelector('.s-listing-empty__icon')?.getAttribute('aria-hidden')).toBe(
+    expect(container.querySelector('.s-empty-state__icon')?.getAttribute('aria-hidden')).toBe(
       'true'
     );
   });

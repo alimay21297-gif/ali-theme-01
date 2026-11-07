@@ -196,44 +196,7 @@
   }
 }
 
-/* Empty state (`ListingEmpty.tsx`): centred, gray-400 decorative icon, Readex Pro
-   heading, one line, then the "Clear filters" pill (44px, brand green, white
-   text, the global focus ring) or, with no filters active, a plain link. */
-.s-listing-page .s-listing-empty {
-  @apply w-full px-4 pb-16 pt-10 text-center;
-
-  &__icon {
-    @apply mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-gray-100 text-gray-400;
-
-    svg {
-      @apply h-10 w-10;
-    }
-  }
-
-  &__title {
-    @apply mb-2 text-xl font-bold;
-    color: var(--lameem-ink);
-    font-family: var(--lameem-font-display);
-  }
-
-  p.s-listing-empty__hint {
-    @apply mb-6 max-w-sm text-base text-gray-600;
-  }
-
-  &__action {
-    @apply inline-flex min-h-11 items-center justify-center rounded-full px-6 text-sm font-bold text-white transition-colors;
-    background-color: var(--lameem-primary);
-
-    &:hover {
-      background-color: var(--lameem-glow);
-    }
-  }
-
-  &__link {
-    @apply inline-flex min-h-11 items-center px-2 text-sm font-bold underline underline-offset-4;
-    color: var(--lameem-primary);
-  }
-}
+/* The listing's empty state is the shared `EmptyState` (`empty-state.scss`). */
 
 /* Filter retry button: brand green here only, `.link--primary` stays global. */
 .s-listing-page .link--primary {
