@@ -21,9 +21,23 @@
   &__delete {
     @apply w-5;
 
+    &:hover:not(:disabled) {
+      color: var(--lameem-sale);
+    }
+
     &:disabled {
       @apply cursor-wait;
     }
+  }
+
+  /* discounted unit price: the brand sale colour (6.5:1 on white), not the merchant colour */
+  .item-price--discount {
+    color: var(--lameem-sale);
+  }
+
+  /* "Free" corner ribbon on a gifted line; white text on the sale colour is 6.5:1 */
+  .free-ribbon {
+    background-color: var(--lameem-sale);
   }
 
   /* spinner shown in place of the trash icon while the row is being removed */
@@ -48,14 +62,22 @@
 }
 
 /*
-  Sidebar cards (engine): the Order Summary box (`… transition-height`) and the
-  free-shipping progress box (`#free-shipping`) — flat and gray instead of the
-  default white drop-shadow card.
+  Sidebar cards (engine): loyalty, gifting, free-shipping and Order Summary all
+  carry `shadow-default bg-white`. On the cart page they take the same white card
+  as the product page (`--lameem-card-shadow`, theme radius). `.cart-page` is a
+  class on the populated cart's root in CartPage.tsx, replacing the old `.cart …`
+  selectors (no theme or engine source sets a `cart` class on <body>).
 */
-#cart-gifting,
-.cart .shadow-default.transition-height,
-.cart #free-shipping {
-  @apply bg-gray-100 shadow-none rounded;
+.cart-page .shadow-default {
+  border-radius: var(--s-radius);
+  box-shadow: var(--lameem-card-shadow);
+}
+
+/* `<salla-conditional-offer>` is light DOM; its band is a 7% tint of the merchant
+   colour (pink on the dev store). The element prefix beats the component's own
+   class rule, which is injected after the theme's. */
+salla-conditional-offer .s-conditional-offer-root {
+  background-color: var(--lameem-light);
 }
 
 #cart-gifting .s-gifting-widget .s-list-tile-item{
@@ -67,8 +89,8 @@ salla-list-tile.s-gifting-widget .s-list-tile-item-content::before{
 }
 
 /* Free-shipping progress track (engine default `bg-border-color`) — darken it so
-   it reads against the now-gray card behind it. The fill stays `bg-primary`. */
-.cart #free-shipping-bar {
+   it reads against the white card behind it. The fill stays `bg-primary`. */
+.cart-page #free-shipping-bar {
   @apply bg-gray-200;
 }
 

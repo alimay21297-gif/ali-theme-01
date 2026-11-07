@@ -177,7 +177,7 @@ function CartItemInfo({ item }: { item: CartItemType }) {
         )}
 
         <span
-          className={`inline-flex gap-1 leading-4 item-price ${item.has_discount ? 'text-red-800' : 'text-sm text-gray-500'}`}
+          className={`inline-flex gap-1 leading-4 item-price ${item.has_discount ? 'item-price--discount' : 'text-sm text-gray-500'}`}
         >
           {format(toNumber(item.price), { currency: moneyCurrency(item.price) })}
         </span>
@@ -336,7 +336,7 @@ export function CartItem({ item, isFirst = false, onMutated }: CartItemProps) {
               />
 
               {isFreeProduct && (
-                <div className="free-ribbon absolute top-[11px] right-[-38px] w-32 bg-red-600 text-white text-xs font-bold text-center py-1 rotate-45 shadow-md">
+                <div className="free-ribbon absolute top-[11px] right-[-38px] w-32 text-white text-xs font-bold text-center py-1 rotate-45 shadow-md">
                   {t('pages.loyalty_program.free_product', 'Free')}
                 </div>
               )}
@@ -356,7 +356,7 @@ export function CartItem({ item, isFirst = false, onMutated }: CartItemProps) {
 
             <button
               type="button"
-              className="cart-item__delete shrink-0 text-gray-400 transition-colors hover:text-red-600"
+              className="cart-item__delete shrink-0 text-gray-400 transition-colors"
               aria-label={t('common.elements.remove', 'Remove from the cart')}
               aria-busy={deleting}
               disabled={deleting}

@@ -122,7 +122,7 @@ function CartPageContent({ page }: CartPageProps) {
   }
 
   return (
-    <div className="container">
+    <div className="container cart-page">
       {/* Analytics — no visible UI, fires GTM checkout events */}
       <SeoCartWidget cart={cartData} />
 
