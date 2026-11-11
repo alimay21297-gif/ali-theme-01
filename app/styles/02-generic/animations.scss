@@ -35,6 +35,16 @@
   -webkit-animation-name: fadeInDown;
 }
 
+/* these start at opacity 0 and rely on the keyframes to show: with no motion,
+   show them straight away */
+@media (prefers-reduced-motion: reduce) {
+  .animatedfadeInDown,
+  .fadeInDown {
+    opacity: 1;
+    animation: none;
+  }
+}
+
 // toRightFromLeft
 @keyframes toRightFromLeft {
   49% {
@@ -106,4 +116,8 @@
   animation-duration: 1s;
   animation-fill-mode: both;
   animation-iteration-count: 1;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 }

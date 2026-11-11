@@ -89,6 +89,10 @@
 
     .options-panel__icon {
       @apply h-5 w-5 transition-transform;
+
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+      }
     }
   }
 

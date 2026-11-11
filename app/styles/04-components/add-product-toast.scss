@@ -7,6 +7,10 @@
   transform: translateY(-100%);
   transition: opacity 0.3s ease-out, transform 0.3s ease-out;
 
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+
   &.s-add-product-toast--visible {
     opacity: 1;
     transform: translateY(0);

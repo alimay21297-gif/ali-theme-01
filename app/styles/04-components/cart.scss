@@ -85,6 +85,11 @@ $cart-qty-width: 8.5rem;
   /* spinner shown in place of the trash icon while the row is being removed */
   &__delete-spinner {
     @apply inline-block h-5 w-5 animate-spin rounded-full border-2 border-gray-200 border-t-gray-500;
+
+    /* keeps turning, just slower */
+    @media (prefers-reduced-motion: reduce) {
+      animation-duration: 1.5s;
+    }
   }
 
   /* per-item product options render inside the flat row — drop the wrapper's

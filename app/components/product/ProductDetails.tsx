@@ -330,9 +330,9 @@ function ProductQuantityInfo({ product }: { product: Product }) {
           <div className="inline-flex items-center gap-2 px-4 only:px-1 font-medium text-green-700">
             {/* live "in stock" dot with pulsing waves */}
             <span className="relative flex h-2.5 w-2.5 shrink-0">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75 motion-reduce:hidden" />
               <span
-                className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-40"
+                className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-40 motion-reduce:hidden"
                 style={{ animationDelay: '0.75s' }}
               />
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-600" />

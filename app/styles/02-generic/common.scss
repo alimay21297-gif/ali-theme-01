@@ -1,5 +1,9 @@
 html {
   scroll-behavior: smooth;
+
+  @media (prefers-reduced-motion: reduce) {
+    scroll-behavior: auto;
+  }
 }
 
 // using salla.document.onClick(...), become effective when all children are none pointer events.
@@ -105,12 +109,6 @@ input[type='number'] {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.cart-thumb {
-  position: fixed;
-  z-index: 30;
-  transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
-}
-
 /* Hide scrollbar for Chrome, Safari and Opera */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
@@ -157,6 +155,11 @@ body {
     border-left-color: var(--color-primary);
     border-right-color: #eee;
     animation: loader 1s ease-in-out infinite;
+
+    /* a loading spinner keeps turning, just slower */
+    @media (prefers-reduced-motion: reduce) {
+      animation-duration: 1.5s;
+    }
 
     .btn--danger & {
       border-top-color: #ff6767;
@@ -480,6 +483,10 @@ salla-localization-modal {
     grid-template-rows 225ms ease-out,
     opacity 225ms ease-out;
 
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+
   > * {
     overflow: hidden;
     min-height: 0;
@@ -513,6 +520,10 @@ salla-localization-modal {
 
 .slide-in-start {
   animation: slideInStart 500ms ease-out forwards;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 }
 
 // Scale pulse animation
@@ -530,6 +541,10 @@ salla-localization-modal {
 
 .scale-pulse {
   animation: scalePulse 400ms ease-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 }
 
 // Fade out and collapse animation
@@ -540,6 +555,10 @@ salla-localization-modal {
   height: 0 !important;
   opacity: 0;
   overflow: hidden;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 }
 
 /*

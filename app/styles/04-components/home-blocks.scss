@@ -137,6 +137,15 @@
     }
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    &:hover {
+      .banner__title,
+      .banner__description {
+        animation: none;
+      }
+    }
+  }
+
   &--fixed {
     img {
       @apply w-full object-cover rounded border-none block bg-gray-100;
@@ -175,6 +184,10 @@
   h3,
   p {
     @apply lg:opacity-0 transition-all duration-300 relative z-1 lg:translate-y-6;
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
   }
 
   &:hover {
@@ -721,6 +734,10 @@
     transition:
       width 0.25s ease,
       background-color 0.25s ease;
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
   }
 
   &__dot.is-active &__bar {
@@ -967,6 +984,10 @@
       &:hover {
         .feature-icon i {
           animation: toRightFromLeft 0.3s forwards;
+
+          @media (prefers-reduced-motion: reduce) {
+            animation: none;
+          }
         }
       }
     }
@@ -1200,6 +1221,10 @@
     transition:
       width 0.25s ease,
       background-color 0.25s ease;
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
   }
 
   .swiper-pagination-bullet-active {
@@ -1446,6 +1471,10 @@ salla-reviews:not(:has(.s-reviews-swiper-slide)) {
       transition:
         width 0.2s ease,
         background-color 0.2s ease;
+
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+      }
     }
 
     &.is-active::before {
@@ -1732,10 +1761,18 @@ salla-reviews:not(:has(.s-reviews-swiper-slide)) {
 
     img {
       @apply transition-transform duration-500;
+
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+      }
     }
 
     &:hover img {
       @apply scale-105;
+
+      @media (prefers-reduced-motion: reduce) {
+        transform: none;
+      }
     }
   }
 

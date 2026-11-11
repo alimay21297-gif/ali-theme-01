@@ -529,6 +529,11 @@ salla-gifting {
 
     .sticky-product-bar {
       @apply fixed z-[2] gap-3 rounded p-3 shadow-[-1px_-2px_9px_0_theme(colors.black/5%)] transition duration-700 delay-500 translate-y-100 opacity-0 ease-elastic;
+
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+      }
+
       /* Floats inset from the screen edges, matching the bottom nav's own
          rounded pill (mobile-bottom-bar.scss) rather than running flush edge
          to edge. */
@@ -537,6 +542,10 @@ salla-gifting {
 
       &__actions {
         @apply translate-y-5 opacity-0 transition duration-700 ease-elastic delay-[900ms];
+
+        @media (prefers-reduced-motion: reduce) {
+          transition: none;
+        }
       }
 
       .hydrated & {
@@ -1043,6 +1052,10 @@ salla-gifting {
     transform: scale(0);
     transition: transform 0.5s ease;
     box-shadow: inset 0px 0px 30px theme('colors.gray.400');
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
   }
   &:hover {
     .img-magnifier-glass {

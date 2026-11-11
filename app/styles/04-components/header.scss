@@ -299,6 +299,10 @@ button.header-action,
     transform: translateY(100%);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+
     &::before {
       content: '';
       @apply mx-auto mt-2.5 block h-1 w-10 rounded-full bg-gray-300;
@@ -327,16 +331,8 @@ button.header-action,
   .site-header__bar,
   .site-header__bar-inner,
   .site-header__brand img,
-  .site-header__burger span,
-  .site-nav-drawer,
-  .site-nav-drawer__foot,
-  .site-nav-drawer__back {
+  .site-header__burger span {
     transition: none;
-  }
-
-  .site-nav-drawer__foot {
-    opacity: 1;
-    transform: none;
   }
 }
 
@@ -425,6 +421,10 @@ button.header-action,
     width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
 
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+
   @media (min-width: 768px) {
     --visible-children: 2;
   }
@@ -474,6 +474,10 @@ button.header-action,
   width: max-content;
   transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
   transform: translateX(calc(var(--child-col-w) * var(--extra-children) * -1));
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 
   [dir='rtl'] & {
     transform: translateX(calc(var(--child-col-w) * var(--extra-children)));
@@ -575,6 +579,10 @@ button.header-action,
     transition:
       opacity 0.35s ease,
       transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
   }
 
   &.is-in li {
@@ -640,6 +648,10 @@ button.header-action,
     background-color 0.2s ease,
     color 0.2s ease;
 
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+
   &.is-visible {
     width: 2.25rem;
     margin-inline-end: 0.5rem;
@@ -671,6 +683,13 @@ button.header-action,
   transition:
     opacity 0.3s ease,
     transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* no slide-in: the bar is simply there */
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 
   &.is-in {
     opacity: 1;
@@ -946,6 +965,10 @@ body.topnav-is-dark .site-header__topnav {
         opacity 0.18s ease,
         transform 0.18s ease,
         visibility 0.18s;
+
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+      }
     }
 
     /* A first-level panel opens flush under the header row, so its top
@@ -1099,6 +1122,10 @@ body.topnav-is-dark .site-header__topnav {
       font-family: 'sallaicons';
       content: '\e970';
       @apply ms-1 inline-block text-base leading-none opacity-50 transition-transform;
+
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+      }
     }
 
     /* `\e970` points left, the way a nested panel flies out in Arabic; in LTR
