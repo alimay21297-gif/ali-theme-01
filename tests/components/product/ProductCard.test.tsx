@@ -29,7 +29,9 @@ vi.mock('@salla.sa/twilight-theme-engine/product', () => ({
         {layout !== 'horizontal' && (
           <button
             type="button"
-            className="s-product-card-wishlist-btn"
+            className={`s-product-card-wishlist-btn animated ${
+              product.id === 99 ? 's-product-card-wishlist-added pulse-anime' : 'not-added un-favorited'
+            }`}
             aria-label="engine wishlist"
           >
             {product.name}
@@ -130,6 +132,49 @@ describe('ProductCard', () => {
     expect(heart.closest('.s-product-card-image')).toBeTruthy();
     expect(heart.style.display).not.toBe('none');
     expect(getByTestId('footer').querySelector('button')).toBeNull();
+  });
+
+  describe('wishlist heart pressed state', () => {
+    const heartOf = (container: HTMLElement) =>
+      container.querySelector<HTMLButtonElement>('button.s-product-card-wishlist-btn')!;
+
+    it('is not pressed by default', async () => {
+      const { container } = render(<ProductCard product={product} />);
+
+      await waitFor(() => expect(heartOf(container).getAttribute('aria-pressed')).toBe('false'));
+    });
+
+    it('is pressed when the saved class is present', async () => {
+      const { container } = render(<ProductCard product={{ id: 99, name: 'Saved' } as never} />);
+
+      await waitFor(() => expect(heartOf(container).getAttribute('aria-pressed')).toBe('true'));
+    });
+
+    it('follows a class change in both directions', async () => {
+      const { container } = render(<ProductCard product={product} />);
+      const heart = heartOf(container);
+      await waitFor(() => expect(heart.getAttribute('aria-pressed')).toBe('false'));
+
+      heart.classList.add('s-product-card-wishlist-added');
+      await waitFor(() => expect(heart.getAttribute('aria-pressed')).toBe('true'));
+
+      heart.classList.remove('s-product-card-wishlist-added');
+      await waitFor(() => expect(heart.getAttribute('aria-pressed')).toBe('false'));
+    });
+
+    it('reads a salla-button host class and writes only to the inner button', async () => {
+      const { container } = render(<ProductCard product={product} />);
+      const heart = heartOf(container);
+      const host = document.createElement('salla-button');
+      host.className = 's-product-card-wishlist-btn';
+      heart.replaceWith(host);
+      host.append(heart);
+      await waitFor(() => expect(heart.getAttribute('aria-pressed')).toBe('false'));
+
+      host.classList.add('s-product-card-wishlist-added');
+      await waitFor(() => expect(heart.getAttribute('aria-pressed')).toBe('true'));
+      expect(host.hasAttribute('aria-pressed')).toBe(false);
+    });
   });
 
   it('unmounts cleanly and survives a layout change', async () => {

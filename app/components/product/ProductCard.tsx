@@ -53,11 +53,27 @@ export function ProductCard(props: ProductCardProps) {
         el.setAttribute('fill', 'solid');
         el.setAttribute('loader-position', 'center');
       });
+
+      // Saved state for screen readers. The engine only toggles classes. `salla-button`
+      // copies its class onto the inner <button>, so the host matches the same selector:
+      // aria-pressed goes on the button only (never the host), read from the host class,
+      // which React keeps current. Written only when it changes, so this observer's own
+      // attribute writes (not in its filter) can't loop.
+      root.querySelectorAll<HTMLButtonElement>('button.s-product-card-wishlist-btn').forEach((btn) => {
+        const source = btn.closest('salla-button') ?? btn;
+        const pressed = String(source.classList.contains('s-product-card-wishlist-added'));
+        if (btn.getAttribute('aria-pressed') !== pressed) btn.setAttribute('aria-pressed', pressed);
+      });
     };
 
     sync();
     const observer = new MutationObserver(sync);
-    observer.observe(root, { childList: true, subtree: true });
+    observer.observe(root, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class'],
+    });
     return () => observer.disconnect();
   }, []);
 
