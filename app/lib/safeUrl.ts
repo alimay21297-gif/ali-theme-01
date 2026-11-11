@@ -14,6 +14,18 @@ export function safeUrl(url: unknown): string | undefined {
 }
 
 /**
+ * A CSS `url("…")` for a background image built from data. The address goes through
+ * {@link safeUrl} first (so no control characters, `javascript:` or `//host`), then is
+ * double-quoted with `\` and `"` escaped, so no value can end the `url()` early.
+ * Returns `undefined` when the address is rejected: set no `background-image` then.
+ */
+export function cssUrl(value: unknown): string | undefined {
+  const url = safeUrl(value);
+  if (!url) return undefined;
+  return `url("${url.replace(/[\\"]/g, '\\$&')}")`;
+}
+
+/**
  * A link (variable-list) arrives as a string, `[{ value }]` or `{ value }` — the shapes
  * the engine reads for `variable-url`. Anything else, or an unsafe address, is dropped.
  */

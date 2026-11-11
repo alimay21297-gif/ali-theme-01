@@ -12,6 +12,7 @@ import { useHydrated } from '../../hooks/useHydrated';
 import { useMobileViewport } from '../../hooks/useMobileViewport';
 import { cardBadgeText } from '../../lib/cardBadge';
 import { formatDigits } from '../../lib/formatDigits';
+import { safeUrl } from '../../lib/safeUrl';
 import { ProductMetadata } from './ProductMetadata';
 
 export interface ProductGalleryProps {
@@ -385,11 +386,11 @@ function ImageSlide({
       data-fslightbox={`product_${product.id}`}
       data-img-id={image.id}
       data-slid-index={index}
-      {...(image.video_url ? { 'data-video-src': image.video_url } : {})}
+      {...(safeUrl(image.video_url) ? { 'data-video-src': safeUrl(image.video_url) } : {})}
       data-caption={image.alt}
       data-infinite="false"
       data-type={image.video_type ?? (image.video_url ? 'youtube' : 'image')}
-      href={image.video_url || image.url}
+      href={safeUrl(image.video_url || image.url)}
       // Capture runs before fsLightbox's own `onclick`, so the native app's gallery wins.
       onClickCapture={(event) => {
         if (!onNativeOpen(image)) return;

@@ -30,7 +30,12 @@ vi.mock('@salla.sa/twilight-theme-engine/i18n', () => ({
 
 describe('EnhancedSquareBanners', () => {
   const mockBanners = [
-    { image: 'banner1.jpg', url: '/url1', title: 'Banner 1', description: 'Desc 1' },
+    {
+      image: 'https://cdn.salla.network/banner1.jpg',
+      url: '/url1',
+      title: 'Banner 1',
+      description: 'Desc 1',
+    },
     { image: 'banner2.jpg', url: '/url2', title: 'Banner 2', description: 'Desc 2' },
     { image: 'banner3.jpg', url: '/url3' },
   ];
@@ -90,6 +95,13 @@ describe('EnhancedSquareBanners', () => {
     expect(link?.style.backgroundImage).toContain('banner1.jpg');
     expect(link?.className).toContain('bg-cover');
     expect(link?.className).toContain('bg-center');
+  });
+
+  it('sets no background image when the address is not safe', () => {
+    const { container } = render(
+      <EnhancedSquareBanners data={{ banners: [{ image: 'javascript:alert(1)', url: '/x' }] }} />
+    );
+    expect(container.querySelector<HTMLElement>('.banner-entry')?.style.backgroundImage).toBe('');
   });
 
   it('returns null when no banners', () => {

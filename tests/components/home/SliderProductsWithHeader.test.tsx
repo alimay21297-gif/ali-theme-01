@@ -55,7 +55,7 @@ import { SliderProductsWithHeader } from '../../../app/components/home/SliderPro
 
 describe('SliderProductsWithHeader', () => {
   const mockData = {
-    background: 'bg.jpg',
+    background: 'https://cdn.salla.network/bg.jpg',
     title: 'Featured Products',
     description: 'Check out our best products',
     display_all_url: '/products',
@@ -67,6 +67,13 @@ describe('SliderProductsWithHeader', () => {
     const sliderBg = container.querySelector('.slider-bg');
     expect(sliderBg?.getAttribute('style')).toContain('background-image');
     expect(sliderBg?.getAttribute('style')).toContain('bg.jpg');
+  });
+
+  it('sets no background image when the address is not safe', () => {
+    const { container } = render(
+      <SliderProductsWithHeader data={{ ...mockData, background: 'javascript:alert(1)' }} />
+    );
+    expect(container.querySelector('.slider-bg')?.getAttribute('style') ?? '').not.toContain('url');
   });
 
   it('renders title', () => {

@@ -11,6 +11,7 @@ import { useCloseOnDesktop } from '../../hooks/useCloseOnDesktop';
 import { ROWS_IN_DELAY_MS, useStaggeredRows } from '../../hooks/useStaggeredRows';
 import { ArrowLeftIcon, LanguagesIcon, MapPinIcon, Money01Icon } from '../icons';
 import { openStoreSwitcher, type StoreSwitcher } from '../../lib/storeSwitchers';
+import { safeUrl } from '../../lib/safeUrl';
 
 interface MobileAccountSheetProps {
   open: boolean;
@@ -30,12 +31,12 @@ function openLogin(onClose: () => void) {
  *  top of one duplicates it (`https://t.me/https://t.me/acme_store`). */
 const isUrl = (value: string) => /^https?:\/\//i.test(value);
 
-function telegramHref(value: string): string {
-  return isUrl(value) ? value : `https://t.me/${value.replace(/^@/, '')}`;
+function telegramHref(value: string): string | undefined {
+  return safeUrl(isUrl(value) ? value : `https://t.me/${value.replace(/^@/, '')}`);
 }
 
-function whatsappHref(value: string): string {
-  return isUrl(value) ? value : `https://wa.me/${value.replace(/[\s+-]/g, '')}`;
+function whatsappHref(value: string): string | undefined {
+  return safeUrl(isUrl(value) ? value : `https://wa.me/${value.replace(/[\s+-]/g, '')}`);
 }
 
 /** Close the sheet, then open the switcher (the web modal, or the app's own sheet). */
@@ -292,7 +293,7 @@ function ContactsList() {
           href: whatsappHref(contacts.whatsapp),
         }
       : null,
-  ].filter((row): row is NonNullable<typeof row> => row !== null);
+  ].filter((row): row is NonNullable<typeof row> => row !== null && Boolean(row.href));
 
   if (!rows.length) return null;
 

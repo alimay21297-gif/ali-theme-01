@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { linkUrl, safeUrl } from '../../app/lib/safeUrl';
+import { cssUrl, linkUrl, safeUrl } from '../../app/lib/safeUrl';
 
 describe('safeUrl', () => {
   it('keeps paths, anchors and http(s) addresses', () => {
@@ -32,6 +32,26 @@ describe('safeUrl', () => {
     expect(safeUrl('java\tscript:alert(1)')).toBeUndefined();
     expect(safeUrl('/ok\u0000')).toBeUndefined();
     expect(safeUrl('https://a.b/\r\nx')).toBeUndefined();
+  });
+});
+
+describe('cssUrl', () => {
+  it('quotes an https address and a relative path', () => {
+    expect(cssUrl('https://cdn.salla.network/a.jpg')).toBe('url("https://cdn.salla.network/a.jpg")');
+    expect(cssUrl('/images/a.jpg')).toBe('url("/images/a.jpg")');
+  });
+
+  it('drops rejected, empty and non-string values', () => {
+    expect(cssUrl('javascript:alert(1)')).toBeUndefined();
+    expect(cssUrl('//evil.com/a.jpg')).toBeUndefined();
+    expect(cssUrl('https://a.b/\nx')).toBeUndefined();
+    expect(cssUrl('')).toBeUndefined();
+    expect(cssUrl(undefined)).toBeUndefined();
+  });
+
+  it('escapes quotes and backslashes so the value cannot end the url() early', () => {
+    expect(cssUrl('https://a.b/x")y')).toBe('url("https://a.b/x\\")y")');
+    expect(cssUrl('https://a.b/x\\y')).toBe('url("https://a.b/x\\\\y")');
   });
 });
 

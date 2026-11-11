@@ -8,6 +8,7 @@ import {
 } from '@salla.sa/twilight-theme-engine/api/advertisement';
 import { whenSallaReady } from '@salla.sa/twilight-theme-engine/utils';
 import { useTranslation } from '@salla.sa/twilight-theme-engine/i18n';
+import { safeUrl } from '../../lib/safeUrl';
 
 /** The key `<salla-advertisement>` marks a closed ad with, through `salla.storage` (store.js, JSON). */
 const dismissedKey = (id: number) => `statusAd-${id}`;
@@ -118,11 +119,11 @@ export function PageAdvertisements() {
               <i
                 className={`s-advertisement-content-icon inline-block align-middle me-2 text-base ${ad.icon ?? ''}`}
               />
-              {ad.url ? (
+              {safeUrl(ad.url) ? (
                 <a
-                  href={ad.url}
+                  href={safeUrl(ad.url)}
                   target={ad.target ?? undefined}
-                  rel={ad.target === '_blank' ? 'noopener' : undefined}
+                  rel={ad.target === '_blank' ? 'noopener noreferrer' : undefined}
                 >
                   {ad.description}
                 </a>

@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { Link } from '@salla.sa/twilight-theme-engine/common';
 import { useTranslation } from '@salla.sa/twilight-theme-engine/i18n';
+import { cssUrl } from '../../lib/safeUrl';
 
 interface BannerItem {
   image?: string;
@@ -35,7 +36,7 @@ function MosaicBanner({ banner, ctaLabel }: { banner: BannerItem; ctaLabel: stri
       to={banner.url || '#'}
       aria-label={bannerLabel(banner, ctaLabel)}
       className={`enhanced-square-banner bg-no-repeat bg-cover bg-center ${isComplete(banner) ? '' : 'enhanced-square-banner--overlay'}`}
-      style={{ backgroundImage: `url(${banner.image})` }}
+      style={{ backgroundImage: cssUrl(banner.image) }}
     >
       <span className="enhanced-square-banner__content">
         {banner.title && (
@@ -90,7 +91,7 @@ export const EnhancedSquareBanners = memo(function EnhancedSquareBanners({
           to={banner.url || '#'}
           aria-label={bannerLabel(banner, ctaLabel)}
           className={`banner-entry bg-no-repeat bg-cover bg-center ${banner.title && !isComplete(banner) ? 'has-overlay' : ''} ${hasTwoRows ? 'h-banner' : 'h-lg-banner'}`}
-          style={{ backgroundImage: `url(${banner.image})` }}
+          style={{ backgroundImage: cssUrl(banner.image) }}
         >
           <article className="banner-entry__text text-with-border">
             <h3 aria-level={2} className="banner__title font-bold mb-1 leading-6">{banner.title}</h3>

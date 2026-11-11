@@ -2,6 +2,7 @@ import { Suspense, useCallback } from 'react';
 import type { Product } from '@salla.sa/twilight-theme-engine/types';
 import { product, type ProductsListSource } from '@salla.sa/twilight-theme-engine/api/product';
 import { ProductCard } from '../product';
+import { cssUrl } from '../../lib/safeUrl';
 import { ProductsSliderSkeleton, SallaProductsSlider } from '@salla.sa/twilight-components-react';
 
 interface ProductsSourceConfig {
@@ -75,7 +76,7 @@ export function SliderProductsWithHeader({ data }: SliderProductsWithHeaderProps
     <>
       <div
         className="slider-bg"
-        style={{ backgroundImage: background ? `url('${background}')` : undefined }}
+        style={{ backgroundImage: cssUrl(background) }}
       >
         <div className="container pt-8 sm:pt-20 relative">
           <div>
