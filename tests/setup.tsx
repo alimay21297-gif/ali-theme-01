@@ -6,6 +6,26 @@ afterEach(() => {
   cleanup();
 });
 
+// Node 25+ ships its own `localStorage`/`sessionStorage` globals. Without
+// `--localstorage-file` they are unusable (undefined / throwing) and shadow jsdom's,
+// so code that reads storage fails under test. Point them back at jsdom's storage
+// only when the global one is broken; Node without webstorage is left untouched.
+for (const name of ['localStorage', 'sessionStorage'] as const) {
+  let usable = false;
+  try {
+    usable = typeof globalThis[name]?.getItem === 'function';
+  } catch {
+    usable = false;
+  }
+  const jsdomWindow = (globalThis as { jsdom?: { window: Window } }).jsdom?.window;
+  if (!usable && jsdomWindow) {
+    Object.defineProperty(globalThis, name, {
+      configurable: true,
+      get: () => jsdomWindow[name],
+    });
+  }
+}
+
 // jsdom doesn't implement matchMedia. Default to "matches" so components that
 // gate mobile-only behavior behind a media query (e.g. MobileBottomBar's DOM
 // observers) behave as they would on a small screen, matching what the
