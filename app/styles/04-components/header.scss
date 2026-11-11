@@ -365,9 +365,9 @@ button.header-action,
 
 .site-header__social .s-social-link a {
   @apply inline-grid place-items-center w-12 h-12 rounded-full text-primary transition-colors border-none;
-  /* primary at 5% — the `primary` token is a hex var, so the `/5` opacity
-     modifier can't be used; mix it down instead. */
-  background-color: color-mix(in srgb, var(--color-primary) 5%, transparent);
+  /* The intro row sits on the light page ground, so the circle is the brand
+     light surface (a merchant-colour tint would show pink on a red store). */
+  background-color: var(--lameem-light);
 
   svg {
     @apply w-5 h-5 fill-current;

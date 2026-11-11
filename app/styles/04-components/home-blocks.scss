@@ -347,7 +347,7 @@
 }
 
 /*
-  Featured-products pill tab bar — full-viewport-width strip, primary/10 ground,
+  Featured-products pill tab bar — full-viewport-width strip, --lameem-light ground,
   rounded buttons that fill with primary on hover / active.
   Markup: app/components/home/FeaturedProducts.tsx (TabTriggers).
 */
@@ -358,7 +358,7 @@
        (`.app-inner` clips the ~scrollbar overhang from `100vw`) */
     width: 100vw;
     margin-inline: calc(50% - 50vw);
-    background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+    background-color: var(--lameem-light);
   }
 
   .tab-trigger {
