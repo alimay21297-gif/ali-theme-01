@@ -270,6 +270,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
                 image={image}
                 index={index}
                 label={viewLabel(index)}
+                objectFit={objectFit}
               />
             ))}
           </div>
@@ -428,10 +429,12 @@ function ThumbSlide({
   image,
   index,
   label,
+  objectFit,
 }: {
   image: ProductImage;
   index: number;
   label: string;
+  objectFit: ObjectFit;
 }) {
   return (
     <div
@@ -442,7 +445,7 @@ function ThumbSlide({
         src={image.url}
         alt={label}
         className="w-full h-full rounded overflow-hidden"
-        objectFit="contain"
+        objectFit={objectFit}
         priority={index < 5}
         noWrapper
       />

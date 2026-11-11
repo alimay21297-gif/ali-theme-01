@@ -178,6 +178,23 @@ describe('ProductGallery image fit', () => {
     expect(new Set(fitClasses(container))).toEqual(new Set(['object-cover']));
   });
 
+  it('gives the thumbnails the same fit as the slides: cover when set, contain by default', () => {
+    const thumbFits = (container: HTMLElement) =>
+      new Set(
+        [...container.querySelectorAll('[slot="thumbs"] img')].map((img) =>
+          [...img.classList].filter((c) => c.startsWith('object-')).join(' ')
+        )
+      );
+
+    const fallback = render(<ProductGallery product={product} />);
+    expect(thumbFits(fallback.container)).toEqual(new Set(['object-contain']));
+    fallback.unmount();
+
+    settings.slider_background_size = 'cover';
+    const covered = render(<ProductGallery product={product} />);
+    expect(thumbFits(covered.container)).toEqual(new Set(['object-cover']));
+  });
+
   it('server-renders the poster contained, without the Image default cover', () => {
     settings.slider_background_size = [{ value: 'contain' }];
     const html = renderToString(<ProductGallery product={product} />);
