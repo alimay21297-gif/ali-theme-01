@@ -163,7 +163,8 @@ function attributesFor(tag: string, attribs: Record<string, string>, mode: Mode)
     }
   } else if (tag === 'img') {
     if (attribs.src !== undefined) add('src', safeImageSrc(attribs.src));
-    if (attribs.alt !== undefined) add('alt', attribs.alt);
+    // No alt at all fails axe `image-alt`; `alt=""` marks it decorative. A merchant's alt stays.
+    add('alt', attribs.alt ?? '');
     if (attribs.width) add('width', dimension(attribs.width));
     if (attribs.height) add('height', dimension(attribs.height));
     add('loading', 'lazy');

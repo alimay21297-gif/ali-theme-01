@@ -81,6 +81,17 @@ describe('sanitizeRichHtml', () => {
     expect(sanitizeRichHtml('<img src="/img/a.jpg">')).toContain('src="/img/a.jpg"');
   });
 
+  it('writes alt="" on an image with no alt attribute (axe image-alt)', () => {
+    expect(sanitizeRichHtml('<img src="/a.jpg">')).toContain(' alt=""');
+  });
+
+  it('keeps a merchant alt unchanged, including an explicit empty one', () => {
+    const out = sanitizeRichHtml('<img src="/a.jpg" alt="A &quot;red&quot; shoe">');
+    expect(out).toContain('alt="A &quot;red&quot; shoe"');
+    expect(out.match(/alt=/g)).toHaveLength(1);
+    expect(sanitizeRichHtml('<img src="/a.jpg" alt="">').match(/alt=""/g)).toHaveLength(1);
+  });
+
   it('overrides a merchant loading attribute on images', () => {
     expect(sanitizeRichHtml('<img src="/a.jpg" loading="eager">')).toContain('loading="lazy"');
   });

@@ -56,4 +56,10 @@ salla-offer {
     background-color: transparent;
     padding-block: 0;
   }
+
+  /* the component paints the "min items" line #9ca3af (gray-400), 2.53:1 on the white card;
+     gray-600 clears 4.5:1 (axe color-contrast). Beats the component's rule on specificity. */
+  salla-offer .s-offer-card .s-offer-min-items {
+    color: theme('colors.gray.600');
+  }
 }
