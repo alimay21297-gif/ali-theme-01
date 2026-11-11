@@ -125,7 +125,7 @@ _Kept in the theme repo root. Updated by Claude Code via /handover. Last update:
 
 - Logos are TEMPORARY: made from a 478px screenshot. Get the original SVG from the client and replace the store logo and the `logo_on_dark` image before release.
 - Mobile bottom-bar scrim (white frosted fade behind the floating bar) kept as-is; revisit if it looks wrong over dark sections.
-- Red cart badge on the dark bottom bar is 2.8:1 (under 3:1 for non-text); kept because its white ring separates it from the bar and the white active pill. Brighter red if a reviewer objects.
+- Bottom bar: cart badge red-600 #dc2626, 3.8:1 on the bar, white ring kept (#27).
 - Header calligraphy shows on the main bar at every width (not only mobile), as well as on the desktop top bar.
 
 - OPEN CLIENT QUESTION (catalogue): recommend ONE product per item with a colour option (variants), not five separate products per item. Needed for colour dots / swatches on the product page, one set of reviews and stock per model. Also needed: product photos per colour (on white, same size), names, prices, any sale prices.
