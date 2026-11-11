@@ -48,6 +48,13 @@
     &:focus {
       @apply border-0 shadow-none ring-0;
     }
+
+    /* A mouse click keeps the plain look above; keyboard focus gets the global 2px
+       brand ring (reset.scss). Inside the box (-2px) so the pill never clips it. */
+    &:focus-visible {
+      outline: 2px solid var(--lameem-primary);
+      outline-offset: -2px;
+    }
   }
 
   &[max='1'] {

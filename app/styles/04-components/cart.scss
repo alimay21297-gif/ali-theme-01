@@ -37,12 +37,6 @@ $cart-qty-width: 8.5rem;
 
     .s-quantity-input-input {
       @apply h-11 w-11;
-
-      /* the shared rule removes the ring on :focus; inputs are not in the global ring */
-      &:focus-visible {
-        outline: 2px solid var(--lameem-primary);
-        outline-offset: -2px;
-      }
     }
   }
 

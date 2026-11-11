@@ -120,7 +120,7 @@ export function ProductDetails({
             <Fragment key={tag.name}>
               <Link
                 to={tag.url}
-                className="rtl:ml-2 ltr:mr-2 inline-flex text-gray-600 hover:text-primary underline text-sm mb-1"
+                className="me-2 inline-flex text-gray-600 hover:text-primary underline text-sm mb-1"
               >
                 {tag.name}
               </Link>
@@ -156,7 +156,7 @@ export function ProductDetails({
         <section className="mb-4 last:mb-0">
           <div className="center-between">
             <span className="flex items-center text-base">
-              <span className="sicon-location rtl:ml-1 ltr:mr-1"></span>
+              <span className="sicon-location me-1"></span>
               <span className="inline-block">{t('pages.products.availability')}</span>
             </span>
             <div className="mt-1 sm:mt-0 sm:col-span-2 text-end">
@@ -320,7 +320,7 @@ function ProductQuantityInfo({ product }: { product: Product }) {
     <div className="mb-4 inline-flex text-sm">
       {(product.sold_quantity ?? 0) > 0 && (
         <div className="px-4 only:px-0 !text-[color:var(--lameem-sale)]">
-          <i className="sicon-fire rtl:ml-1.5 ltr:mr-1.5"></i> {t('pages.products.sold')}{' '}
+          <i className="sicon-fire me-1.5"></i> {t('pages.products.sold')}{' '}
           {/* Salla ships `sold_times` in Laravel plural format; resolve it for the count. */}
           <span>{formatSallaPlural(t('pages.products.sold_times'), product.sold_quantity!)}</span>
         </div>
@@ -341,7 +341,7 @@ function ProductQuantityInfo({ product }: { product: Product }) {
           </div>
         ) : (
           <div className="px-4 only:px-1 !text-amber-800">
-            <i className="sicon-box-bankers rtl:ml-1.5 ltr:mr-1.5"></i>
+            <i className="sicon-box-bankers me-1.5"></i>
             {t('pages.products.remained')} <span>{product.quantity ?? 0}</span>
           </div>
         ))}

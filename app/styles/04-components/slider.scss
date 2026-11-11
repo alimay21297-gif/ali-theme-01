@@ -79,14 +79,14 @@ salla-slider{
         @apply absolute inset-x-0 bottom-4 z-[3] mx-auto flex w-max items-center justify-center gap-1.5;
         padding: 5px 12px;
         border-radius: 9999px;
-        background: rgba(255, 255, 255, 0.6);
+        background: theme('colors.white / 60%');
         backdrop-filter: blur(4px);
       }
 
       .swiper-pagination-bullet{
         @apply block h-1.5 w-1.5 rounded-full opacity-100;
         margin: 0 !important;
-        background: rgba(0, 0, 0, 0.25);
+        background: theme('colors.black / 25%');
         transition:
           width 0.25s ease,
           background-color 0.25s ease;
@@ -221,7 +221,7 @@ salla-slider{
   .swiper-pagination-bullet {
     width: 20px;
     @apply rounded;
-    background: #fff;
+    background: theme('colors.white');
     opacity: 0.3;
 
     &-active {

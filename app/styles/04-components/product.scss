@@ -528,7 +528,7 @@ salla-gifting {
     }
 
     .sticky-product-bar {
-      @apply fixed z-[2] gap-3 rounded p-3 shadow-[-1px_-2px_9px_0_rgba(0,0,0,0.05)] transition duration-700 delay-500 translate-y-100 opacity-0 ease-elastic;
+      @apply fixed z-[2] gap-3 rounded p-3 shadow-[-1px_-2px_9px_0_theme(colors.black/5%)] transition duration-700 delay-500 translate-y-100 opacity-0 ease-elastic;
       /* Floats inset from the screen edges, matching the bottom nav's own
          rounded pill (mobile-bottom-bar.scss) rather than running flush edge
          to edge. */
@@ -766,7 +766,7 @@ salla-gifting {
       &-icon {
         @apply mb-1;
         i {
-          color: #7c8082;
+          color: var(--color-text); /* #7c8082, the theme's secondary text token */
           @apply text-xl;
         }
       }
@@ -987,10 +987,10 @@ salla-gifting {
     pointer-events: auto;
     /* `!important` — the store's Twig CSS otherwise strips the background off
        `<salla-social-share>` */
-    background-color: #fff !important;
+    background-color: theme('colors.white') !important;
     box-shadow:
-      0 4px 14px rgb(0 0 0 / 5%),
-      0 1px 3px rgb(0 0 0 / 3%);
+      0 4px 14px theme('colors.black / 5%'),
+      0 1px 3px theme('colors.black / 3%');
 
     svg {
       @apply h-5 w-5;

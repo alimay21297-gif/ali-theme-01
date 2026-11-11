@@ -100,12 +100,12 @@ salla-product-options {
         background-image: linear-gradient(
           to top right,
           transparent calc(50% - 2px),
-          white calc(50% - 2px),
-          white calc(50% - 1px),
+          theme('colors.white') calc(50% - 2px),
+          theme('colors.white') calc(50% - 1px),
           var(--lameem-ink) calc(50% - 1px),
           var(--lameem-ink) calc(50% + 1px),
-          white calc(50% + 1px),
-          white calc(50% + 2px),
+          theme('colors.white') calc(50% + 1px),
+          theme('colors.white') calc(50% + 2px),
           transparent calc(50% + 2px)
         );
       }
