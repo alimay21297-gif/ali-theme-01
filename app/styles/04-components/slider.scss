@@ -76,7 +76,7 @@ salla-slider{
       }
 
       .swiper-pagination.swiper-pagination-bullets{
-        @apply absolute inset-x-0 bottom-4 z-[3] mx-auto flex w-max items-center justify-center gap-1.5;
+        @apply absolute inset-x-0 bottom-4 z-[3] mx-auto flex w-max items-center justify-center;
         padding: 5px 12px;
         border-radius: 9999px;
         background: theme('colors.white / 60%');
@@ -84,8 +84,10 @@ salla-slider{
       }
 
       .swiper-pagination-bullet{
-        @apply block h-1.5 w-1.5 rounded-full opacity-100;
+        @apply relative block h-1.5 w-1.5 rounded-full opacity-100;
+        /* 24px centre-to-centre (6px dot + 2 × 9px); the engine sets its own margin. */
         margin: 0 !important;
+        margin-inline: 9px !important;
         background: theme('colors.black / 25%');
         transition:
           width 0.25s ease,
@@ -98,6 +100,25 @@ salla-slider{
 
       .swiper-pagination-bullet-active{
         @apply w-5 bg-gray-900;
+      }
+
+      /* 24px tap target on the 6px dot (the 20px active dot too: 9px past each side
+         leaves it 38px wide, and neighbours' areas meet without overlapping). */
+      .swiper-pagination-bullet::after{
+        content: '';
+        position: absolute;
+        inset: -9px;
+        border-radius: 9999px;
+      }
+
+      /* The focus ring is drawn on the target, not the 6px dot. */
+      .swiper-pagination-bullet:focus-visible{
+        outline: none;
+      }
+
+      .swiper-pagination-bullet:focus-visible::after{
+        outline: 2px solid var(--lameem-primary);
+        outline-offset: -2px;
       }
     }
   }
