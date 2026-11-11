@@ -263,6 +263,19 @@
       position: absolute;
       inset: 0;
     }
+
+    /* The `<h3>` clips (line-clamp), so the global ring (2px outside the link) would
+       show only its bottom edge. It is drawn instead on the full-row `::after`, inside
+       the clip. The global rule is `:where()`, so these win without `!important`. */
+    a:focus-visible {
+      outline: none;
+    }
+
+    a:focus-visible::after {
+      outline: 2px solid var(--lameem-primary);
+      outline-offset: -2px;
+      border-radius: 0.25rem;
+    }
   }
 }
 
