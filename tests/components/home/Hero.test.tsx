@@ -117,6 +117,26 @@ describe('Hero', () => {
     });
   });
 
+  it('renders a relative single image', () => {
+    const { container } = render(<Hero data={{ title: 'T', image: '/path.webp' }} />);
+    expect(container.querySelector('img.home-hero__image')?.getAttribute('src')).toBe('/path.webp');
+  });
+
+  it.each([
+    ['javascript:', 'javascript:alert(1)'],
+    ['data:text/html', 'data:text/html,<script>alert(1)</script>'],
+    ['//evil.host', '//evil.host/p.png'],
+    ['/\\evil.host', '/\\evil.host/p.png'],
+    ['a control character', '/\t/evil.host/p.png'],
+  ])('treats an unsafe single image (%s) as empty: no image, no media', (_label, image) => {
+    const { container } = render(<Hero data={{ title: 'T', image }} />);
+    expect(container.querySelector('img')).toBeNull();
+    expect(container.querySelector('.home-hero__media')).toBeNull();
+    expect(container.querySelector('h2')?.textContent).toBe('T');
+    // an unsafe image and nothing else is the same as an empty hero
+    expect(render(<Hero data={{ image }} />).container.innerHTML).toBe('');
+  });
+
   it('renders an image-only hero without a text column', () => {
     const { container } = render(<Hero data={{ image: 'https://cdn.example/p.png' }} />);
     expect(container.querySelector('.home-hero__text')).toBeNull();

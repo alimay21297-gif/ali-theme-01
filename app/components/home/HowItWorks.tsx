@@ -3,6 +3,7 @@ import { Image } from '@salla.sa/twilight-theme-engine/common';
 import { useTranslation } from '@salla.sa/twilight-theme-engine/i18n';
 import { useCalligraphy } from '../../hooks/useCalligraphy';
 import { formatDigits } from '../../lib/formatDigits';
+import { safeUrl } from '../../lib/safeUrl';
 
 export interface HowItWorksProps {
   data: {
@@ -91,7 +92,7 @@ export const HowItWorks = memo(function HowItWorks({ data }: HowItWorksProps) {
 
   const title = data.title?.trim();
   const subtitle = data.subtitle?.trim();
-  const image = data.image || undefined;
+  const image = safeUrl(data.image);
 
   return (
     <div className={`home-how ${calligraphy.className}`.trim()} style={calligraphy.style}>

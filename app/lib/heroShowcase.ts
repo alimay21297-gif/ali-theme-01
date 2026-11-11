@@ -1,5 +1,5 @@
 import type { ShowcaseAnimation, ShowcaseProduct } from '../components/home/ProductShowcase';
-import { linkUrl } from './safeUrl';
+import { linkUrl, safeUrl } from './safeUrl';
 
 /** A dropdown value arrives as a string or as `[{ value }]`. */
 function choice(raw: unknown): string | undefined {
@@ -9,10 +9,10 @@ function choice(raw: unknown): string | undefined {
 
 /** A layer item arrives as `{ image }`, `{ '<id>.image': … }` or a bare URL. */
 function layerImage(item: unknown, id: string): string | undefined {
-  if (typeof item === 'string') return item.trim() || undefined;
+  if (typeof item === 'string') return safeUrl(item);
   const record = item as Record<string, unknown> | null;
-  const value = record?.image ?? record?.[`${id}.image`];
-  return typeof value === 'string' && value.trim() ? value.trim() : undefined;
+  // An unsafe address counts as missing, so the layer is dropped.
+  return safeUrl(record?.image ?? record?.[`${id}.image`]);
 }
 
 function percent(raw: unknown): number | undefined {
@@ -24,7 +24,9 @@ function percent(raw: unknown): number | undefined {
 function parseProduct(data: Record<string, unknown>, n: 1 | 2): ShowcaseProduct | null {
   const p = `p${n}`;
   const url = linkUrl(data[`${p}_link`]);
-  const body = typeof data[`${p}_body`] === 'string' ? (data[`${p}_body`] as string).trim() : '';
+  // Defence in depth (the field is an image picker): an unsafe value counts as
+  // missing, so the product is left out.
+  const body = safeUrl(data[`${p}_body`]);
   const rawLayers = data[`${p}_layers`];
   const layers = (Array.isArray(rawLayers) ? rawLayers : [])
     .map((item) => layerImage(item, `${p}_layers`))

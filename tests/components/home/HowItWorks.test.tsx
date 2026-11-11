@@ -109,6 +109,32 @@ describe('HowItWorks', () => {
     expect(withImage.querySelector('b')).toBeNull();
   });
 
+  it('renders an https image', () => {
+    const { container } = render(
+      <HowItWorks data={{ steps: steps(2), image: 'https://cdn.test/phone.webp' }} />
+    );
+    expect(container.querySelector('img')?.getAttribute('src')).toBe('https://cdn.test/phone.webp');
+  });
+
+  it('renders a relative /path.webp image', () => {
+    const { container } = render(<HowItWorks data={{ steps: steps(2), image: '/path.webp' }} />);
+    expect(container.querySelector('img')?.getAttribute('src')).toBe('/path.webp');
+  });
+
+  it.each([
+    ['javascript:', 'javascript:alert(1)'],
+    ['data:text/html', 'data:text/html,<script>alert(1)</script>'],
+    ['//evil.host', '//evil.host/p.png'],
+    ['/\\evil.host', '/\\evil.host/p.png'],
+    ['a control character', '/\t/evil.host/p.png'],
+  ])('uses the no-image layout for an unsafe image (%s)', (_label, image) => {
+    const { container } = render(<HowItWorks data={{ steps: steps(2), image }} />);
+    expect(container.querySelector('img')).toBeNull();
+    expect(container.querySelector('.home-how__media')).toBeNull();
+    expect(container.querySelector('.home-how__body--with-image')).toBeNull();
+    expect(container.querySelectorAll('.home-how__step')).toHaveLength(2);
+  });
+
   it('arms the reveal and shows the steps once the list is seen', () => {
     const { container } = render(<HowItWorks data={{ steps: steps(3) }} />);
     const list = container.querySelector('.home-how__steps') as HTMLElement;

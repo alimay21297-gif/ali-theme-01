@@ -40,6 +40,34 @@ describe('parseShowcase', () => {
     ).toEqual([]);
   });
 
+  it('keeps an https or a relative front image', () => {
+    const on = { ...wallet, animate_products: true };
+    expect(parseShowcase({ ...on, p1_body: ' https://cdn.test/b.webp ' })[0].body).toBe(
+      'https://cdn.test/b.webp'
+    );
+    expect(parseShowcase({ ...on, p1_body: '/path.webp' })[0].body).toBe('/path.webp');
+  });
+
+  it.each([
+    ['javascript:', 'javascript:alert(1)'],
+    ['data:text/html', 'data:text/html,<script>alert(1)</script>'],
+    ['//evil.host', '//evil.host/b.webp'],
+    ['/\\evil.host', '/\\evil.host/b.webp'],
+    ['a control character', '/\t/evil.host/b.webp'],
+  ])('leaves a product out when its front image is unsafe (%s)', (_label, body) => {
+    const on = { ...wallet, animate_products: true };
+    expect(parseShowcase({ ...on, p1_body: body })).toEqual([]);
+    // the other product is not affected
+    const products = parseShowcase({
+      ...on,
+      p1_body: body,
+      p2_link: '/keys',
+      p2_body: 'https://cdn.test/keys-body.webp',
+      p2_layers: [{ image: 'https://cdn.test/k1.webp' }],
+    });
+    expect(products.map((product) => product.url)).toEqual(['/keys']);
+  });
+
   it('reads the link as a string', () => {
     const [product] = parseShowcase({ ...wallet, animate_products: true, p1_link: '/p/1' });
     expect(product.url).toBe('/p/1');
@@ -107,6 +135,31 @@ describe('parseShowcase', () => {
       'https://cdn.test/b.webp',
       'https://cdn.test/c.webp',
     ]);
+  });
+
+  it('keeps a relative /path.webp layer', () => {
+    const [product] = parseShowcase({
+      ...wallet,
+      animate_products: true,
+      p1_layers: [{ image: '/path.webp' }, '/other.webp'],
+    });
+    expect(product.layers).toEqual(['/path.webp', '/other.webp']);
+  });
+
+  it.each([
+    ['javascript:', 'javascript:alert(1)'],
+    ['data:text/html', 'data:text/html,<script>alert(1)</script>'],
+    ['//evil.host', '//evil.host/c.webp'],
+    ['/\\evil.host', '/\\evil.host/c.webp'],
+    ['a control character', '/\t/evil.host/c.webp'],
+  ])('drops an unsafe layer (%s) in any shape; no layer left leaves the product out', (_label, bad) => {
+    const on = { ...wallet, animate_products: true };
+    const [product] = parseShowcase({
+      ...on,
+      p1_layers: [{ image: bad }, { 'p1_layers.image': bad }, bad, { image: 'https://cdn.test/ok.webp' }],
+    });
+    expect(product.layers).toEqual(['https://cdn.test/ok.webp']);
+    expect(parseShowcase({ ...on, p1_layers: [{ image: bad }, bad] })).toEqual([]);
   });
 
   it('reads the pivot as a number or numeric string, clamped to 0-100', () => {

@@ -65,7 +65,7 @@ export const Hero = memo(function Hero({ data }: HeroProps) {
   const subtitle = data.subtitle?.trim();
   const btnname = data.btnname?.trim();
   const url = safeUrl(data.url);
-  const image = data.image || undefined;
+  const image = safeUrl(data.image);
   const showcase = parseShowcase(data);
 
   if (!title && !image && showcase.length === 0) return null;

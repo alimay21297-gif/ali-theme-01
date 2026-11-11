@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { useTranslation } from '@salla.sa/twilight-theme-engine/i18n';
 import { TestimonialsCarousel, type TestimonialItem } from '../common';
+import { safeUrl } from '../../lib/safeUrl';
 
 export interface CustomTestimonialsProps {
   data: {
@@ -27,7 +28,9 @@ function parseItems(raw: unknown): TestimonialItem[] {
   return raw
     .filter((item): item is Record<string, unknown> => Boolean(item) && typeof item === 'object')
     .map((item) => ({
-      avatar: text(item, 'avatar'),
+      // Defence in depth (the field is an image picker): an unsafe value counts as
+      // missing, so the first-letter circle shows.
+      avatar: safeUrl(text(item, 'avatar')),
       name: text(item, 'name'),
       city: text(item, 'city'),
       product: text(item, 'product'),

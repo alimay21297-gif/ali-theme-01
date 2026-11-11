@@ -33,9 +33,9 @@ vi.mock('@salla.sa/twilight-theme-engine/common', () => ({
 }));
 
 const items = [
-  { avatar: 'a1.jpg', name: 'ندى الحسيني', text: 'رائحة رائعة', stars: 5 },
-  { avatar: 'a2.jpg', name: 'خالد الأحمد', text: 'أنصح به', stars: 4 },
-  { avatar: 'a3.jpg', name: 'هند الزهراني', text: 'ممتاز', stars: 5 },
+  { avatar: '/a1.jpg', name: 'ندى الحسيني', text: 'رائحة رائعة', stars: 5 },
+  { avatar: 'https://cdn.test/a2.jpg', name: 'خالد الأحمد', text: 'أنصح به', stars: 4 },
+  { avatar: '/a3.jpg', name: 'هند الزهراني', text: 'ممتاز', stars: 5 },
 ];
 
 beforeEach(() => {
@@ -107,8 +107,39 @@ describe('CustomTestimonials', () => {
     expect(getByText('ندى الحسيني')).toBeTruthy();
     expect(getByText('رائحة رائعة')).toBeTruthy();
     expect(container.querySelector('.testimonial-card__avatar')?.getAttribute('src')).toBe(
-      'a1.jpg'
+      '/a1.jpg'
     );
+  });
+
+  it('renders an https or a relative avatar and trims it', () => {
+    const { container } = render(
+      <CustomTestimonials
+        data={{
+          items: [
+            { name: 'A', text: 'x', avatar: ' https://cdn.test/a.webp ' },
+            { name: 'B', text: 'y', avatar: '/path.webp' },
+          ],
+        }}
+      />
+    );
+    const srcs = Array.from(container.querySelectorAll('img.testimonial-card__avatar')).map((img) =>
+      img.getAttribute('src')
+    );
+    expect(srcs).toEqual(['https://cdn.test/a.webp', '/path.webp']);
+  });
+
+  it.each([
+    ['javascript:', 'javascript:alert(1)'],
+    ['data:text/html', 'data:text/html,<script>alert(1)</script>'],
+    ['//evil.host', '//evil.host/a.png'],
+    ['/\\evil.host', '/\\evil.host/a.png'],
+    ['a control character', '/\t/evil.host/a.png'],
+  ])('treats an unsafe avatar (%s) as missing: first-letter circle, no img', (_label, avatar) => {
+    const { container } = render(
+      <CustomTestimonials data={{ items: [{ name: 'ندى', text: 'رائع', avatar }] }} />
+    );
+    expect(container.querySelector('img.testimonial-card__avatar')).toBeNull();
+    expect(container.querySelector('.testimonial-card__avatar.is-initial')?.textContent).toBe('ن');
   });
 
   it('renders prev / next controls on the title line', () => {
