@@ -137,5 +137,7 @@
   "pages.products.slider_prev": "Previous image",
   "pages.products.slider_next": "Next image",
   "pages.products.slider_bullet": "Go to image {{index}}",
-  "pages.products.slider_slide": "{{index}} / {{slidesLength}}"
+  "pages.products.slider_slide": "{{index}} / {{slidesLength}}",
+  "common.titles.cart": "Cart",
+  "common.errors.error_occurred": "Something went wrong, please try again"
 }

@@ -187,6 +187,7 @@ body.thank-you #main-content:not(:has(salla-thank-you-page)) {
   @apply flex items-center gap-2;
   salla-button {
     button {
+      /* `!important`: the inner button of `<salla-button>` carries the component's own size and margin. */
       @apply rounded mx-0 w-11 h-11 #{!important}
     }
   }

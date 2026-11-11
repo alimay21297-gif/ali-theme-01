@@ -137,5 +137,7 @@
   "pages.products.slider_prev": "الصورة السابقة",
   "pages.products.slider_next": "الصورة التالية",
   "pages.products.slider_bullet": "الانتقال إلى الصورة {{index}}",
-  "pages.products.slider_slide": "{{index}} / {{slidesLength}}"
+  "pages.products.slider_slide": "{{index}} / {{slidesLength}}",
+  "common.titles.cart": "سلة التسوق",
+  "common.errors.error_occurred": "حدث خطأ، حاول مرة أخرى"
 }

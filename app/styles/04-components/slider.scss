@@ -86,6 +86,7 @@ salla-slider{
       .swiper-pagination-bullet{
         @apply relative block h-1.5 w-1.5 rounded-full opacity-100;
         /* 24px centre-to-centre (6px dot + 2 × 9px); the engine sets its own margin. */
+        /* `!important`: the engine's Swiper sets an inline margin on each bullet. */
         margin: 0 !important;
         margin-inline: 9px !important;
         background: theme('colors.black / 25%');
