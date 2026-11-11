@@ -548,7 +548,9 @@ salla-gifting {
     }
 
     &.product-single:has(.sticky-product-bar--sold-out) .app-inner {
-      padding-bottom: calc(140px + var(--flow-safe-bottom));
+      /* 76 nav + 12 air in px; the bar (24 padding + 28 label = 3.25rem) grows with
+         the user's text size, so its share of the reserve is in rem. */
+      padding-bottom: calc(88px + 3.25rem + var(--flow-safe-bottom));
     }
 
     .sticky-product-bar {
@@ -596,6 +598,7 @@ salla-gifting {
 
       .sticky-product-bar__summary {
         justify-content: center;
+        text-align: center;
       }
     }
   }
