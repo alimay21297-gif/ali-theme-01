@@ -102,6 +102,16 @@ describe('CustomTestimonials', () => {
     expect(initial?.getAttribute('aria-hidden')).toBe('true');
   });
 
+  it.each([
+    ['an emoji', '😀 سارة', '😀'],
+    ['a surrogate pair letter', '𠮷野', '𠮷'],
+  ])('shows the whole first character when the name starts with %s', (_label, name, initial) => {
+    const { container } = render(<CustomTestimonials data={{ items: [{ name, text: 'رائع' }] }} />);
+    expect(container.querySelector('.testimonial-card__avatar.is-initial')?.textContent).toBe(
+      initial
+    );
+  });
+
   it('renders name, text and avatar for each card', () => {
     const { container, getByText } = render(<CustomTestimonials data={{ items }} />);
     expect(getByText('ندى الحسيني')).toBeTruthy();

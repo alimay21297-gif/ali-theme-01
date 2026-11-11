@@ -364,7 +364,7 @@ export interface FooterProps {
  *    footer menu laid out as an inline, pipe-separated row.
  *
  * Styling for the handful of pieces rendered by web components this owns no
- * markup for (`<salla-social>`'s `.social-link` icons, `<salla-menu>`'s
+ * markup for (`<salla-social>`'s `.s-social-link` icons, `<salla-menu>`'s
  * `.s-menu-footer-item` rows, `<salla-payments>`'s `.s-payments-list-item`
  * icons) is the consuming theme's own responsibility, the same way
  * `inSheet`'s own presentation is -- this component owns structure and data,

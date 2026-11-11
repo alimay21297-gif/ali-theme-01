@@ -64,7 +64,7 @@ function TestimonialCard({ item }: { item: TestimonialItem }) {
         ) : (
           name && (
             <span className="testimonial-card__avatar is-initial" aria-hidden="true">
-              {name.charAt(0)}
+              {Array.from(name)[0]}
             </span>
           )
         )}

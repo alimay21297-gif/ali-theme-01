@@ -239,18 +239,6 @@ function ProductPrice({ product }: { product: Product }) {
   );
 }
 
-/** An `<iframe>` start tag; quoted values may hold `>`. */
-const IFRAME_TAG = /<iframe\b(?:[^>"']|"[^"]*"|'[^']*')*>/gi;
-
-/** Embedded players (YouTube, Vimeo, maps) load only when scrolled near, unless the merchant set `loading`. */
-function lazyIframes(html: string): string {
-  return html.replace(IFRAME_TAG, (tag) =>
-    /\sloading\s*=/i.test(tag.replace(/"[^"]*"|'[^']*'/g, '""'))
-      ? tag
-      : tag.replace(/^<iframe/i, '<iframe loading="lazy"')
-  );
-}
-
 function ProductDescription({ product }: { product: Product }) {
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -260,10 +248,10 @@ function ProductDescription({ product }: { product: Product }) {
 
   if (!product.description) return null;
 
-  // Merchant HTML: sanitise first (allow-list), then lazy iframes, then YouTube thumbnails.
+  // Merchant HTML: sanitise first (allow-list; it also forces lazy iframes), then YouTube thumbnails.
   // `&nbsp;` is swapped before parsing, because the sanitiser would decode it to a raw U+00A0.
   const description = youtubeFacades(
-    lazyIframes(sanitizeRichHtml(product.description.replace(/&nbsp;/g, '\n'))),
+    sanitizeRichHtml(product.description.replace(/&nbsp;/g, '\n')),
     playingVideos,
     t('pages.products.play_video', 'Play video')
   );

@@ -483,7 +483,7 @@ export function ProductListPage({
   return (
     <div
       key={listKey}
-      className="container s-listing-page px-2.5 mb-10"
+      className="container s-listing-page mb-10"
       data-source={isReorder ? 'reorder' : undefined}
     >
       {theme?.settings?.product_index_show_breadcrumbs !== false && <Breadcrumb page={page} />}

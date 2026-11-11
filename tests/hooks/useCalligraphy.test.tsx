@@ -21,6 +21,13 @@ describe('useCalligraphy', () => {
     expect(opacity()).toBe(0.12);
   });
 
+  it('falls back to standard for an unknown strength, including inherited object keys', () => {
+    for (const value of ['loud', 'toString', 'constructor', '__proto__']) {
+      state.settings = { calligraphy_bg_strength: value };
+      expect(opacity()).toBe(0.08);
+    }
+  });
+
   it('scales the strength for a quieter surface (footer: 60%)', () => {
     state.settings = { calligraphy_bg_strength: 'standard' };
     expect(opacity(0.6)).toBe(0.048);

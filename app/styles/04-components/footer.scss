@@ -20,10 +20,6 @@
    just the handful of pieces rendered by web components Footer has no markup
    of its own for, which it explicitly leaves to the consuming theme. */
 .store-footer {
-  .social-link {
-    @apply flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 text-sm transition duration-300 hover:opacity-75;
-  }
-
   /* `<salla-social>` renders 32px circles (`.s-social-link a`): the circle stays,
      the touch target around it is 44px. */
   .s-social-link a {
@@ -106,10 +102,6 @@ body.footer-is-dark .store-footer:not(.store-footer--sheet) {
 
   .store-footer__menu--inline .s-menu-footer-item {
     @apply border-white/10 text-white hover:underline;
-  }
-
-  .social-link {
-    @apply border-white/30 text-white;
   }
 
   /* The dark surface is --lameem-primary, so --color-primary rings would vanish. */

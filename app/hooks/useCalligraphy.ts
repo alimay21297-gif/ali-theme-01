@@ -35,7 +35,7 @@ export function useCalligraphy(scale = 1): Calligraphy {
   if (settings?.calligraphy_bg_enabled === false) return { className: '', style: undefined };
 
   const value = dropdownValue(settings?.calligraphy_bg_strength);
-  const strength: Strength = value && value in OPACITY ? (value as Strength) : 'standard';
+  const strength: Strength = value && Object.hasOwn(OPACITY, value) ? (value as Strength) : 'standard';
   return {
     className: 'has-calligraphy',
     style: {
