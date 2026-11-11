@@ -172,4 +172,4 @@ _Kept in the theme repo root. Updated by Claude Code via /handover. Last update:
 - LATER (v1.1): product gallery slides are `<a role=group>` from the Swiper a11y `slideRole` (axe aria-allowed-role, minor); test `slideRole` or wrap the anchor in a `div.swiper-slide`.
 
 ## Next step
-Phase 7 step 1: twilight.json metadata.
+Phase 7 step 3, publish prep: demo store colour #0F2A1E + default preview store confirmed (Ali), Salla question sent (pre-publish production preview / 2 MB / bilingual labels), changelog ar+en, 4+ screenshots after the colour change, categories, price. Then publish and measure Lighthouse performance on the preview store while in review.
