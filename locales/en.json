@@ -132,5 +132,10 @@
   "pages.products.similar_products": "Similar products",
   "common.titles.products": "Products",
   "pages.products.social_share": "Share this product",
-  "blocks.footer.sbc_alt": "Saudi Business Center certificate {{id}}"
+  "blocks.footer.sbc_alt": "Saudi Business Center certificate {{id}}",
+  "pages.categories.filter_products": "Filter products",
+  "pages.products.slider_prev": "Previous image",
+  "pages.products.slider_next": "Next image",
+  "pages.products.slider_bullet": "Go to image {{index}}",
+  "pages.products.slider_slide": "{{index}} / {{slidesLength}}"
 }

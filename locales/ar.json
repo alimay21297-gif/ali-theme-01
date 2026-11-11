@@ -132,5 +132,10 @@
   "pages.products.similar_products": "منتجات مشابهة",
   "common.titles.products": "المنتجات",
   "pages.products.social_share": "مشاركة المنتج",
-  "blocks.footer.sbc_alt": "شهادة المركز السعودي للأعمال {{id}}"
+  "blocks.footer.sbc_alt": "شهادة المركز السعودي للأعمال {{id}}",
+  "pages.categories.filter_products": "تصفية المنتجات",
+  "pages.products.slider_prev": "الصورة السابقة",
+  "pages.products.slider_next": "الصورة التالية",
+  "pages.products.slider_bullet": "الانتقال إلى الصورة {{index}}",
+  "pages.products.slider_slide": "{{index}} / {{slidesLength}}"
 }

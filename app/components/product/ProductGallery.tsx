@@ -135,6 +135,16 @@ export function ProductGallery({ product }: ProductGalleryProps) {
 
   const hasManyImages = images.length > 1;
   // "View image 2 of 5", digits in the page language.
+  // Swiper's own a11y strings, translated. Swiper fills `{{index}}` / `{{slidesLength}}` itself
+  // (Latin digits); they are passed back as literals so the translator leaves them alone.
+  const placeholders = { index: '{{index}}', slidesLength: '{{slidesLength}}' };
+  const sliderA11y = {
+    prevSlideMessage: t('pages.products.slider_prev', 'Previous slide'),
+    nextSlideMessage: t('pages.products.slider_next', 'Next slide'),
+    paginationBulletMessage: t('pages.products.slider_bullet', 'Go to slide {{index}}', placeholders),
+    slideLabelMessage: t('pages.products.slider_slide', '{{index}} / {{slidesLength}}', placeholders),
+  };
+
   const viewLabel = (index: number) =>
     t('pages.products.view_image', 'View image {{n}} of {{total}}', {
       n: formatDigits(index + 1, locale),
@@ -214,7 +224,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
         autoHeight
         listenToThumbnailsOption
         showThumbsControls={false}
-        sliderConfig={{ watchOverflow: true, autoHeight: true }}
+        sliderConfig={{ watchOverflow: true, autoHeight: true, a11y: sliderA11y }}
         thumbsConfig={{ slidesPerView: 'auto', spaceBetween: 8 }}
         onAfterInit={() => {
           setSliderReady(true);

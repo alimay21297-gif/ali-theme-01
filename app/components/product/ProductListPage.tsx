@@ -282,14 +282,22 @@ function CatalogGrid({
   return (
     <div className={filtersVisible ? 'md:grid md:grid-cols-[288px_1fr] gap-8' : ''}>
       {filtersVisible && (
-        <SallaFilters
-          id="filters-menu"
-          className="hidden md:block lg:sticky lg:top-20"
-          filters={filters as never}
-        />
+        <>
+          {/* Heading before the column keeps the outline h1 → h2 → h3 (the filter widget titles are h3).
+              The column is `hidden` below md, so its heading is too. */}
+          <h2 className="sr-only max-md:hidden">
+            {t('pages.categories.filter_products', 'Filter products')}
+          </h2>
+          <SallaFilters
+            id="filters-menu"
+            className="hidden md:block lg:sticky lg:top-20"
+            filters={filters as never}
+          />
+        </>
       )}
 
       <div className="min-w-0">
+        <h2 className="sr-only">{t('common.titles.products', 'Products')}</h2>
         <HookSlot name="product:list.items.start" />
         {/* legacy name for the same point */}
         <HookSlot name="product:index.items.start" />
