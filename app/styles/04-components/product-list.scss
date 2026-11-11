@@ -118,6 +118,46 @@
     }
   }
 
+  /* Tap targets. `<salla-filters>` renders in the light DOM (no shadow root, no
+     documented parts), and every rule below targets a child of the host, never the
+     host. The id selector outranks the engine's single-class rules.
+     - Section title (the whole `<h3>` toggles the section): 24px line + 12px above,
+       8px below = 44px. The 8px below leaves room for the search box's own padding.
+       The container's 14px padding holds the 12px above.
+     - Option row (`<label>` wraps the input and the name): rows are 32px apart
+       (20px + 12px margin), so 6px above and below is the most that does not overlap. */
+  .s-filters-widget-title {
+    @apply relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset-block: -12px -8px;
+      inset-inline: 0;
+    }
+  }
+
+  .s-filters-label::after {
+    content: '';
+    position: absolute;
+    inset-block: -6px;
+    inset-inline: 0;
+  }
+
+  /* "Show more": 20px line. Its 6px of top padding is cancelled by a -6px margin (the
+     text stays where it was, and the box starts where the last row's area ends); the
+     extra 18px sits below, inside the section. The engine's `margin-top` is 8px, so
+     the override has to come from here. */
+  .s-filters-widget-more {
+    margin-block-start: -6px;
+    padding-block: 6px 18px;
+  }
+
+  /* Price inputs are 38px tall; 44px adds 6px to that row. */
+  .s-price-range-number-input {
+    min-block-size: 2.75rem;
+  }
+
   .s-filters-widget-container {
     @apply border-b border-gray-100 py-3.5;
     margin-bottom: 0;

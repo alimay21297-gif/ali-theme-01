@@ -720,9 +720,10 @@
     }
   }
 
-  /* A 24px target around each bar, like `.carousel-dots`. */
+  /* A 44px-tall target around each bar (the nav row is already 48px, so nothing
+     moves). The width stays 24px: dots sit 24px apart, so wider targets would overlap. */
   &__dot {
-    @apply flex h-6 min-w-6 items-center justify-center px-[3px] py-0;
+    @apply flex h-11 min-w-6 items-center justify-center px-[3px] py-0;
 
     &:focus-visible {
       @apply outline outline-2 outline-white;

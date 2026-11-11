@@ -252,6 +252,17 @@
     -webkit-line-clamp: 2;
     line-clamp: 2;
     overflow: hidden;
+    position: relative;
+
+    /* Tap area: the engine's inline `<a>` is one text line (22px) tall. Its `::after`
+       fills the whole `<h3>` (full card width, 44px in the vertical card through the
+       `min-block-size` below), so the card's layout is untouched. The `<h3>` clips it,
+       so it never reaches the subtitle, the price or the add-to-cart button. */
+    a::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+    }
   }
 }
 
