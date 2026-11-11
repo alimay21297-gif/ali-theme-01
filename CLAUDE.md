@@ -24,9 +24,10 @@ Read `PROJECT-CONTEXT.md` at session start, if it exists.
 14. File edits only with the Edit/Write tools. Never write or rewrite files through the shell (`cat >`, heredocs, `echo >`, `node -e` writes): it has truncated files and mangled backslashes, and a truncated module helps hang the dev server.
 15. Never edit files while a Playwright page is open on the dev server: close it, edit, then reopen. Never write `twilight.preview.json` while the dev server runs; ask the human to stop it first.
 16. After any batch of edits, stop and ask Ali to restart `pnpm dev` BEFORE the browser check (edits reliably trigger the SSR hang). Never browser-check on a server that was running during edits.
+17. Breakpoints: use min-width variants (`hidden md:block`), never `max-*` variants. `max-md:hidden` did not compile in this theme (cause unknown, Tailwind 3.4) and the element stayed visible on phones. Verify every new breakpoint class in the browser.
 
 ## Definition of done
-- [ ] `pnpm build`, `pnpm typecheck`, `pnpm test` pass (+ `pnpm check:manifest` if twilight.json changed)
+- [ ] `pnpm build`, `pnpm typecheck`, `pnpm test` pass (test baseline: 0 fail / 839 pass, 87 files; update it when tests are added) (+ `pnpm check:manifest` if twilight.json changed)
 - [ ] Verified at /ar and /en, 375px and desktop
 - [ ] No hard-coded colors/strings; logical CSS only
 - [ ] Cleanup done, diff shown; `PROJECT-CONTEXT.md` updated via `/handover`
