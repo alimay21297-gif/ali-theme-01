@@ -149,7 +149,7 @@ function CartPageContent({ page }: CartPageProps) {
               <span className="text-center">
                 {t('pages.products.quantity', 'Quantity')}
               </span>
-              <span>{t('blocks.cart.item_total', 'Total')}</span>
+              <span className="md:w-28 md:text-end">{t('blocks.cart.item_total', 'Total')}</span>
               <span className="w-5" aria-hidden="true"></span>
             </span>
           </div>

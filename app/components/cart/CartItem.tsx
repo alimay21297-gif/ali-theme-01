@@ -348,7 +348,7 @@ export function CartItem({ item, isFirst = false, onMutated }: CartItemProps) {
           <div className="cart-item__controls mt-5 md:mt-0 flex gap-6 md:gap-8 justify-between items-center md:items-start">
             <CartItemQuantity item={item} disabled={deleting} onChange={changeQuantity} />
 
-            <p className="flex-none font-bold">
+            <p className="flex-none font-bold md:w-28 md:text-end">
               {/* label shows on mobile only — desktop has the column heading */}
               <span className="md:hidden">{t('blocks.cart.item_total', 'Total')}: </span>
               <span className="inline-block item-total">{cartItemTotalLabel(item, format, t)}</span>
