@@ -116,7 +116,7 @@ export const HowItWorks = memo(function HowItWorks({ data }: HowItWorksProps) {
                 </span>
                 <div className="home-how__content">
                   {ICON_CLASS.test(step.icon) && <i className={`home-how__icon ${step.icon}`} aria-hidden="true" />}
-                  <h3 className="home-how__step-title">{step.title}</h3>
+                  <h3 aria-level={title ? undefined : 2} className="home-how__step-title">{step.title}</h3>
                   {step.text && <p className="home-how__step-text">{step.text}</p>}
                 </div>
               </li>

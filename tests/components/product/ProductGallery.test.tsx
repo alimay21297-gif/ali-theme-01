@@ -15,7 +15,11 @@ vi.mock('@salla.sa/twilight-theme-engine/providers', () => ({
 }));
 
 vi.mock('@salla.sa/twilight-theme-engine/i18n', () => ({
-  useTranslation: () => ({ t: (_k: string, fb?: string) => fb ?? _k }),
+  useTranslation: () => ({
+    locale: 'en',
+    t: (_k: string, fb?: string, vars?: Record<string, string>) =>
+      (fb ?? _k).replace(/\{\{(\w+)\}\}/g, (_m, name: string) => vars?.[name] ?? ''),
+  }),
 }));
 
 // The web component never upgrades in jsdom; report it laid out, as Swiper's afterInit does.
@@ -89,6 +93,35 @@ describe('ProductGallery media', () => {
     expect(slides(container).some((a) => a.target === '_blank')).toBe(false);
   });
 
+  it('names each slide "View image n of total" and leaves its image with an empty alt', () => {
+    const { container } = render(<ProductGallery product={product} />);
+
+    expect(slides(container).map((a) => a.getAttribute('aria-label'))).toEqual([
+      'View image 1 of 3',
+      'View image 2 of 3',
+      'View image 3 of 3',
+    ]);
+    for (const a of slides(container)) expect(a.querySelector('img')?.getAttribute('alt')).toBe('');
+  });
+
+  it('names each thumbnail the same way, through its image', () => {
+    const { container } = render(<ProductGallery product={product} />);
+
+    const thumbs = [...container.querySelectorAll('[slot="thumbs"] img')];
+    expect(thumbs.map((img) => img.getAttribute('alt'))).toEqual([
+      'View image 1 of 3',
+      'View image 2 of 3',
+      'View image 3 of 3',
+    ]);
+  });
+
+  it('keeps the product name as the label of a lone image', () => {
+    const lone = { ...product, images: [product.images[0]] } as unknown as Product;
+    const { container } = render(<ProductGallery product={lone} />);
+
+    expect(slides(container)[0].getAttribute('aria-label')).toBe('Course');
+  });
+
   it("opens a video with no type as YouTube, as Twig's gallery does", () => {
     const untyped = {
       ...product,
@@ -125,7 +158,7 @@ describe('ProductGallery image fit', () => {
   // Every slide image and the server-rendered poster.
   const fitClasses = (container: HTMLElement) =>
     [...container.querySelectorAll('img')]
-      .filter((img) => img.alt !== '' || img.closest('.product-gallery__poster'))
+      .filter((img) => img.closest('a[data-fslightbox], .product-gallery__poster'))
       .map((img) => [...img.classList].filter((c) => c.startsWith('object-')).join(' '));
 
   it("contains the images when the merchant never saved the setting, as twilight.json's default", () => {

@@ -115,7 +115,11 @@ export const Faq = memo(function Faq({ data }: FaqProps) {
             {ICON_CLASS.test(guaranteeIcon) && (
               <i className={`home-faq__card-icon ${guaranteeIcon}`} aria-hidden="true" />
             )}
-            {guaranteeTitle && <h3 className="home-faq__card-title">{guaranteeTitle}</h3>}
+            {guaranteeTitle && (
+              <h3 aria-level={title ? undefined : 2} className="home-faq__card-title">
+                {guaranteeTitle}
+              </h3>
+            )}
             {guaranteeText && <p className="home-faq__card-text">{guaranteeText}</p>}
             {buttonLabel && url && (
               <Link to={url} className="home-faq__card-cta">

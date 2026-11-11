@@ -40,7 +40,11 @@ function SlideCard({
       {motionAllowed && <SlideVideo url={slide.video} poster={slide.image} />}
       {!slide.without_overlay && <span className="s-text-photos-slider__overlay" />}
       <div className="s-text-photos-slider__content">
-        {slide.title && <h3 className="s-text-photos-slider__title">{slide.title}</h3>}
+        {slide.title && (
+          <h3 aria-level={2} className="s-text-photos-slider__title">
+            {slide.title}
+          </h3>
+        )}
         {slide.description && (
           <p className="s-text-photos-slider__description">{slide.description}</p>
         )}

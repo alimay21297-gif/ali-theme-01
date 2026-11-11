@@ -174,7 +174,7 @@ function FooterLinksMenu({
 
   return (
     <div className="store-footer__links">
-      <h3 className={`mb-3 text-lg font-bold lg:mb-5 ${dark ? 'text-white' : 'text-gray-900'}`}>
+      <h3 aria-level={2} className={`mb-3 text-lg font-bold lg:mb-5 ${dark ? 'text-white' : 'text-gray-900'}`}>
         {heading}
       </h3>
       {links}
@@ -276,7 +276,7 @@ function FooterContactsColumn({ inSheet, dark }: { inSheet: boolean; dark: boole
 
   return (
     <div className="store-footer__contact-list">
-      <h3 className={`mb-3 text-lg font-bold lg:mb-5 ${dark ? 'text-white' : 'text-gray-900'}`}>
+      <h3 aria-level={2} className={`mb-3 text-lg font-bold lg:mb-5 ${dark ? 'text-white' : 'text-gray-900'}`}>
         {t('blocks.footer.social', 'Contact us')}
       </h3>
       {isClient && <SallaContacts contacts={contacts} hideTitle />}

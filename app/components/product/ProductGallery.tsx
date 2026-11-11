@@ -11,6 +11,7 @@ import { ArrowRightIcon } from '../icons';
 import { useHydrated } from '../../hooks/useHydrated';
 import { useMobileViewport } from '../../hooks/useMobileViewport';
 import { cardBadgeText } from '../../lib/cardBadge';
+import { formatDigits } from '../../lib/formatDigits';
 import { ProductMetadata } from './ProductMetadata';
 
 export interface ProductGalleryProps {
@@ -133,6 +134,12 @@ export function ProductGallery({ product }: ProductGalleryProps) {
   const { posterUrl, hidePoster } = useSliderPoster(images[0]);
 
   const hasManyImages = images.length > 1;
+  // "View image 2 of 5", digits in the page language.
+  const viewLabel = (index: number) =>
+    t('pages.products.view_image', 'View image {{n}} of {{total}}', {
+      n: formatDigits(index + 1, locale),
+      total: formatDigits(images.length, locale),
+    });
   const openNativeGallery = (selected: ProductImage) => {
     if (!isNativeApp()) return false;
     const mobile = window.salla?.mobile as
@@ -232,6 +239,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
               image={image}
               product={product}
               index={index}
+              label={hasManyImages ? viewLabel(index) : product.name}
               objectFit={objectFit}
               lightboxReady={lightboxReady}
               onNativeOpen={openNativeGallery}
@@ -251,6 +259,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
                 key={image.id ?? image.three_d_image_url ?? image.video_url ?? image.url}
                 image={image}
                 index={index}
+                label={viewLabel(index)}
               />
             ))}
           </div>
@@ -326,6 +335,7 @@ function ImageSlide({
   image,
   product,
   index,
+  label,
   objectFit,
   lightboxReady,
   onNativeOpen,
@@ -333,6 +343,7 @@ function ImageSlide({
   image: ProductImage;
   product: Product;
   index: number;
+  label: string;
   objectFit: 'cover' | 'contain';
   lightboxReady: RefObject<boolean>;
   onNativeOpen: (image: ProductImage) => boolean;
@@ -378,14 +389,15 @@ function ImageSlide({
       onClick={(event) => {
         if (!lightboxReady.current) event.preventDefault();
       }}
-      aria-label={product.name}
+      aria-label={label}
       className={`swiper-slide magnify-wrapper homeslider__slide ${image.video_url ? 'video-entry' : ''}`}
     >
       <div className={`w-full ${loaded ? '' : 'aspect-square bg-gray-100 animate-pulse'}`}>
         <Image
           id={String(image.id)}
           src={image.url}
-          alt={image.alt || product.name}
+          // The link's label names the slide; an alt here would be read twice.
+          alt=""
           className="h-full w-full"
           objectFit={objectFit}
           aspectRatio="1/1"
@@ -398,7 +410,19 @@ function ImageSlide({
   );
 }
 
-function ThumbSlide({ image, index }: { image: ProductImage; index: number }) {
+/**
+ * The thumbnail's click target is the slider's own slide wrapper (engine markup, not reachable
+ * here), which takes its name from its content, so the label goes on the `<img>`.
+ */
+function ThumbSlide({
+  image,
+  index,
+  label,
+}: {
+  image: ProductImage;
+  index: number;
+  label: string;
+}) {
   return (
     <div
       className={`slide--one-fourth ${image.video_url ? 'video-entry' : ''} ${image.three_d_image_url ? 'model-entry' : ''}`}
@@ -406,10 +430,9 @@ function ThumbSlide({ image, index }: { image: ProductImage; index: number }) {
     >
       <Image
         src={image.url}
-        alt={image.alt || ''}
+        alt={label}
         className="w-full h-full rounded overflow-hidden"
         objectFit="contain"
-        title={image.alt}
         priority={index < 5}
         noWrapper
       />

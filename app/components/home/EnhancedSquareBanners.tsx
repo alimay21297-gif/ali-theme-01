@@ -38,7 +38,12 @@ function MosaicBanner({ banner, ctaLabel }: { banner: BannerItem; ctaLabel: stri
       style={{ backgroundImage: `url(${banner.image})` }}
     >
       <span className="enhanced-square-banner__content">
-        {banner.title && <h3 className="enhanced-square-banner__title">{banner.title}</h3>}
+        {banner.title && (
+          // `aria-level`: the block's top heading is level 2 (no `<h2>`, whose CSS differs).
+          <h3 aria-level={2} className="enhanced-square-banner__title">
+            {banner.title}
+          </h3>
+        )}
         {banner.description && (
           <p className="enhanced-square-banner__description">{banner.description}</p>
         )}
@@ -88,7 +93,7 @@ export const EnhancedSquareBanners = memo(function EnhancedSquareBanners({
           style={{ backgroundImage: `url(${banner.image})` }}
         >
           <article className="banner-entry__text text-with-border">
-            <h3 className="banner__title font-bold mb-1 leading-6">{banner.title}</h3>
+            <h3 aria-level={2} className="banner__title font-bold mb-1 leading-6">{banner.title}</h3>
             <p className="banner__description">{banner.description}</p>
           </article>
         </Link>

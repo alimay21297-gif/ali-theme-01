@@ -56,7 +56,7 @@ export const Features = memo(function Features({ data }: FeaturesProps) {
             <span className="home-features__icon" aria-hidden="true">
               {ICON_CLASS.test(item.icon) && <i className={item.icon} />}
             </span>
-            <h3 className="home-features__title">{item.title}</h3>
+            <h3 aria-level={2} className="home-features__title">{item.title}</h3>
             {item.text && <p className="home-features__text">{item.text}</p>}
           </li>
         ))}

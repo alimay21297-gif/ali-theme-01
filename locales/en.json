@@ -13,6 +13,7 @@
   "pages.products.out_of_stock": "Out of Stock",
   "pages.products.sold_out": "Sold out",
   "pages.products.discount_badge": "{{percent}}% off",
+  "pages.products.view_image": "View image {{n}} of {{total}}",
   "common.actions.save": "Save",
   "common.actions.cancel": "Cancel",
   "pages.thank_you.hero_title": "Thank you for shopping with us! 😊",

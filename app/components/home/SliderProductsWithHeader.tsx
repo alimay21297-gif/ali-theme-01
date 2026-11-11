@@ -79,7 +79,11 @@ export function SliderProductsWithHeader({ data }: SliderProductsWithHeaderProps
       >
         <div className="container pt-8 sm:pt-20 relative">
           <div>
-            {title && <h3 className="text-lg font-bold leading-12">{title}</h3>}
+            {title && (
+              <h3 aria-level={2} className="text-lg font-bold leading-12">
+                {title}
+              </h3>
+            )}
             {description && <p className="text-sm mb-8 line-clamp-2 max-w-lg">{description}</p>}
           </div>
         </div>
