@@ -17,6 +17,10 @@ export interface ScrollCarouselProps {
   nextLabel: string;
   /** Scroll forward one slide on a timer, back to the start at the end. Off by default. */
   autoPlay?: boolean;
+  /** Id of the visible title: makes the track a named region (preferred over `label`). */
+  labelledBy?: string;
+  /** Accessible name for the track when there is no visible title to point at. */
+  label?: string;
 }
 
 /** One slide and the gap after it. */
@@ -83,6 +87,8 @@ export function ScrollCarousel({
   prevLabel,
   nextLabel,
   autoPlay = false,
+  labelledBy,
+  label,
 }: ScrollCarouselProps) {
   const { t } = useTranslation();
   const track = useRef<HTMLDivElement>(null);
@@ -209,6 +215,13 @@ export function ScrollCarousel({
           .filter(Boolean)
           .join(' ')}
         onScroll={sync}
+        {...((labelledBy || label) && {
+          role: 'region',
+          'aria-labelledby': labelledBy,
+          'aria-label': labelledBy ? undefined : label,
+          // Focusable only while it scrolls, so keyboard users can scroll it.
+          tabIndex: rail && !rail.fits ? 0 : undefined,
+        })}
         {...drag}
       >
         {children}

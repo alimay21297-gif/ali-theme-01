@@ -138,6 +138,42 @@ describe('ScrollCarousel count', () => {
   });
 });
 
+describe('ScrollCarousel region', () => {
+  const track = (container: HTMLElement) =>
+    container.querySelector('.scroll-carousel__track') as HTMLElement;
+
+  it('is a plain track unless it is given a name', () => {
+    layout({ scrollWidth: 800, clientWidth: 400 });
+    const { container } = carousel();
+    expect(track(container).getAttribute('role')).toBeNull();
+    expect(track(container).hasAttribute('tabindex')).toBe(false);
+  });
+
+  it('is a region named by the title, and focusable while it scrolls', () => {
+    layout({ scrollWidth: 800, clientWidth: 400 });
+    const { container } = render(
+      <ScrollCarousel prevLabel="Previous" nextLabel="Next" labelledBy="t1" label="Fallback">
+        {slides(8)}
+      </ScrollCarousel>
+    );
+    expect(track(container).getAttribute('role')).toBe('region');
+    expect(track(container).getAttribute('aria-labelledby')).toBe('t1');
+    expect(track(container).hasAttribute('aria-label')).toBe(false);
+    expect(track(container).getAttribute('tabindex')).toBe('0');
+  });
+
+  it('uses the label without a title, and is not focusable when everything fits', () => {
+    layout({ scrollWidth: 400, clientWidth: 400 });
+    const { container } = render(
+      <ScrollCarousel prevLabel="Previous" nextLabel="Next" label="Customer reviews">
+        {slides(3)}
+      </ScrollCarousel>
+    );
+    expect(track(container).getAttribute('aria-label')).toBe('Customer reviews');
+    expect(track(container).hasAttribute('tabindex')).toBe(false);
+  });
+});
+
 describe('ScrollCarousel layout', () => {
   it('puts the arrows on the title line when there is a heading', () => {
     layout({ scrollWidth: 800, clientWidth: 400 });

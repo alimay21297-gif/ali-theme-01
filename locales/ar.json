@@ -74,6 +74,7 @@
   "blocks.home.reviews_prev": "السابق",
   "blocks.home.reviews_all": "عرض كل الآراء",
   "blocks.home.reviews_next": "التالي",
+  "blocks.home.reviews_region_label": "آراء العملاء",
   "blocks.home.slider_page": "الشريحة",
   "blocks.home.count_of": "من",
   "blocks.home.rating_label": "التقييم {{rating}} من {{max}}",

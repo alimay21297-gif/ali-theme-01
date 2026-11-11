@@ -1412,6 +1412,12 @@ salla-reviews:not(:has(.s-reviews-swiper-slide)) {
       scroll-padding-inline: 0;
     }
 
+    /* Same ring as the global one in 02-generic/reset.scss (the track is focusable when it scrolls). */
+    &:focus-visible {
+      outline: 2px solid var(--lameem-primary);
+      outline-offset: 2px;
+    }
+
     &.is-dragging {
       @apply cursor-grabbing select-none;
       scroll-snap-type: none;

@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { useTranslation } from '@salla.sa/twilight-theme-engine/i18n';
 import { Link } from '@salla.sa/twilight-theme-engine/common';
 import { formatDigits } from '../../lib/formatDigits';
@@ -103,6 +104,7 @@ export function TestimonialsCarousel({
   showAllLink = false,
 }: TestimonialsCarouselProps) {
   const { t } = useTranslation();
+  const titleId = useId();
 
   if (!items.length) return null;
 
@@ -112,10 +114,14 @@ export function TestimonialsCarousel({
         className={`testimonials-track testimonials-track--${Math.min(items.length, 3)}`}
         heading={
           <>
-            <h2 className="s-testimonials__title">{title}</h2>
+            <h2 id={titleId} className="s-testimonials__title">
+              {title}
+            </h2>
             {description && <p className="s-testimonials__desc">{description}</p>}
           </>
         }
+        labelledBy={title ? titleId : undefined}
+        label={t('blocks.home.reviews_region_label', 'Customer reviews')}
         prevLabel={t('blocks.home.reviews_prev', 'Previous')}
         nextLabel={t('blocks.home.reviews_next', 'Next')}
       >

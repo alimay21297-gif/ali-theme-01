@@ -74,6 +74,7 @@
   "blocks.home.reviews_prev": "Previous",
   "blocks.home.reviews_all": "See all reviews",
   "blocks.home.reviews_next": "Next",
+  "blocks.home.reviews_region_label": "Customer reviews",
   "blocks.home.slider_page": "Slide",
   "blocks.home.count_of": "of",
   "blocks.home.rating_label": "Rated {{rating}} out of {{max}}",
