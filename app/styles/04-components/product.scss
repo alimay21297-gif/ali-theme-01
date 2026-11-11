@@ -47,7 +47,7 @@
 // Digital Rating(SVG)---------------------------
 .s-product-card-content-pie-svg-base {
   transition: stroke-dashoffset 1s linear;
-  stroke: #e8edf2;
+  stroke: theme('colors.gray.200');
   stroke-width: 2px;
   stroke-linecap: round;
   fill: none;
@@ -88,12 +88,12 @@
 }
 
 .pie-wrapper {
-  @apply w-[72px] h-[72px] absolute top-2.5 rtl:left-5 ltr:right-5 text-primary flex items-center justify-center;
+  @apply w-[72px] h-[72px] absolute top-2.5 end-5 text-primary flex items-center justify-center;
 
   .pie-svg {
     circle {
       transition: stroke-dashoffset 1s linear;
-      stroke: #e8edf2;
+      stroke: theme('colors.gray.200');
       stroke-width: 2px;
       stroke-linecap: round;
       fill: none;
@@ -1023,8 +1023,6 @@ salla-gifting {
     .s-social-share-list {
       inset-inline: 0 auto;
       inset-block-start: calc(100% + 0.4rem);
-      left: 0;
-      right: auto;
     }
   }
 }
@@ -1044,7 +1042,7 @@ salla-gifting {
     pointer-events: none;
     transform: scale(0);
     transition: transform 0.5s ease;
-    box-shadow: inset 0px 0px 30px #949494;
+    box-shadow: inset 0px 0px 30px theme('colors.gray.400');
   }
   &:hover {
     .img-magnifier-glass {

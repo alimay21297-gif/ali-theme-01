@@ -6,7 +6,7 @@
     @apply center-between mb-4 md:mb-8;
 
     .right-side {
-      @apply rtl:pl-8 ltr:pr-8;
+      @apply pe-8;
     }
 
     h2 {
@@ -14,11 +14,11 @@
     }
 
     p {
-      @apply text-sm opacity-60 mt-2 line-clamp-1 sm:line-clamp-2 rtl:md:pl-16 ltr:md:pr-16;
+      @apply text-sm opacity-60 mt-2 line-clamp-1 sm:line-clamp-2 md:pe-16;
     }
 
     &-nav {
-      @apply hidden sm:flex ltr:flex-row-reverse rtl:space-x-reverse space-x-2.5 rtl:mr-6 ltr:ml-6;
+      @apply hidden sm:flex ltr:flex-row-reverse rtl:space-x-reverse space-x-2.5 ms-6;
     }
   }
 
@@ -1003,10 +1003,8 @@
 */
 %salla-container {
   width: 100%;
-  margin-right: auto;
-  margin-left: auto;
-  padding-right: 10px;
-  padding-left: 10px;
+  margin-inline: auto;
+  padding-inline: 10px;
   max-width: 1280px;
 }
 
