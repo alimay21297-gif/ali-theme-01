@@ -285,7 +285,7 @@ function CatalogGrid({
         <>
           {/* Heading before the column keeps the outline h1 → h2 → h3 (the filter widget titles are h3).
               The column is `hidden` below md, so its heading is too. */}
-          <h2 className="sr-only max-md:hidden">
+          <h2 className="sr-only hidden md:block">
             {t('pages.categories.filter_products', 'Filter products')}
           </h2>
           <SallaFilters
