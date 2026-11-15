@@ -20,6 +20,9 @@ vi.mock('@salla.sa/twilight-theme-engine/i18n', () => ({
 vi.mock('@salla.sa/twilight-theme-engine/hooks/useUser', () => ({
   useUser: () => ({ isLoggedIn: true }),
 }));
+vi.mock('@salla.sa/twilight-components-react/search', () => ({
+  SallaSearchCore: () => <salla-search />,
+}));
 vi.mock('../../../app/components/layout/Footer', () => ({ Footer: () => <footer /> }));
 vi.mock('../../../app/components/layout/Header', () => ({ Header: () => null }));
 vi.mock('../../../app/components/layout/ImportantLinksSheet', () => ({
@@ -100,6 +103,13 @@ describe("ThemeLayout's component translations", () => {
   it('server-renders the footer outside any Suspense boundary, so it hydrates with the page', () => {
     const html = renderToString(<ThemeLayout>page</ThemeLayout>);
     expect(html).toMatch(/<\/main><footer><\/footer>/);
+  });
+
+  // The header button and the bottom bar open it with `search::open`; a second one would open too.
+  it('mounts exactly one search modal, outside the header', () => {
+    const { container } = render(<ThemeLayout>page</ThemeLayout>);
+    expect(container.querySelectorAll('salla-search')).toHaveLength(1);
+    expect(container.querySelector('.app-inner salla-search')).toBeNull();
   });
 
   it('renders without the SDK, as on the server', () => {

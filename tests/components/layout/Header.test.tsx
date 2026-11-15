@@ -63,9 +63,6 @@ vi.mock('../../../app/hooks/useNavHasContent', () => ({
 vi.mock('../../../app/components/layout/PageAdvertisements', () => ({
   PageAdvertisements: () => <div data-testid="advertisement-bar-render" />,
 }));
-vi.mock('@salla.sa/twilight-components-react/search', () => ({
-  SallaSearch: () => <salla-search />,
-}));
 vi.mock('@salla.sa/twilight-components-react/social', () => ({
   SallaSocial: () => <salla-social />,
 }));
@@ -98,13 +95,14 @@ afterEach(() => {
 });
 
 describe('Header', () => {
-  it('renders the shell: logo, actions, search modal, cart, and the hook slots', () => {
+  it('renders the shell: logo, actions, search trigger, cart, and the hook slots', () => {
     const { container, getAllByLabelText } = render(<Header />);
     expect(container.querySelector('header.site-header')).toBeTruthy();
     expect(container.querySelector('.site-header__brand img')).toBeTruthy();
     expect(container.querySelector('salla-user-menu')).toBeTruthy();
     expect(container.querySelector('salla-cart-summary')).toBeTruthy();
-    expect(container.querySelector('salla-search')).toBeTruthy();
+    // The search modal lives in ThemeLayout (the Salla app hides the header), never here.
+    expect(container.querySelector('salla-search')).toBeNull();
     // One search trigger, in the actions group opposite the menu button.
     expect(getAllByLabelText('Search')).toHaveLength(1);
     expect(container.querySelector('[data-hook-slot="header:start"]')).toBeTruthy();

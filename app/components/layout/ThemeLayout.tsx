@@ -5,6 +5,7 @@ import themeTranslations from 'virtual:twilight/theme-translations';
 import { useTwilight } from '@salla.sa/twilight-theme-engine/providers';
 import { useTranslation } from '@salla.sa/twilight-theme-engine/i18n';
 import { useUser } from '@salla.sa/twilight-theme-engine/hooks/useUser';
+import { SallaSearchCore } from '@salla.sa/twilight-components-react/search';
 import { Footer } from './Footer';
 import { Header } from './Header';
 import { ImportantLinksSheet } from './ImportantLinksSheet';
@@ -87,6 +88,15 @@ function GlobalModals() {
 
   return (
     <>
+      {/* The ONE search modal. The header button and the bottom bar open it with
+          `search::open`. It lives here, not in the header, so it still exists where
+          the Salla app hides the header. Never mount a second one: both would open.
+          `Core`, not `SallaSearch`: the wrapper swaps its skeleton for the element only
+          once it scrolls into view, which never happens down here after the footer, so
+          nothing would answer `search::open`. Core mounts with the page and has no
+          skeleton. */}
+      <SallaSearchCore suppressHydrationWarning />
+
       <Suspense>
         <SallaOfferModal />
       </Suspense>

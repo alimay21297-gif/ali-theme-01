@@ -29,12 +29,6 @@
   height: var(--app-safe-area-top, 0px);
 }
 
-/* `<SallaSearch>` is a modal and takes no room once loaded, but its SSR
-   skeleton sat in the header flow (36px) until hydration (CLS 0.068). */
-.site-header .s-skeleton-search {
-  display: none;
-}
-
 /* Row 1 — action bar. The ad above it and the intro row below it scroll away
    normally. Once the page is scrolled past the top, `is-scrolled` (set from
    Header.tsx) pins the bar with `position: fixed` and shrinks it into a solid,
