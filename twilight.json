@@ -1,8 +1,8 @@
 {
     "type": "react",
     "name": {
-        "ar": "لميم",
-        "en": "LAMEEM"
+        "ar": "ali-theme-01",
+        "en": "ali-theme-01"
     },
     "repository": "https://github.com/alimay21297-gif/ali-theme-01",
     "author_email": "alimay21297@gmail.com",
@@ -3063,7 +3063,7 @@
     ],
     "support_url": "https://wa.me/966569722982",
     "description": {
-        "ar": "ثيم خاص بمتجر لميم للمنظمات الذكية: تصميم أخضر داكن بلمسات من الخط العربي، مصمم للجوال أولاً.",
-        "en": "Custom theme for the LAMEEM smart organizers store: a dark-green design with Arabic calligraphy accents, built mobile-first."
+        "ar": null,
+        "en": null
     }
 }
